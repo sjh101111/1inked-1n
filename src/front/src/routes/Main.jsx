@@ -16,12 +16,12 @@ const Main = () =>{
     },[isLogin]);
 
     const doLogin = () =>{
-            setLogin(true);
-        }
+        nevigate("/login");
+    }
 
     const goSignup = () =>{
-            nevigate("/signup");
-        }
+        nevigate("/signup");
+    }
 
     return (
         isLogin ?
