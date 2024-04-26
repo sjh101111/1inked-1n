@@ -56,6 +56,10 @@ const Signup = () =>{
         nevigate("/");
     }
 
+    const doLogin = () =>{
+        nevigate("/");
+    };
+
     return (
         <main className="flex flex-col min-h-screen items-center">
             <section className="w-500 py-16 px-10 mt-16 bg-white border">
@@ -92,13 +96,11 @@ const Signup = () =>{
                         Signup
                     </div>
                 </Button>
-                <div className="flex gap-2 mt-4 w-full items-center">
-                    <div className="border h-0 border-black/65 grow"></div>
-                    <span>또는</span>
-                    <div className="border h-0 border-black/65 grow"></div>
-                </div>
-                <div className="flex justify-center">
-                    <Link to="/findPassword" className="text-black/65">비밀번호를 잊으셨나요?</Link>
+                <div className="flex flex-col justify-center mt-4">
+                    <h3 className="text-center text-lg font-bold">이미 계정이 있으신가요?</h3>
+                    <Button asChild className="bg-[#6866EB] mt-4 w-full hover:bg-violet-600">
+                        <div onClick={doLogin}>로그인</div>
+                    </Button>
                 </div>
             </section>
         </main>
