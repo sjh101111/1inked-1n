@@ -50,4 +50,4 @@ jobs:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ env.CLOUD_FRONT_ID }} --paths /*
+            --distribution-id ${{ env.CLOUD_FRONT_ID }} --paths "/*"
