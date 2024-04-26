@@ -1,13 +1,21 @@
 import { useState, createContext, useEffect } from 'react';
 
-const GlobalContext = createContext({});
+const GlobalContext = createContext({
+  isLogin: false,
+  setLogin: () =>{}
+});
 
 const ContextProvider = ({children}) =>{
-    return (
-        <GlobalContext.Provider value={{}}>
-            {children}
-        </GlobalContext.Provider>
-    )
+  const [isLogin, setLogin] = useState(false);
+
+  return (
+      <GlobalContext.Provider value={{
+        isLogin,
+        setLogin, 
+      }}>
+          {children}
+      </GlobalContext.Provider>
+  )
 }
 
 
