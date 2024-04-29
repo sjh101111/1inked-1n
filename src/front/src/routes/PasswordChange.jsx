@@ -49,8 +49,10 @@ const PasswordChange = () => {
     return (
         <main id="login-wrap" className="flex flex-col min-h-screen items-center">
             <section className="flex flex-col items-center w-500 py-20 px-10 mt-60 bg-white border">
+
                 <h1>1INKED 1N</h1>
                 <h3>비밀번호 변경</h3>
+
                 <LabelSection asChild label="Current Password" className="mt-4">
                     <Input id="cur_pwd" type="password" placeholder="current password"
                     value = {currentPassword} onChange={(p => setCurrentPassword(p.target.value))}/>
