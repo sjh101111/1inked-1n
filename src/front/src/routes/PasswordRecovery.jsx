@@ -26,7 +26,8 @@ const PasswordRecovery = () => {
     return (
         <main id="login-wrap" className="flex flex-col min-h-screen items-center">
             <section className="flex flex-col items-center w-500 py-20 px-10 mt-60 bg-white border">
-                <h2> 1INKED 1N</h2>
+                <h1>1INKED 1N</h1>
+                <h3>비밀번호 찾기</h3>
                 <LabelSection asChild label="Email">
                     <Input id="tBox_email" type="email" placeholder="Email Address"></Input>
                 </LabelSection>
