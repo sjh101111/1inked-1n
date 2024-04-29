@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "..";
 import { Link } from "react-router-dom";
@@ -17,7 +17,6 @@ const Login = () =>{
         setLogin(true);
         nevigate("/");
     }
-    
 
     return (
         <main id="login-wrap" className="flex flex-col min-h-screen items-center">

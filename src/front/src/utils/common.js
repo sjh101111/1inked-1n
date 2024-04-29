@@ -1,3 +1,7 @@
+export function GenerateLiElUUID(){
+    return crypto.randomUUID().replaceAll("-", "");
+}
+
 /**
  * @brief 이메일 정규식 형태가 일치하는지 확인합니다.
  * The email couldn't start or finish with a dot
