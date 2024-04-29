@@ -5,7 +5,7 @@ import FileInput from "@/components/FileInput";
 import { Button } from "@/components/ui/button";
 
 
-const Article = () =>{
+const Article = (props) =>{
     const resource = {
         btnText: "생성",
         clickCallback: () =>{
@@ -17,7 +17,7 @@ const Article = () =>{
 
     return (
         <Dialog>
-            <DialogTrigger>Open</DialogTrigger>
+            <DialogTrigger asChild {...props}></DialogTrigger>
             <DialogContent onPointerDownOutside={ev => ev.preventDefault()}>
                 <DialogHeader>
                     <div className="flex items-center gap-4">
