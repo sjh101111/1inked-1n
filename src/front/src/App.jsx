@@ -5,12 +5,13 @@ import Main from "./routes/Main";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Test from "./routes/Test";
+import ChatBox from "./components/ChatBox";
 
 
 const router = createBrowserRouter([
       {
         path: "/",
-        element: <Main></Main> 
+        element: <Main></Main>
       },
       {
         path: "/login",
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup></Signup>
+      },
+      {
+        path: "/chat",
+        element: <ChatBox></ChatBox>
       },
       {
         path: "/test",
