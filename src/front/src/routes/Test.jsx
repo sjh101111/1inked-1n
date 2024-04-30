@@ -15,6 +15,7 @@ import Chat from "./Chat";
 import ChatDialog from "@/components/ChatDialog";
 import ChatBox from "@/components/ChatBox";
 import FollowInfo from "@/components/FollowInfo";
+import MyResumes from "@/components/MyResumes";
 
 const Test =  () => {
     const resource = {
@@ -27,7 +28,7 @@ const Test =  () => {
     }
 
     return (
-        <FollowInfo></FollowInfo>
+        <MyResumes></MyResumes>
     );
 };
 
