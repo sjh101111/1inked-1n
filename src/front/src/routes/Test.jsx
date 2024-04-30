@@ -10,6 +10,8 @@ import CommentCircleIcon from "@/components/svg/CommentCircleIcon";
 import { useState } from "react";
 import Login from "./Login";
 import Article from "@/components/Article";
+import Header from "@/components/Layout/Header";
+import Chat from "./Chat";
 
 const Test =  () => {
     const resource = {
@@ -22,7 +24,7 @@ const Test =  () => {
     }
 
     return (
-        <Article></Article>
+        <Chat></Chat>
     );
 };
 
