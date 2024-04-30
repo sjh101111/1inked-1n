@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { useState, useEffect } from "react";
+import ChatDialog from "./ChatDialog";
 
 const ChatBox = (props) =>{
     const [selectBoxItem, setBoxItem] = useState(null);
@@ -63,9 +64,11 @@ const ChatBoxDetail = ({selectBoxItem}) =>{
             <div className="flex justify-between items-center">
                 <h2>상대 유저 이름</h2>
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost">
-                       <Send className="mr-2 w-4 h-4"/>쪽지보내기
-                    </Button>
+                    <ChatDialog>
+                        <Button variant="ghost">
+                            <Send className="mr-2 w-4 h-4"/>쪽지보내기
+                        </Button>
+                    </ChatDialog>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Link>쪽지 삭제</Link>

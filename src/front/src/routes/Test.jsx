@@ -12,6 +12,8 @@ import Login from "./Login";
 import Article from "@/components/Article";
 import Header from "@/components/Layout/Header";
 import Chat from "./Chat";
+import ChatDialog from "@/components/ChatDialog";
+import ChatBox from "@/components/ChatBox";
 
 const Test =  () => {
     const resource = {
@@ -24,7 +26,7 @@ const Test =  () => {
     }
 
     return (
-        <Chat></Chat>
+       <ChatBox></ChatBox> 
     );
 };
 
