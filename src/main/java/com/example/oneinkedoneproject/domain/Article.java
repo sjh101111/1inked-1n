@@ -10,10 +10,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 public class Article {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "article_id", nullable = false)
     private String id;
 
     @CreatedDate

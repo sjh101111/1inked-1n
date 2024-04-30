@@ -11,11 +11,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    @Column(name = "comment_id" , nullable = false)
+    private String Id;
 
     @Column(name = "comments", nullable = false)
     private String comments;

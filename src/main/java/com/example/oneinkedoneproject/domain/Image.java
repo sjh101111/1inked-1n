@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +14,11 @@ public class Image {
     @Column(name = "img_path")
     private String imgPath;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
