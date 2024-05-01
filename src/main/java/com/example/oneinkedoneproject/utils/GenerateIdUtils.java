@@ -1,7 +1,5 @@
 package com.example.oneinkedoneproject.utils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class GenerateIdUtils {
@@ -15,6 +13,10 @@ public class GenerateIdUtils {
 
     public static String generateUserId() {
         return "user_" + generateId();
+    }
+
+    public static String generateCommentId() {
+        return "comment_" + generateId();
     }
 
     public static String generateId() {
