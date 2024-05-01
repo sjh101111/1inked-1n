@@ -27,7 +27,9 @@ public class FollowRepositoryTest {
 
         // given
         User toUser = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        userRepository.save(toUser);
         User fromUser = new User("2","김민","3","1234","음1","아1","학생1","부산","hi2",false, (byte) 10, Grade.ROLE_BASIC);
+        userRepository.save(fromUser);
         Follow follow = new Follow("1", toUser, fromUser);
 
         //when
