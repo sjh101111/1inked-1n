@@ -4,19 +4,17 @@ import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.Resume;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.repository.ResumeRepository;
-import com.example.oneinkedoneproject.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ContextConfiguration(classes = OneinkedOneProjectApplication.class)
+@Transactional
 public class ResumeRepositoryTest {
 
     @Autowired
@@ -98,7 +96,7 @@ public class ResumeRepositoryTest {
         resumeRepository.delete(savedResume);
 
         //then
-        Assertions.assertThat(userRepository.existsById(user.getId())).isFalse();
+        Assertions.assertThat(resumeRepository.existsById(savedResume.getId())).isFalse();
 
     }
 
