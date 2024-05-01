@@ -6,6 +6,7 @@ import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Test from "./routes/Test";
 import ChatBox from "./components/ChatBox";
+import Mypage from "@/routes/Mypage.jsx";
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/chat",
         element: <ChatBox></ChatBox>
+      },
+      {
+        path: "/mypage",
+        element: <Mypage></Mypage>
       },
       {
         path: "/test",

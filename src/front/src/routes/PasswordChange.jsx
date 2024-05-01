@@ -12,7 +12,7 @@ const PasswordChange = () => {
 
     const { isLogin, setLogin } = useContext(GlobalContext);
     //라우팅 네비게이터
-    const nevigate = useNavigate();
+    const navigate = useNavigate();
 
     // State for input values
     const [currentPassword, setCurrentPassword] = useState('');
@@ -42,33 +42,31 @@ const PasswordChange = () => {
             }
         }
 
-        
     }
 
-
     return (
-        <main id="login-wrap" className="flex flex-col min-h-screen items-center">
-            <section className="flex flex-col items-center w-500 py-20 px-10 mt-60 bg-white border">
+        <main id="login-wrap" className="flex justify-center items-center h-screen">
+
+            <section className="flex flex-col items-center w-500 py-20 px-10 bg-white border">
 
                 <h1>1INKED 1N</h1>
                 <h3>비밀번호 변경</h3>
 
                 <LabelSection asChild label="Current Password" className="mt-4">
                     <Input id="cur_pwd" type="password" placeholder="current password"
-                    value = {currentPassword} onChange={(p => setCurrentPassword(p.target.value))}/>
+                           value={currentPassword} onChange={(p => setCurrentPassword(p.target.value))}/>
                 </LabelSection>
-
 
                 <LabelSection asChild label="New Password" className="mt-4">
                     <Input id="new_pwd" type="password" placeholder="new password"
-                    value = {newPassword} onChange={(p => setNewPassword(p.target.value))}/>
+                           value={newPassword} onChange={(p => setNewPassword(p.target.value))}/>
                 </LabelSection>
 
                 <LabelSection asChild label="Verify Password" className="mt-4">
                     <Input id="veri_pwd" type="password" placeholder="verify password"
-                    value = {verifyPassword} onChange={(p => setVerifyPassword(p.target.value))}/>
+                           value={verifyPassword} onChange={(p => setVerifyPassword(p.target.value))}/>
                 </LabelSection>
-              
+
                 <Button className="bg-[#6866EB] mt-4 w-full hover:bg-violet-600" onClick={handlePasswordChange}>
                     <div>비밀번호 변경</div>
                 </Button>
