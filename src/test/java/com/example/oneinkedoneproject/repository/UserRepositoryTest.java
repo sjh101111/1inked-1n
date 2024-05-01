@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ContextConfiguration(classes = OneinkedOneProjectApplication.class)
@@ -20,7 +19,7 @@ public class UserRepositoryTest {
 
 
     @Test
-    @DisplayName("user 저장 확인")
+    @DisplayName("User 저장 확인")
     void saveMember(){
         // given
         User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
@@ -45,7 +44,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("user 조회 확인")
+    @DisplayName("User 조회 확인")
     void findUser(){
 
         // given
@@ -74,7 +73,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("user 수정 확인")
+    @DisplayName("User 수정 확인")
     void updateUser(){
 
         // given
@@ -92,18 +91,20 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("user 삭제 확인")
-    void deleteUser(){
-
+    @DisplayName("User 삭제 확인")
+    void deleteUser() {
         // given
-        User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1", "김", "2", "123", "음", "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
         userRepository.delete(savedUser);
 
-        //then
-        Assertions.assertThat(userRepository.count()).isEqualTo(0);
+        // then
+        Assertions.assertThat(userRepository.existsById(user.getId())).isFalse(); // 사용자가 삭제되었는지 확인
+
+
+
 
     }
 

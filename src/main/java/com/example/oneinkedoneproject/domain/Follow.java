@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Table(name = "follow")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +27,7 @@ public class Follow {
         this.toUser = toUser;
         this.fromUser = fromUser;
     }
-
-
+    public void changeFollow(User toUser) {
+        this.toUser = toUser;
+    }
 }

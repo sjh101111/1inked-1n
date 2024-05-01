@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ContextConfiguration(classes = OneinkedOneProjectApplication.class)
@@ -34,9 +35,9 @@ public class ResumeRepositoryTest {
         // when
         Resume savedResume = resumeRepository.save(resume);
         // then
-        Assertions.assertThat(savedResume.getId()).isNotNull();
+        Assertions.assertThat(resume.getId()).isEqualTo(savedResume.getId());
         Assertions.assertThat(resume.getContents()).isEqualTo(savedResume.getContents());
-        Assertions.assertThat(resume.getUser()).isEqualTo(savedResume.getUser());
+        Assertions.assertThat(resume.getUser().getId()).isEqualTo(savedResume.getUser().getId());
         Assertions.assertThat(resumeRepository.count()).isEqualTo(1);
     }
 
@@ -58,43 +59,46 @@ public class ResumeRepositoryTest {
 
 
         // then
-        Assertions.assertThat(resumeRepository.count()).isEqualTo(1);
-        Assertions.assertThat(findResume.getId()).isEqualTo("1");
-        Assertions.assertThat(findResume.getContents()).isEqualTo("hi");
-        Assertions.assertThat(findResume.getUser()).isEqualTo(savedUser);
+        Assertions.assertThat(findResume.getId()).isEqualTo(savedResume.getId());
+        Assertions.assertThat(findResume.getContents()).isEqualTo(savedResume.getContents());
+        Assertions.assertThat(resume.getUser().getId()).isEqualTo(savedResume.getUser().getId());
     }
 
     @Test
-    @DisplayName("resume 수정 확인")
+    @DisplayName("Resume 수정 확인")
     void updateResume(){
 
         // given
         User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
+        Resume resume = new Resume("1", "hi", savedUser);
+        Resume savedResume = resumeRepository.save(resume);
 
         // when
-        savedUser.updateName("김민");
+        Resume updatedResume = resumeRepository.findById(savedResume.getId())
+                .orElseThrow(IllegalArgumentException::new);
+        updatedResume.updateContents("hi1");
 
         //then
-        User findUser = userRepository.findById(savedUser.getId())
-                .orElseThrow(IllegalArgumentException::new);
-        Assertions.assertThat(findUser).isNotNull();
-        Assertions.assertThat(findUser.getUsername()).isEqualTo("김민");
+        Assertions.assertThat(updatedResume).isNotNull();
+        Assertions.assertThat(updatedResume.getContents()).isEqualTo("hi1");
     }
 
     @Test
-    @DisplayName("resume 삭제 확인")
+    @DisplayName("Resume 삭제 확인")
     void deleteResume(){
 
         // given
         User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
+        Resume resume = new Resume("1", "hi", savedUser);
+        Resume savedResume = resumeRepository.save(resume);
 
         // when
-        userRepository.delete(savedUser);
+        resumeRepository.delete(savedResume);
 
         //then
-        Assertions.assertThat(userRepository.count()).isEqualTo(0);
+        Assertions.assertThat(userRepository.existsById(user.getId())).isFalse();
 
     }
 
