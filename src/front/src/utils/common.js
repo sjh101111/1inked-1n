@@ -33,3 +33,16 @@ export function correctRegxPwd(inputString){
     return pwdRegx.test(inputString);
 }
 
+
+/**
+ * anchor 태그 scroll 이벤트 콜백
+ */
+
+export function anchorScrollCallback(e){
+    e.preventDefault(); // [2] a태그의 주소이동 막고
+    let MemuData = (e.target).hash; // #HOME, #ABOUT 등
+    const IdMatchedPage = document.querySelector(MemuData);
+
+    // [3] 해당 id를 갖은 요소에 scrollIntoview 메서드를 사용한다.
+    IdMatchedPage?.scrollIntoView({ behavior: "smooth" });
+};
