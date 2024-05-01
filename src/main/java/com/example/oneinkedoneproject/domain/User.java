@@ -85,21 +85,11 @@ public class User implements UserDetails {
         return null;
     }
 
-    /*
     @Override
-    public String getUsername() {
-        return null;
-    }
-
-*/    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired(){ return true;}
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
     public boolean isCredentialsNonExpired() {
@@ -108,7 +98,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return withdraw;
     }
 
     public void updateName(String username) {
