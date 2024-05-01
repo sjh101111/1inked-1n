@@ -20,7 +20,7 @@ public class Chat {
     @Column(name = "contents", nullable = false)
     private String contents;
 
-    @Column(name = "send_at", nullable = false)
+    @Column(name = "sent_at", nullable = false)
     @CreatedDate
     private LocalDateTime sendAt;
 
@@ -32,10 +32,10 @@ public class Chat {
     @JoinColumn(name = "receiver_id")
     private User receiverUser;
 
-    @Column(name = "is_deleted_to" , nullable = false)
+    @Column(name = "is_deleted_to")
     private boolean isDeletedTo;
 
-    @Column(name = "is_deleted_from" , nullable = false)
+    @Column(name = "is_deleted_from")
     private boolean isDeletedFrom;
 
     public Chat(String id, String contents, User sendUser, User receiverUser) {
