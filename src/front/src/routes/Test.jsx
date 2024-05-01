@@ -19,6 +19,7 @@ import MyResumes from "@/components/MyResumes";
 import MyPage from "./MyPage";
 import UserPage from "./UserPage";
 
+
 const Test =  () => {
     const resource = {
         btnText: "생성",
