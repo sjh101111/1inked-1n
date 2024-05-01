@@ -14,6 +14,7 @@ const UserPage = () => {
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
     const [username, setUsername] = useState('Username');
+    const [isFollow, setFollow] = useState(false);
 
     return (
         <>
@@ -29,11 +30,18 @@ const UserPage = () => {
                     </Avatar>
                     <div className="mt-4 flex justify-between items-center">
                         <strong>{username}</strong>
-                        <ChatDialog>
-                            <Button variant="ghost">
-                                <Send className="mr-2 w-4 h-4" /> 쪽지 보내기
-                            </Button>
-                        </ChatDialog> 
+                        <div className="flex gap-2">
+                            {
+                                !isFollow ?
+                                <Button className="text-sm text-black/65 bg-[#6866EB] hover:bg-violet-600" variant="ghost">FOLLOW</Button> :
+                                <Button className="text-sm text-black/65 bg-slate-400 hover:bg-slate-300" variant="ghost">UNFOLLOW</Button>
+                            }
+                            <ChatDialog>
+                                <Button variant="ghost">
+                                    <Send className="mr-2 w-4 h-4" /> 쪽지 보내기
+                                </Button>
+                            </ChatDialog> 
+                        </div>
                     </div>
                     <div className="flex flex-col gap-4">
                         <p className="w-full mt-2">{identity}</p>

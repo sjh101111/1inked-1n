@@ -31,7 +31,7 @@ const Test =  () => {
     }
 
     return (
-        <MyPage></MyPage>
+        <UserPage></UserPage>
     );
 };
 
