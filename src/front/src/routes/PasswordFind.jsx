@@ -13,7 +13,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-const PasswordRecovery = () => {
+const PasswordFind = () => {
     //라우팅 네비게이터
     const nevigate = useNavigate();
     
@@ -57,4 +57,4 @@ const PasswordRecovery = () => {
     );
 };
 
-export default PasswordRecovery;
+export default PasswordFind;
