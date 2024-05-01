@@ -16,8 +16,9 @@ import ChatDialog from "@/components/ChatDialog";
 import ChatBox from "@/components/ChatBox";
 import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
-import PasswordChange from "@/routes/PasswordChange.jsx";
-import Resign from "@/routes/Resign.jsx";
+import MyPage from "./MyPage";
+import UserPage from "./UserPage";
+
 
 const Test =  () => {
     const resource = {
@@ -30,7 +31,7 @@ const Test =  () => {
     }
 
     return (
-        <Resign></Resign>
+        <MyPage></MyPage>
     );
 };
 

@@ -23,7 +23,7 @@ const Header = () =>{
                     <Link to="/newsinfo">뉴스</Link>
                     <Link to="/resumeAi">Resume</Link>
                     <Link to="/chat">쪽지</Link>
-                    <div className="flex items-center ml-2 gap-2">
+                    <Link to="/mypage" className="flex items-center ml-2 gap-2">
                         <Avatar className="w-10 h-10">
                             <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
                             <AvatarFallback>hi</AvatarFallback>
@@ -32,7 +32,7 @@ const Header = () =>{
                             <h2 className="font-medium text-base">username</h2>
                             <span className="text-sm text-black/50 ">id</span>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             </div>
             <div className="flex px-4 gap-4 items-center justify-center border-l w-2/12">

@@ -22,7 +22,7 @@ const FollowInfo = () =>{
 
     // 팔로위, 팔로워 클릭시 해당 유저의 page로 이동
     return (
-        <section className="w-full p-2">
+        <section className="w-full p-4 bg-white">
             {/* 헤더 */}
             <div className="flex h-12">
                 <h2 className="w-1/2 text-lg font-bold m-auto">Follow</h2>

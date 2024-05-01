@@ -6,7 +6,9 @@ import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Test from "./routes/Test";
 import ChatBox from "./components/ChatBox";
-import Mypage from "@/routes/Mypage.jsx";
+import MyPage from "./routes/MyPage";
+import UserPage from "./routes/UserPage";
+
 
 
 const router = createBrowserRouter([
@@ -28,7 +30,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/mypage",
-        element: <Mypage></Mypage>
+        element: <MyPage></MyPage>
+      },
+      {
+        path: "/userpage",
+        element: <UserPage></UserPage>
       },
       {
         path: "/test",
@@ -37,7 +43,6 @@ const router = createBrowserRouter([
 ]);
 
 export default function App(){
-
     return (
         <ContextProvider>
             <CookiesProvider>

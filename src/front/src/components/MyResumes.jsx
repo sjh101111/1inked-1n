@@ -37,7 +37,8 @@ const MyResumes = () =>{
     dummyTableItems = dummyTableItems.map(i => getTableItem({name: "temp", content: "hihi"},0,GenerateLiElUUID()))
 
     return (
-        <section className="container mx-auto px-4 py-8 md:py-12 lg:py-16">
+        //스크롤 이벤트 처리 위한 mt-20
+        <section className="container mx-auto mt-20">
             <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div className="grid gap-2">
