@@ -67,7 +67,7 @@ public class CommentServiceUnitTest {
                 .build())
         ).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         Comment comment = Comment.builder()
                 .id(GenerateIdUtils.generateCommentId())
@@ -93,7 +93,7 @@ public class CommentServiceUnitTest {
         // given
         doReturn(Optional.empty()).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         // when
         assertThatThrownBy(() -> commentService.save(null, "123", addCommentRequestDto)).isInstanceOf(IllegalArgumentException.class);

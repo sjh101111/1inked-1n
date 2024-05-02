@@ -23,8 +23,12 @@ public class CommentService {
 
     public Comment save(User user, String articleId, AddCommentRequestDto request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("not found: " + articleId));
-
-        Comment comment = request.toEntity(user, article);
+        String parentId = request.getParentId();
+        Comment parentComment = null;
+        if (parentId != null) {
+            parentComment = commentRepository.findById(parentId).orElseThrow(() -> new IllegalArgumentException("not found: " + parentId));
+        }
+        Comment comment = request.toEntity(user, article, parentComment);
 
         return commentRepository.save(comment);
     }
