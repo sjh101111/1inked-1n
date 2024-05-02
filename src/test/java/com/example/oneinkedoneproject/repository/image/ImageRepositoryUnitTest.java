@@ -35,7 +35,7 @@ public class ImageRepositoryUnitTest {
 
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .username("test")
+                .realname("test")
                 .email("test@test.com")
                 .password("test")
                 .withdraw(false)

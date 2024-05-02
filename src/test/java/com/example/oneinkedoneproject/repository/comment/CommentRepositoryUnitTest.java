@@ -28,7 +28,7 @@ class CommentRepositoryUnitTest {
     void test(){
         User user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .username("test")
+                .realname("test")
                 .email("test@test.com")
                 .password("1234")
                 .withdraw(false)
