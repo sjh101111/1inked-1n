@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
-@Table(name= "user")
+@Table(name= "users")
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
@@ -32,8 +31,10 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "password_question", nullable = false)
-    private String passwordQuestion;
+
+    @ManyToOne
+    @JoinColumn(name = "password_question", nullable = false)
+    private PasswordQuestion passwordQuestion;
 
     @Column(name = "password_answer", nullable = true)
     private String passwordAnswer;
@@ -63,10 +64,10 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Article> articleList;
 
-
-    public User(String id, String realname, String email, String password, String passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
+    public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
         this.id = id;
-        this.realname = realname;
+        this.realname = username;
+
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -111,6 +112,7 @@ public class User implements UserDetails {
 
     public void updateName(String realname) {
         this.realname = realname;
+
     }
 
 }
