@@ -1,5 +1,6 @@
 package com.example.oneinkedoneproject.domain;
 
+import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,10 +51,17 @@ public class Article {
     private List<Comment> commentList;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public void update(String contents) {
         this.contents = contents;
+    }
+
+    public ArticleResponseDto toDto() {
+        return ArticleResponseDto.builder()
+                .contents(contents).createdAt(createdAt)
+                .updatedAt(updatedAt).images(imageList)
+                .user(user).build();
     }
 }

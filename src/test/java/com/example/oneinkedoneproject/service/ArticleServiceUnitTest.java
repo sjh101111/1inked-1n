@@ -6,6 +6,7 @@ import com.example.oneinkedoneproject.domain.Image;
 import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
+import com.example.oneinkedoneproject.repository.image.ImageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,8 +30,11 @@ public class ArticleServiceUnitTest {
     @InjectMocks
     ArticleService articleService;
 
+    @Mock
+    ImageRepository imageRepository;
+
     @Test
-    void createArticleTest() throws Exception{
+    void createArticleTest() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
         List<MultipartFile> files = List.of(file);
@@ -48,14 +52,16 @@ public class ArticleServiceUnitTest {
                 .contents("contents")
                 .images(images)
                 .build();
-        Mockito.doReturn(responseDto).when(articleRepository.save(any(Article.class)));
+
+        Mockito.doReturn(Article.builder().contents(addArticleRequest.getContents()).imageList(images).build())
+                .when(articleRepository).save(any(Article.class));
 
         //when
         ArticleResponseDto returnedDto = articleService.createArticle(addArticleRequest);
 
         //then
         assertThat(returnedDto.getContents().equals(addArticleRequest.getContents()));
-        assertThat(returnedDto.getImages().size()).equals(addArticleRequest.getFiles().size());
+        assertThat(returnedDto.getImages().size()).isEqualTo(addArticleRequest.getFiles().size());
     }
 
 }

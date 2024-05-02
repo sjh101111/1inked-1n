@@ -8,7 +8,7 @@ import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
 import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
+import com.example.oneinkedoneproject.repository.UserRepository;
 import com.example.oneinkedoneproject.service.comment.CommentService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.assertj.core.api.Assertions;
