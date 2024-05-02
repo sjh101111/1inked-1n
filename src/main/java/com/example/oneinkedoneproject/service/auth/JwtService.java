@@ -1,5 +1,8 @@
 package com.example.oneinkedoneproject.service.auth;
 
+import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.dto.auth.TokenInfo;
+import com.example.oneinkedoneproject.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,20 +10,53 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.MissingCsrfTokenException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
 
+    /*
+    private final UserRepository userRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    public Optional<User> findUserById(String id){
 
+        return userRepository.findById(id);
+    }
+    public Optional<User> findUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail);
+    }
+    @Transactional
+    public TokenInfo login(String memberId, String password) {
+        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
+        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
+        String encodedPassword = passwordEncoder.encode(password);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
+
+        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
+        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        // 3. 인증 정보를 기반으로 JWT 토큰 생성 후 리턴
+        return jwtTokenProvider.createToken(authentication);
+    }
+    */
     @Value("${jwt.secret}")
     private String secretKey;
 
