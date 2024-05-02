@@ -1,5 +1,6 @@
 package com.example.oneinkedoneproject.domain;
 
+import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,5 +53,12 @@ public class Article {
 
     public void update(String contents) {
         this.contents = contents;
+    }
+
+    public ArticleResponseDto toDto() {
+        return ArticleResponseDto.builder()
+                .contents(contents).createdAt(createdAt)
+                .updatedAt(updatedAt).images(imageList)
+                .user(user).build();
     }
 }
