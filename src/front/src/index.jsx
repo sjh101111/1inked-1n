@@ -6,6 +6,7 @@ const GlobalContext = createContext({
 });
 
 const ContextProvider = ({children}) =>{
+  // 생성자
   const [isLogin, setLogin] = useState(false);
 
   return (

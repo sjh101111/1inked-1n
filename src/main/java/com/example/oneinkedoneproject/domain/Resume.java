@@ -32,7 +32,7 @@ public class Resume {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Resume(String id, String contents, User user) {

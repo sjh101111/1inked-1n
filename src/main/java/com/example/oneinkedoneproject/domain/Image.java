@@ -16,7 +16,7 @@ public class Image {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
     @Column(name = "img", columnDefinition = "LONGBLOB")

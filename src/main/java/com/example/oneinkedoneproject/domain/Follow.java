@@ -15,11 +15,11 @@ public class Follow {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
-    @JoinColumn(name = "to_user")
+    @JoinColumn(name = "to_user", nullable = false)
     private User toUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_user")
+    @JoinColumn(name = "from_user", nullable = false)
     private User fromUser;
 
     public Follow(String id, User toUser, User fromUser) {

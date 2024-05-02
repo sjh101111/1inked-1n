@@ -1,9 +1,11 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject.repository.resume;
 
 import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.Resume;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.repository.resume.ResumeRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
