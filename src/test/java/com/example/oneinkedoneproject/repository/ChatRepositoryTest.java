@@ -4,7 +4,6 @@ import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Chat;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ContextConfiguration(classes = OneinkedOneProjectApplication.class)
+@Transactional
 public class ChatRepositoryTest {
     @Autowired
     private ChatRepository chatRepository;
@@ -81,7 +81,7 @@ public class ChatRepositoryTest {
         Chat savedChat = chatRepository.save(chat);
 
         //when
-        Chat selectedChat = chatRepository.findAll().getFirst();
+        Chat selectedChat = chatRepository.findAll().get(0);
 
         //then
         assertThat(savedChat.getId()).isEqualTo(selectedChat.getId());
