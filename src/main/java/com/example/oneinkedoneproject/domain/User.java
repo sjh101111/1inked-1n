@@ -3,24 +3,28 @@ package com.example.oneinkedoneproject.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Table(name= "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
+@Builder
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id", nullable = false)
     private String id;
 
     @Column(name = "username", nullable = false)
-    private String username;
+    private String realname;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -60,9 +64,9 @@ public class User implements UserDetails {
 //    private List<Article> articleList;
 
 
-    public User(String id, String username, String email, String password, String passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
+    public User(String id, String realname, String email, String password, String passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
         this.id = id;
-        this.username = username;
+        this.realname = realname;
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -77,12 +81,16 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(this.grade.getRoleName()));
     }
 
     @Override
+    public String getUsername() {
+        return email;
+    }
+    @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
@@ -101,8 +109,8 @@ public class User implements UserDetails {
         return withdraw;
     }
 
-    public void updateName(String username) {
-        this.username = username;
+    public void updateName(String realname) {
+        this.realname = realname;
     }
 
 }

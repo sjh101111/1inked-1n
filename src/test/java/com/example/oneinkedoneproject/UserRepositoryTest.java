@@ -1,6 +1,6 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject;
 
-import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
+import com.example.oneinkedoneproject.repository.UserRepository;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.User;
 import org.assertj.core.api.Assertions;
@@ -90,7 +90,7 @@ public class UserRepositoryTest {
 
         //then
         Assertions.assertThat(updatedUser).isNotNull();
-        Assertions.assertThat(updatedUser.getUsername()).isEqualTo("김민");
+        Assertions.assertThat(updatedUser.getRealname()).isEqualTo("김민");
 
     }
 
