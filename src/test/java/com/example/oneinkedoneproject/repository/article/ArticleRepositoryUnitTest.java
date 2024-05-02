@@ -18,7 +18,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
-@ContextConfiguration(classes = OneinkedOneProjectApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ArticleRepositoryUnitTest {
     @Autowired
