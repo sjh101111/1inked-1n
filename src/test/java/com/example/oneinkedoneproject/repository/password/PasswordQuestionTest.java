@@ -25,7 +25,7 @@ public class PasswordQuestionTest {
     @BeforeEach
     void beforeTest(){
         // 테스트 전에 테이블을 모두 초기화한다.
-        passwordRepository.deleteAll();
+        // passwordRepository.deleteAll();
         passwordQuestion = PasswordQuestion
                 .builder()
                 .id("1")
