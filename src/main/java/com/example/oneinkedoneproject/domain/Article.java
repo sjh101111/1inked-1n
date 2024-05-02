@@ -1,26 +1,25 @@
 package com.example.oneinkedoneproject.domain;
 
-import com.example.oneinkedoneproject.dto.ArticleResponseDto;
-import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Table(name = "article")
 @Entity
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
 public class Article {
 
     @Id
@@ -56,12 +55,5 @@ public class Article {
 
     public void update(String contents) {
         this.contents = contents;
-    }
-
-    public ArticleResponseDto toDto() {
-        return ArticleResponseDto.builder()
-                .contents(contents).createdAt(createdAt)
-                .updatedAt(updatedAt).images(imageList)
-                .user(user).build();
     }
 }

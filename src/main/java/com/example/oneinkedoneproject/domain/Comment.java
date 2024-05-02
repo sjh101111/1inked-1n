@@ -14,7 +14,6 @@ import java.util.UUID;
 @Table(name = "comment")
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

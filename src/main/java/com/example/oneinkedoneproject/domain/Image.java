@@ -1,16 +1,14 @@
 package com.example.oneinkedoneproject.domain;
 
-import com.example.oneinkedoneproject.utils.GenerateIdUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table(name = "image")
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,12 +17,12 @@ public class Image {
     @Column(name = "image_id", nullable = false, updatable = false)
     private String id;
 
-    @Column(name = "img", columnDefinition = "LONGBLOB")
-    private byte[] img;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Column(name = "img", columnDefinition = "LONGBLOB")
+    private byte[] img;
 
     public void update(byte[] img) {
         this.img = img;
