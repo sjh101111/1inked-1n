@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@ContextConfiguration(classes = OneinkedOneProjectApplication.class)
 public class ChatRepositoryTest {
     @Autowired
     private ChatRepository chatRepository;
