@@ -31,11 +31,11 @@ public class Article {
     private String contents;
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Column(name = "like_count", columnDefinition = "integer default 0")
@@ -46,6 +46,9 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<Image> imageList;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> commentList;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
