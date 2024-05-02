@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject.repository.password;
 
 import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
@@ -55,7 +55,7 @@ public class PasswordQuestionTest {
         passwordRepository.save(passwordQuestion);
 
         //when
-        PasswordQuestion selectedQuestion = passwordRepository.findAll().getFirst();
+        PasswordQuestion selectedQuestion = passwordRepository.findAll().get(0);
 
         //then
         assertThat(selectedQuestion.getId()).isEqualTo(passwordQuestion.getId());
@@ -71,11 +71,11 @@ public class PasswordQuestionTest {
         String updateQuestionString = "세상에서 가장 싫어하는 사람은?";
         passwordRepository.save(passwordQuestion);
         //선택한 question
-        PasswordQuestion selectedQuestion = passwordRepository.findAll().getFirst();
+        PasswordQuestion selectedQuestion = passwordRepository.findAll().get(0);
 
         //when
         selectedQuestion.updateQuestion(updateQuestionString);
-        PasswordQuestion afterUpdateQuestion = passwordRepository.findAll().getFirst();
+        PasswordQuestion afterUpdateQuestion = passwordRepository.findAll().get(0);
 
         //then
         //id는 같고, question 내용만 업데이트 되었을것이다.

@@ -1,9 +1,11 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject.repository.chat;
 
 import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Chat;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.repository.chat.ChatRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
