@@ -2,18 +2,25 @@ package com.example.oneinkedoneproject.repository.comment;
 
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
+import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
+import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 
-@SpringBootTest
+@DataJpaTest
 class CommentRepositoryUnitTest {
+    @Autowired
+    PasswordRepository passwordRepository;
+
     @Autowired
     CommentRepository commentRepository;
 
@@ -23,25 +30,38 @@ class CommentRepositoryUnitTest {
     @Autowired
     UserRepository userRepository;
 
+    private PasswordQuestion passwordQuestion;
+    private User user;
 
-    @Test
-    void test(){
-        User user = User.builder()
+    private Article article;
+
+    @BeforeEach
+    void init(){
+        passwordQuestion = new PasswordQuestion("1","질문");
+        user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
+                .passwordQuestion(passwordQuestion)
                 .realname("test")
                 .email("test@test.com")
                 .password("1234")
                 .withdraw(false)
                 .build();
+        article = Article.builder()
+            .id(GenerateIdUtils.generateArticleId())
+            .contents("blahblahblah")
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
+            .user(user)
+            .build();
 
-        Article article = Article.builder()
-                .id(GenerateIdUtils.generateArticleId())
-                .contents("blahblahblah")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .user(user)
-                .build();
+        passwordRepository.save(passwordQuestion);
+        userRepository.save(user);
+        articleRepository.save(article);
+    }
 
+
+    @Test
+    void test(){
         Comment comment1 = Comment.builder()
                 .comments("1")
                 .id(GenerateIdUtils.generateCommentId())
@@ -81,8 +101,6 @@ class CommentRepositoryUnitTest {
                 .article(article)
                 .build();
 
-        userRepository.save(user);
-        articleRepository.save(article);
         commentRepository.save(comment1);
         commentRepository.save(comment2);
         commentRepository.save(comment3);
