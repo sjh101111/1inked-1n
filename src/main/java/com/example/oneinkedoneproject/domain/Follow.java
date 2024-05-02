@@ -16,11 +16,11 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
     @JoinColumn(name = "to_user", nullable = false)
-    private User toUser;
+    private User toUser;//팔로웅 대상
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_user", nullable = false)
-    private User fromUser;
+    private User fromUser;//팔로워
 
     public Follow(String id, User toUser, User fromUser) {
         this.id = id;
@@ -29,5 +29,16 @@ public class Follow {
     }
     public void changeFollow(User toUser) {
         this.toUser = toUser;
+    }
+
+    public void setFollower(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public void setFollowed(User toUser) {
+        this.toUser = toUser;
+    }
+    public Follow(){
+        //생성자
     }
 }
