@@ -30,7 +30,7 @@ public class UserRepositoryTest {
 
         // then
         Assertions.assertThat(user.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(user.getUsername()).isEqualTo(savedUser.getUsername());
+        Assertions.assertThat(user.getRealname()).isEqualTo(savedUser.getRealname());
         Assertions.assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
         Assertions.assertThat(user.getPassword()).isEqualTo(savedUser.getPassword());
         Assertions.assertThat(user.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
@@ -59,7 +59,7 @@ public class UserRepositoryTest {
         // then
         Assertions.assertThat(userRepository.count()).isEqualTo(1);
         Assertions.assertThat(findUser.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(findUser.getUsername()).isEqualTo(savedUser.getUsername());
+        Assertions.assertThat(findUser.getRealname()).isEqualTo(savedUser.getRealname());
         Assertions.assertThat(findUser.getEmail()).isEqualTo(savedUser.getEmail());
         Assertions.assertThat(findUser.getPassword()).isEqualTo(savedUser.getPassword());
         Assertions.assertThat(findUser.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
