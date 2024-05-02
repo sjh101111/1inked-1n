@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Table(name= "user")
+@Table(name= "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private String id;
 
     @Column(name = "username", nullable = false)
-    private String username;
+    private String realname;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -30,8 +30,9 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "password_question", nullable = false)
-    private String passwordQuestion;
+    @ManyToOne
+    @JoinColumn(name = "password_question", nullable = false)
+    private PasswordQuestion passwordQuestion;
 
     @Column(name = "password_answer", nullable = true)
     private String passwordAnswer;
@@ -62,9 +63,9 @@ public class User implements UserDetails {
 //    private List<Article> articleList;
 
 
-    public User(String id, String username, String email, String password, String passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
+    public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
         this.id = id;
-        this.username = username;
+        this.realname = username;
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -89,7 +90,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return realname;
     }
 
     @Override
@@ -113,7 +114,7 @@ public class User implements UserDetails {
     }
 
     public void updateName(String username) {
-        this.username = username;
+        this.realname = username;
     }
 
 }
