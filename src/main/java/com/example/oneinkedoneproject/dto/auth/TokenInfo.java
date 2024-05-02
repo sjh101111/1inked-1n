@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

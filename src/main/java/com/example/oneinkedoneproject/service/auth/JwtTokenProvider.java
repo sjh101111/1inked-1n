@@ -1,24 +1,24 @@
-package com.example.oneinkedoneproject.config;
+package com.example.oneinkedoneproject.service.auth;
 
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.TokenInfo;
+import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.repository.UserRepository;
 import io.jsonwebtoken.*;
 
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 
@@ -27,13 +27,15 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     // JWT 비밀키와 토큰 유효 시간 설정
     private final Key key;
-
+    private final UserRepository userrepository;
     private long validityInMilliseconds = 3600000; // 토큰 만료 시간(1시간)
 
     // 사용자 이름을 기반으로 JWT 토큰 생성
-    public JwtTokenProvider(@Value("${jwt.secret}") String superSecretKey){
+    public JwtTokenProvider(@Value("${jwt.secret}") String superSecretKey,
+                            final UserRepository userrepository){
         byte[] keyBytes = Decoders.BASE64.decode(superSecretKey); //슈퍼시크릿키를 바이트 배열 형태로 디코딩
         this.key = Keys.hmacShaKeyFor(keyBytes);// HMAX SHA 알고리즘으로 암호 키를 생성
+        this.userrepository = userrepository;
     }
 
     //사용자의 정보와 키를 사용하여 JWT 토큰 발행
@@ -59,6 +61,7 @@ public class JwtTokenProvider {
                 .setSubject("Authorization")
                 .claim("id", curUser.getId())
                 .claim("name", curUser.getUsername())
+                .claim("auth", authorities)
                 .setIssuedAt(new Date())
                 .setExpiration(accessTokenExpirationTime)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -89,14 +92,30 @@ public class JwtTokenProvider {
 
     }
 
-    // 토큰에서 사용자 ID 추출
-    // 토큰에서 사용자 이름 추출
-    /*
+    //인증 받아오기
+    public Authentication getAuthentication(final String token) {
+        // 토큰 복호화
+        Claims claims = parseClaims(token);
+        log.info("token_claims : " + claims.toString());
 
-    private String getUsername(String token) {
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().get("");
+        if (claims.get("auth") == null) {
+            throw new BadCredentialsException("권한 정보가 없는 토큰입니다.");
+        }
+
+        // 클레임에서 권한 정보 가져오기
+        final Collection<? extends GrantedAuthority> authorities = Stream.of(
+                        claims.get("auth").toString())
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+
+        final String userId = claims.get("id").toString();
+
+        //token 에 담긴 정보에 맵핑되는 User 정보 디비에서 조회
+        final User user = userrepository.findById(userId).get();
+        //Authentication 객체 생성
+        return new UsernamePasswordAuthenticationToken(user, userId, authorities);
     }
-    */
+
 
     // 토큰의 유효성 검사
     public boolean validateToken(String token) {
