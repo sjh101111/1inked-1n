@@ -1,57 +1,68 @@
 package com.example.oneinkedoneproject.repository.user;
 
-import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
+import static org.assertj.core.api.Assertions.*;
+
 import com.example.oneinkedoneproject.domain.Grade;
+import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
-import org.assertj.core.api.Assertions;
+import com.example.oneinkedoneproject.repository.password.PasswordRepository;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
-@ContextConfiguration(classes = OneinkedOneProjectApplication.class)
-@Transactional
+@DataJpaTest
+@ExtendWith(MockitoExtension.class)
 public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordRepository passwordRepository;
+
+    private PasswordQuestion pwdQuestion;
+
+    @BeforeEach
+    void init(){
+        pwdQuestion = new PasswordQuestion("1", "질문1");
+        passwordRepository.save(pwdQuestion);
+    }
 
     @Test
     @DisplayName("User 저장 확인")
     void saveMember(){
         // given
-        User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
 
         //when
         User savedUser = userRepository.save(user);
 
         // then
-        Assertions.assertThat(user.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(user.getUsername()).isEqualTo(savedUser.getUsername());
-        Assertions.assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
-        Assertions.assertThat(user.getPassword()).isEqualTo(savedUser.getPassword());
-        Assertions.assertThat(user.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
-        Assertions.assertThat(user.getPasswordAnswer()).isEqualTo(savedUser.getPasswordAnswer());
-        Assertions.assertThat(user.getIdentity()).isEqualTo(savedUser.getIdentity());
-        Assertions.assertThat(user.getLocation()).isEqualTo(savedUser.getLocation());
-        Assertions.assertThat(user.getDescription()).isEqualTo(savedUser.getDescription());
-        Assertions.assertThat(user.getWithdraw()).isEqualTo(savedUser.getWithdraw());
-        Assertions.assertThat(user.getImage()).isEqualTo(savedUser.getImage());
-        Assertions.assertThat(user.getGrade()).isEqualTo(savedUser.getGrade());
-        Assertions.assertThat(userRepository.count()).isEqualTo(1);
+        assertThat(user.getId()).isEqualTo(savedUser.getId());
+        assertThat(user.getUsername()).isEqualTo(savedUser.getUsername());
+        assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
+        assertThat(user.getPassword()).isEqualTo(savedUser.getPassword());
+        assertThat(user.getPasswordQuestion().getId()).isEqualTo(savedUser.getPasswordQuestion().getId());
+        assertThat(user.getPasswordAnswer()).isEqualTo(savedUser.getPasswordAnswer());
+        assertThat(user.getIdentity()).isEqualTo(savedUser.getIdentity());
+        assertThat(user.getLocation()).isEqualTo(savedUser.getLocation());
+        assertThat(user.getDescription()).isEqualTo(savedUser.getDescription());
+        assertThat(user.getWithdraw()).isEqualTo(savedUser.getWithdraw());
+        assertThat(user.getImage()).isEqualTo(savedUser.getImage());
+        assertThat(user.getGrade()).isEqualTo(savedUser.getGrade());
+        assertThat(userRepository.count()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("User 조회 확인")
     void findUser(){
-
         // given
-        User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
@@ -59,28 +70,26 @@ public class UserRepositoryTest {
                 .orElseThrow(IllegalArgumentException::new);
 
         // then
-        Assertions.assertThat(userRepository.count()).isEqualTo(1);
-        Assertions.assertThat(findUser.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(findUser.getUsername()).isEqualTo(savedUser.getUsername());
-        Assertions.assertThat(findUser.getEmail()).isEqualTo(savedUser.getEmail());
-        Assertions.assertThat(findUser.getPassword()).isEqualTo(savedUser.getPassword());
-        Assertions.assertThat(findUser.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
-        Assertions.assertThat(findUser.getPasswordAnswer()).isEqualTo(savedUser.getPasswordAnswer());
-        Assertions.assertThat(findUser.getIdentity()).isEqualTo(savedUser.getIdentity());
-        Assertions.assertThat(findUser.getLocation()).isEqualTo(savedUser.getLocation());
-        Assertions.assertThat(findUser.getDescription()).isEqualTo(savedUser.getDescription());
-        Assertions.assertThat(findUser.getWithdraw()).isEqualTo(savedUser.getWithdraw());
-        Assertions.assertThat(findUser.getImage()).isEqualTo(savedUser.getImage());
-        Assertions.assertThat(findUser.getGrade()).isEqualTo(savedUser.getGrade());
-
+        assertThat(userRepository.count()).isEqualTo(1);
+        assertThat(findUser.getId()).isEqualTo(savedUser.getId());
+        assertThat(findUser.getUsername()).isEqualTo(savedUser.getUsername());
+        assertThat(findUser.getEmail()).isEqualTo(savedUser.getEmail());
+        assertThat(findUser.getPassword()).isEqualTo(savedUser.getPassword());
+        assertThat(findUser.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
+        assertThat(findUser.getPasswordAnswer()).isEqualTo(savedUser.getPasswordAnswer());
+        assertThat(findUser.getIdentity()).isEqualTo(savedUser.getIdentity());
+        assertThat(findUser.getLocation()).isEqualTo(savedUser.getLocation());
+        assertThat(findUser.getDescription()).isEqualTo(savedUser.getDescription());
+        assertThat(findUser.getWithdraw()).isEqualTo(savedUser.getWithdraw());
+        assertThat(findUser.getImage()).isEqualTo(savedUser.getImage());
+        assertThat(findUser.getGrade()).isEqualTo(savedUser.getGrade());
     }
 
     @Test
     @DisplayName("User 수정 확인")
     void updateUser(){
-
         // given
-        User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
@@ -89,28 +98,21 @@ public class UserRepositoryTest {
         updatedUser.updateName("김민");
 
         //then
-        Assertions.assertThat(updatedUser).isNotNull();
-        Assertions.assertThat(updatedUser.getUsername()).isEqualTo("김민");
+        assertThat(updatedUser).isNotNull();
+        assertThat(updatedUser.getUsername()).isEqualTo("김민");
     }
 
     @Test
     @DisplayName("User 삭제 확인")
     void deleteUser() {
         // given
-        User user = new User("1", "김", "2", "123", "음", "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
         userRepository.delete(savedUser);
 
         // then
-        Assertions.assertThat(userRepository.existsById(user.getId())).isFalse(); // 사용자가 삭제되었는지 확인
-
-
-
-
+        assertThat(userRepository.existsById(user.getId())).isFalse(); // 사용자가 삭제되었는지 확인
     }
-
-
-
 }
