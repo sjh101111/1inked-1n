@@ -1,6 +1,6 @@
 package com.example.oneinkedoneproject.config;
 
-import com.example.oneinkedoneproject.repository.UserRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
