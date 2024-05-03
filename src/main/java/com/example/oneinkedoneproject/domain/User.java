@@ -116,5 +116,7 @@ public class User implements UserDetails {
     public void updateName(String username) {
         this.realname = username;
     }
+    public void updateWithdraw(boolean isWithdraw){this.withdraw = isWithdraw;}
 
+    public void updatePassword(String password){this.password = password;}
 }

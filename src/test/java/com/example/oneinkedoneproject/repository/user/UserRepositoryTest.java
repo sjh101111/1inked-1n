@@ -114,4 +114,32 @@ public class UserRepositoryTest {
         // then
         assertThat(userRepository.existsById(user.getId())).isFalse(); // 사용자가 삭제되었는지 확인
     }
+
+    @Test
+    @DisplayName("Email db존재 여부 확인")
+    void existEmailTest(){
+        //given
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        boolean isExist = false;
+        userRepository.save(user);
+
+        //when
+        isExist = userRepository.existsByEmail(user.getEmail());
+
+        //then
+        assertThat(isExist).isTrue();
+    }
+
+    @Test
+    @DisplayName("email로 select 확인")
+    void findByEmailTest(){
+        //given
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        userRepository.save(user);
+
+        //when
+
+        //then
+        assertThat(userRepository.findByEmail(user.getEmail()).get().getId()).isEqualTo(user.getId());
+    }
 }
