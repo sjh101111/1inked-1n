@@ -85,7 +85,7 @@ public class JwtService {
     }
 
     //토큰 만료 확인
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
     //토큰에서 추출한 claim에서 만료 날짜 추출
