@@ -99,7 +99,7 @@ public class UserRepositoryTest {
 
         //then
         assertThat(updatedUser).isNotNull();
-        assertThat(updatedUser.getUsername()).isEqualTo("김민");
+        assertThat(updatedUser.getRealname()).isEqualTo("김민");
     }
 
     @Test

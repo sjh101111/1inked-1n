@@ -7,11 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Table(name= "users")
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
@@ -29,6 +32,7 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
 
     @ManyToOne
     @JoinColumn(name = "password_question", nullable = false)
@@ -62,10 +66,10 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Article> articleList;
 
-
     public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
         this.id = id;
         this.realname = username;
+
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -80,28 +84,23 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(this.grade.getRoleName()));
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
     @Override
     public String getPassword() {
         return password;
     }
 
     @Override
-    public String getUsername() {
-        return realname;
-    }
+    public boolean isAccountNonExpired(){ return true;}
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
     public boolean isCredentialsNonExpired() {
@@ -110,11 +109,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return withdraw;
     }
 
-    public void updateName(String username) {
-        this.realname = username;
+    public void updateName(String realname) {
+        this.realname = realname;
+
     }
 
 }
