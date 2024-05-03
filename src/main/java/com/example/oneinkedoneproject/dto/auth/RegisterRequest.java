@@ -1,6 +1,7 @@
 package com.example.oneinkedoneproject.dto.auth;
 
 
+import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class RegisterRequest {
     private String realname;
     private String email;
     private String password;
-    private String passwordQuestion;
+    private PasswordQuestion passwordQuestion;
     private String passwordAnswer;
 }

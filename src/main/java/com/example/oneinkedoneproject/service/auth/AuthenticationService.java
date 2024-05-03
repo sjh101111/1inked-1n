@@ -4,7 +4,7 @@ import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.auth.AuthenticationRequest;
 import com.example.oneinkedoneproject.dto.auth.AuthenticationResponse;
 import com.example.oneinkedoneproject.dto.auth.RegisterRequest;
-import com.example.oneinkedoneproject.repository.UserRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
