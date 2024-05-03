@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject.repository.resume;
 
 import com.example.oneinkedoneproject.domain.Resume;
 import com.example.oneinkedoneproject.domain.User;

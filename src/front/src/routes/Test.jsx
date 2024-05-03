@@ -1,8 +1,24 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
-import FileInput from "@/components/FileInput";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { GenerateLiElUUID } from "@/utils/common";
+import { Link } from "react-router-dom";
+import ArticleDialog from "@/components/ArticleDialog";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import CommentCircleIcon from "@/components/svg/CommentCircleIcon";
+import { useState } from "react";
+import Login from "./Login";
+import Article from "@/components/Article";
+import Header from "@/components/Layout/Header";
+import Chat from "./Chat";
+import ChatDialog from "@/components/ChatDialog";
+import ChatBox from "@/components/ChatBox";
+import FollowInfo from "@/components/FollowInfo";
+import MyResumes from "@/components/MyResumes";
+import MyPage from "./MyPage";
+import UserPage from "./UserPage";
+
 
 const Test =  () => {
     const resource = {
@@ -14,30 +30,8 @@ const Test =  () => {
         initFn: () => {}
     }
 
-
     return (
-        <Dialog>
-            <DialogTrigger>Open</DialogTrigger>
-            <DialogContent onPointerDownOutside={ev => ev.preventDefault()}>
-                <DialogHeader>
-                    <div className="flex items-center gap-4">
-                        <Avatar className="w-8 h-8">
-                            <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
-                            <AvatarFallback>hi</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col justify-center">
-                            <h2 className="font-bold text-lg">username</h2>
-                            <span className="text-black/50 ">id</span>
-                        </div>
-                    </div>
-                </DialogHeader>
-                <Textarea className="mt-4 h-48 resize-none" placeholder="input your content"></Textarea>
-                <FileInput></FileInput>
-                <DialogFooter>
-                    <Button className="bg-[#6866EB]" onClick={resource.clickCallback} type="submit">{resource.btnText}</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+        <UserPage></UserPage>
     );
 };
 

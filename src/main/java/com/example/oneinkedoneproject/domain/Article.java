@@ -50,7 +50,7 @@ public class Article {
     private List<Comment> commentList;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public void update(String contents) {

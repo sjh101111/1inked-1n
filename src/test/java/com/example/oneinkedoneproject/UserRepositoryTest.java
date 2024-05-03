@@ -1,6 +1,6 @@
-package com.example.oneinkedoneproject.repository;
+package com.example.oneinkedoneproject;
 
-import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
+import com.example.oneinkedoneproject.repository.UserRepository;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.User;
 import org.assertj.core.api.Assertions;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ContextConfiguration(classes = OneinkedOneProjectApplication.class)
-@Transactional
 public class UserRepositoryTest {
 
     @Autowired
@@ -21,7 +20,7 @@ public class UserRepositoryTest {
 
 
     @Test
-    @DisplayName("User 저장 확인")
+    @DisplayName("user 저장 확인")
     void saveMember(){
         // given
         User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
@@ -31,7 +30,7 @@ public class UserRepositoryTest {
 
         // then
         Assertions.assertThat(user.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(user.getUsername()).isEqualTo(savedUser.getUsername());
+        Assertions.assertThat(user.getRealname()).isEqualTo(savedUser.getRealname());
         Assertions.assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
         Assertions.assertThat(user.getPassword()).isEqualTo(savedUser.getPassword());
         Assertions.assertThat(user.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
@@ -46,7 +45,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("User 조회 확인")
+    @DisplayName("user 조회 확인")
     void findUser(){
 
         // given
@@ -60,7 +59,7 @@ public class UserRepositoryTest {
         // then
         Assertions.assertThat(userRepository.count()).isEqualTo(1);
         Assertions.assertThat(findUser.getId()).isEqualTo(savedUser.getId());
-        Assertions.assertThat(findUser.getUsername()).isEqualTo(savedUser.getUsername());
+        Assertions.assertThat(findUser.getRealname()).isEqualTo(savedUser.getRealname());
         Assertions.assertThat(findUser.getEmail()).isEqualTo(savedUser.getEmail());
         Assertions.assertThat(findUser.getPassword()).isEqualTo(savedUser.getPassword());
         Assertions.assertThat(findUser.getPasswordQuestion()).isEqualTo(savedUser.getPasswordQuestion());
@@ -75,7 +74,8 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("User 수정 확인")
+    @DisplayName("user 수정 확인")
+    @Transactional
     void updateUser(){
 
         // given
@@ -85,28 +85,28 @@ public class UserRepositoryTest {
         // when
         User updatedUser = userRepository.findById(savedUser.getId())
                 .orElseThrow(IllegalArgumentException::new);
+
         updatedUser.updateName("김민");
 
         //then
         Assertions.assertThat(updatedUser).isNotNull();
-        Assertions.assertThat(updatedUser.getUsername()).isEqualTo("김민");
+        Assertions.assertThat(updatedUser.getRealname()).isEqualTo("김민");
+
     }
 
     @Test
-    @DisplayName("User 삭제 확인")
-    void deleteUser() {
+    @DisplayName("user 삭제 확인")
+    void deleteUser(){
+
         // given
-        User user = new User("1", "김", "2", "123", "음", "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123","음","아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
         userRepository.delete(savedUser);
 
-        // then
-        Assertions.assertThat(userRepository.existsById(user.getId())).isFalse(); // 사용자가 삭제되었는지 확인
-
-
-
+        //then
+        Assertions.assertThat(userRepository.count()).isEqualTo(0);
 
     }
 
