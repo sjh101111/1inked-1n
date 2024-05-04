@@ -146,9 +146,9 @@ public class CommentServiceUnitTest {
 
 
         // when
-        List<Comment> rootCommentList = commentService.getRootComments(articleId);
+        List<Comment> rootCommentList = commentService.getComments(articleId);
         // then
-        assertThat(rootCommentList.size()).isEqualTo(1);
+        assertThat(rootCommentList.size()).isEqualTo(4);
         assertThat(rootCommentList.get(0).getComments()).isEqualTo(comments);
     }
 

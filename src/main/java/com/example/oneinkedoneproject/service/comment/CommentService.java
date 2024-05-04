@@ -9,6 +9,8 @@ import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,27 +18,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
+    private final ArticleRepository articleRepository;
 
     public Comment save(User user, String articleId, AddCommentRequestDto request) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("not found: " + articleId));
         String parentId = request.getParentId();
         Comment parentComment = null;
-        if (parentId != null) {
+        if (parentId != null) 
             parentComment = commentRepository.findById(parentId).orElseThrow(() -> new IllegalArgumentException("not found: " + parentId));
-        }
         Comment comment = request.toEntity(user, article, parentComment);
+        if (parentId != null)
+        	comment.getReplyList().add(comment);
 
         return commentRepository.save(comment);
     }
 
-    public List<Comment> getRootComments(String articleId) {
+    
+    public List<Comment> getComments(String articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("not found: " + articleId));
-
-        return article.getCommentList().stream().filter(c -> c.getParent() == null).toList();
+        return article.getCommentList();
     }
 
     @Transactional
