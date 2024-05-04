@@ -2,7 +2,9 @@ package com.example.oneinkedoneproject.repository.article;
 
 import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Article;
+import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.*;
@@ -16,26 +18,30 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
-@ContextConfiguration(classes = OneinkedOneProjectApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ArticleRepositoryUnitTest {
     @Autowired
     ArticleRepository articleRepository;
 
+	@Autowired
+	PasswordRepository passwordRepository;
+
     @Autowired
     UserRepository userRepository;
 
-    private static Article article;
-    private static User user;
+	private PasswordQuestion passwordQuestion;
+    private Article article;
+    private User user;
 
     @BeforeEach
     void setUp() {
+		passwordQuestion = new PasswordQuestion("1", "질문");
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .username("test")
+                .realname("test")
                 .email("test@test.com")
                 .password("test")
-                .passwordQuestion("A")
+				.passwordQuestion(passwordQuestion)
                 .withdraw(false)
                 .build();
 
@@ -46,6 +52,8 @@ public class ArticleRepositoryUnitTest {
                 .updatedAt(null)
                 .createdAt(null)
                 .build();
+        passwordRepository.save(passwordQuestion);
+        userRepository.save(user);
     }
 
 
@@ -70,7 +78,6 @@ public class ArticleRepositoryUnitTest {
     @Order(2)
     void readArticleList() {
         // given
-        User savedUser = userRepository.save(user);
         Article savedArticle = articleRepository.save(article);
 
         // when
