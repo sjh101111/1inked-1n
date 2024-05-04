@@ -56,7 +56,6 @@ public class ImageRepositoryUnitTest {
                 .passwordQuestion(passwordQuestion)
                 .password("test")
                 .withdraw(false)
-                .passwordQuestion("A")
                 .build();
 
         article = Article.builder()

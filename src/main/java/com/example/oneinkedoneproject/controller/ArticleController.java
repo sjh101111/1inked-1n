@@ -4,12 +4,10 @@ import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
-import com.example.oneinkedoneproject.repository.article.ArticleRepository;
-import com.example.oneinkedoneproject.service.ArticleService;
+import com.example.oneinkedoneproject.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +24,15 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(articleService.createArticle(addArticleRequestDto, user));
     }
 
-    @GetMapping("/api/myAllArticle")
+    @GetMapping("/api/myAllArticles")
     public ResponseEntity<List<ArticleResponseDto>> readAllMyArticles(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(articleService.readMyAllArticles(user));
     }
-//
-//    @GetMapping("/api/mainFeedArticle")
-//    public ResponseEntity<List<ArticleResponseDto>> readMainFeedArticles(@AuthenticationPrincipal User user) {
-//        return ResponseEntity.ok(articleService.readMainFeedArticles(user));
-//    }
+
+    @GetMapping("/api/mainFeedArticles")
+    public ResponseEntity<List<ArticleResponseDto>> readMainFeedArticles(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(articleService.readMainFeedArticles(user));
+    }
 
     @PutMapping("/api/article/{articleId}")
     public ResponseEntity<ArticleResponseDto> updateArticle(

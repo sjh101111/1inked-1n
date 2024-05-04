@@ -1,14 +1,11 @@
 package com.example.oneinkedoneproject.controller;
 
-import com.example.oneinkedoneproject.domain.Article;
-import com.example.oneinkedoneproject.domain.Image;
-import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
-import com.example.oneinkedoneproject.service.ArticleService;
+import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,12 +53,15 @@ public class ArticleControllerUnitTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(articleController).build();
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .username("test")
+                .realname("test")
                 .email("test@test.com")
                 .password("test")
-                .passwordQuestion("A")
                 .withdraw(false)
+                .passwordQuestion(PasswordQuestion.builder().question("a").build())
+                .grade(Grade.ROLE_BASIC)
                 .build();
+//        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(auth);
 
         images = new ArrayList<>();
         for (MultipartFile fileImage : files) {
@@ -99,7 +99,7 @@ public class ArticleControllerUnitTest {
     }
 
     @Test
-    void readAllMyArticleTest() throws Exception {
+    void readAllMyArticlesTest() throws Exception {
         //given static
         List<Article> articles = new ArrayList<>();
         articles.add(article);
@@ -111,13 +111,47 @@ public class ArticleControllerUnitTest {
         Mockito.doReturn(responseDtos).when(articleService).readMyAllArticles(any(User.class));
 
         //when
-        ResultActions resultActions = mockMvc.perform(get("/api/myAllArticle"))
+        ResultActions resultActions = mockMvc.perform(get("/api/myAllArticles"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(article.getId()))
                 .andExpect(jsonPath("$[0].contents").value("test content"))
                 .andExpect(jsonPath("$[0].images.size()").value(images.size()))
                 .andExpect(jsonPath("$[0].comments").doesNotExist())
                 .andDo(result -> Mockito.verify(articleService).readMyAllArticles(any(User.class)));
+    }
+
+    @Test
+    void readMainFeedArticlesTest() throws Exception {
+        User followUser =  User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("follow test")
+                .email("follow test@test.com")
+                .password("test")
+                .withdraw(false)
+                .passwordQuestion(PasswordQuestion.builder().question("a").build())
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        Follow follow = new Follow(GenerateIdUtils.generateArticleId(), followUser, user);
+
+        ArticleResponseDto followArticle = Article.builder()
+                .id(GenerateIdUtils.generateArticleId())
+                .contents("follow test content")
+                .user(followUser)
+                .updatedAt(null)
+                .createdAt(null)
+                .imageList(images)
+                .build().toDto();
+
+        List<ArticleResponseDto> followArticles = new ArrayList<>();
+        followArticles.add(followArticle);
+        Mockito.doReturn(followArticles).when(articleService).readMainFeedArticles(any(User.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/mainFeedArticles"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].contents").value(followArticle.getContents()))
+                .andExpect(jsonPath("$[0].user.id").value(followUser.getId()))
+                .andDo(result -> Mockito.verify(articleService).readMainFeedArticles(any(User.class)));
     }
 
     @Test

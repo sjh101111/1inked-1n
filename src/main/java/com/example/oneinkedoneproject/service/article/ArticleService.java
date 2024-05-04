@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.service;
+package com.example.oneinkedoneproject.service.article;
 
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Image;
@@ -11,8 +11,6 @@ import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,9 +79,13 @@ public class ArticleService {
                 .toList();
     }
 
-//    public List<ArticleResponseDto> readMainFeedArticles() {
-//
-//    }
+    public List<ArticleResponseDto> readMainFeedArticles(User user) {
+        return articleRepository.findFollowedUserArticlesOrdered(user.getId()).stream()
+                .map(article -> ArticleResponseDto.builder().id(article.getId()).contents(article.getContents())
+                        .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt()).comments(article.getCommentList())
+                        .images(article.getImageList()).user(article.getUser()).build())
+                .toList();
+    }
 
     @Transactional
     public ArticleResponseDto updateArticle(String articleId, UpdateArticleRequestDto updateArticleRequestDto) {
@@ -125,4 +127,5 @@ public class ArticleService {
         imageRepository.deleteByArticle(article);
         articleRepository.deleteById(articleId);
     }
+
 }

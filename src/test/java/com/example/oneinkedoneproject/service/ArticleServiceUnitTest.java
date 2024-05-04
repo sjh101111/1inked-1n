@@ -1,16 +1,15 @@
 package com.example.oneinkedoneproject.service;
 
 
-import com.example.oneinkedoneproject.domain.Article;
-import com.example.oneinkedoneproject.domain.Comment;
-import com.example.oneinkedoneproject.domain.Image;
-import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
+import com.example.oneinkedoneproject.repository.follow.FollowRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
+import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,7 +27,6 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,11 +43,16 @@ public class ArticleServiceUnitTest {
     @Mock
     CommentRepository commentRepository;
 
+    @Mock
+    FollowRepository followRepository;
+
     private User user;
 
     private Article article;
 
     private List<Image> imageList = new ArrayList<>();
+
+    private Follow follow;
 
     MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
     List<MultipartFile> files = List.of(file);
@@ -61,10 +62,9 @@ public class ArticleServiceUnitTest {
     void setUp() {
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .username("test")
+                .realname("test")
                 .email("test@test.com")
                 .password("test")
-                .passwordQuestion("A")
                 .withdraw(false)
                 .build();
 
@@ -175,7 +175,36 @@ public class ArticleServiceUnitTest {
 
     @Test
     void readMainFeedArticles() {
+        //given
+        User toUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("test")
+                .email("test@test.com")
+                .password("test")
+                .withdraw(false)
+                .build();
 
+        Article toUserArticle = Article.builder()
+                .id(GenerateIdUtils.generateArticleId())
+                .contents("toUser test content")
+                .user(toUser)
+                .updatedAt(null)
+                .createdAt(null)
+                .imageList(imageList)
+                .build();
+        follow = new Follow(GenerateIdUtils.generateUserId(),
+                toUser , user );
+
+        List<Article> mainFeedTestArticles = new ArrayList<>();
+        mainFeedTestArticles.add(toUserArticle);
+
+        Mockito.doReturn(mainFeedTestArticles).when(articleRepository).findFollowedUserArticlesOrdered(user.getId());
+
+        //when
+        articleService.readMainFeedArticles(user);
+
+        //then
+        assertThat(mainFeedTestArticles.get(0).getContents()).isEqualTo(toUserArticle.getContents());
     }
 
     @Test
@@ -266,6 +295,37 @@ public class ArticleServiceUnitTest {
     }
 
     @Test
+    public void updateArticle_InvalidArticleId_ThrowsException() {
+        String articleId = "invalid_id";
+        UpdateArticleRequestDto updateArticleRequestDto = UpdateArticleRequestDto.builder().contents("cc").build();
+
+        when(articleRepository.findById(articleId)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            articleService.updateArticle(articleId, updateArticleRequestDto);
+        }); }
+
+    @Test
+    public void testUpdateArticle_FailureInFileProcessing() throws IOException {String articleId = "valid_id";
+        Article existingArticle = Article.builder().id(GenerateIdUtils.generateArticleId()).build();
+
+        MultipartFile file = mock(MultipartFile.class);
+        ArrayList<MultipartFile> files = new ArrayList<>();
+        files.add(file);
+        UpdateArticleRequestDto updateArticleRequestDto = UpdateArticleRequestDto.builder().files(files).contents("dd").build();
+
+        when(articleRepository.findById(articleId)).thenReturn(Optional.of(existingArticle));
+        try {
+            when(file.getBytes()).thenThrow(new IOException("Failed to read file"));
+        } catch (IOException e) {
+            // This block is necessary to handle the checked exception in the mock setup
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            articleService.updateArticle(articleId, updateArticleRequestDto);
+        });    }
+
+    @Test
     void deleteArticleTest() throws Exception {
         //given
         Comment comment = Comment.builder().comments("test").article(article).user(user).build();
@@ -284,5 +344,14 @@ public class ArticleServiceUnitTest {
 
         // To ensure no further methods are called on the mock
         verifyNoMoreInteractions(articleRepository, commentRepository, imageRepository);
+    }
+
+    @Test
+    void deleteArticleTestWithIOException() {
+        // 잘못된 articleId를 사용하여 deleteArticle 메서드를 호출하면 IllegalArgumentException이 발생해야 합니다.
+        String invalidArticleId = "invalid_id";
+
+        // IllegalArgumentException이 발생하는지 확인합니다.
+        assertThrows(IllegalArgumentException.class, () -> articleService.deleteArticle(invalidArticleId));
     }
 }
