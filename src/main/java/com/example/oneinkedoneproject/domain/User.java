@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Table(name= "user")
+@Table(name= "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter

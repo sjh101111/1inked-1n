@@ -2,6 +2,7 @@ package com.example.oneinkedoneproject.dto;
 
 import com.example.oneinkedoneproject.domain.Article;
 
+import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Image;
 import com.example.oneinkedoneproject.domain.User;
 import lombok.AllArgsConstructor;
@@ -18,9 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleResponseDto {
+    private String id;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<Image> images;
     private User user;
+    private List<Comment> comments;
 }

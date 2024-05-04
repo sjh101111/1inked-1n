@@ -2,9 +2,12 @@ package com.example.oneinkedoneproject.controller;
 
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Image;
+import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.service.ArticleService;
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +28,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,16 +42,28 @@ public class ArticleControllerUnitTest {
 
     MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(articleController).build();
-    }
+    private User user;
 
-    @Test
-    public void createArticleTest() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
-        List<MultipartFile> files = List.of(file);
-        List<Image> images = new ArrayList<>();
+    private Article article;
+
+    private List<Image> images;
+
+    MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
+    List<MultipartFile> files = List.of(file);
+
+    @BeforeEach
+    void setUp() throws Exception {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(articleController).build();
+        user = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .username("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordQuestion("A")
+                .withdraw(false)
+                .build();
+
+        images = new ArrayList<>();
         for (MultipartFile fileImage : files) {
             Image image = Image.builder()
                     .img(fileImage.getBytes())
@@ -57,21 +71,99 @@ public class ArticleControllerUnitTest {
             images.add(image);
         }
 
-        AddArticleRequestDto addArticleRequest = new AddArticleRequestDto(
-                "contents", files);
+        article = Article.builder()
+                .id(GenerateIdUtils.generateArticleId())
+                .contents("test content")
+                .user(user)
+                .updatedAt(null)
+                .createdAt(null)
+                .imageList(images)
+                .build();
+    }
+
+    @Test
+    public void createArticleTest() throws Exception {
         ArticleResponseDto responseDto = ArticleResponseDto.builder()
                 .contents("contents")
                 .images(images)
                 .build();
         Mockito.doReturn(responseDto)
-                .when(articleService).createArticle(any(AddArticleRequestDto.class));
+                .when(articleService).createArticle(any(AddArticleRequestDto.class), any(User.class));
 
         ResultActions resultActions = mockMvc.perform(multipart("/api/article")
                         .file(file)
                         .param("contents", "contents")).andExpect(status().isCreated())
                 .andExpect(jsonPath("contents").value("contents"))
-                .andExpect(jsonPath("$.images.length()").value(images.size()));
+                .andExpect(jsonPath("$.images.length()").value(images.size()))
+                .andDo(result -> Mockito.verify(articleService).createArticle(any(AddArticleRequestDto.class), any(User.class)));
     }
 
+    @Test
+    void readAllMyArticleTest() throws Exception {
+        //given static
+        List<Article> articles = new ArrayList<>();
+        articles.add(article);
+        List<ArticleResponseDto> responseDtos = articles.stream()
+                .map(article -> ArticleResponseDto.builder().id(article.getId()).contents(article.getContents())
+                        .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
+                        .images(article.getImageList()).user(article.getUser()).build())
+                .toList();
+        Mockito.doReturn(responseDtos).when(articleService).readMyAllArticles(any(User.class));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/myAllArticle"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(article.getId()))
+                .andExpect(jsonPath("$[0].contents").value("test content"))
+                .andExpect(jsonPath("$[0].images.size()").value(images.size()))
+                .andExpect(jsonPath("$[0].comments").doesNotExist())
+                .andDo(result -> Mockito.verify(articleService).readMyAllArticles(any(User.class)));
+    }
+
+    @Test
+    void updateArticleTest() throws Exception {
+        //given
+        MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
+        MockMultipartFile file1 = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
+        List<MultipartFile> updatedfiles = new ArrayList<>();
+        updatedfiles.add(file);
+        updatedfiles.add(file1);
+        List<Image> updatedimages = new ArrayList<>();
+        for (MultipartFile fileImage : updatedfiles) {
+            Image image = Image.builder()
+                    .img(fileImage.getBytes())
+                    .build();
+            updatedimages.add(image);
+        }
+
+        UpdateArticleRequestDto updateArticleRequestDto = UpdateArticleRequestDto.builder()
+                .contents("updated content").files(updatedfiles).build();
+
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.builder().id(article.getId()).contents(updateArticleRequestDto.getContents())
+                .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
+                .images(updatedimages).user(article.getUser()).build();
+
+        Mockito.doReturn(articleResponseDto).when(articleService).updateArticle(any(String.class), any(UpdateArticleRequestDto.class));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(put("/api/article/{articleId}", article.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.contents").value(updateArticleRequestDto.getContents()))
+                .andExpect(jsonPath("$.images.size()").value(updateArticleRequestDto.getFiles().size()))
+                .andDo(result -> Mockito.verify(articleService).updateArticle(any(String.class), any(UpdateArticleRequestDto.class)));
+    }
+
+    @Test
+    void deleteArticle() throws Exception {
+        //given
+
+        //when
+        ResultActions resultActions = mockMvc.perform(delete("/api/article/{articleId}", article.getId()))
+                .andExpect(status().isOk());
+
+        //then
+        resultActions.andExpect(jsonPath("$.contents").doesNotExist());
+        Mockito.verify(articleService).deleteArticle(any(String.class));
+    }
 
 }

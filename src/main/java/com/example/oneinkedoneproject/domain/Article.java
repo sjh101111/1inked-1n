@@ -38,11 +38,11 @@ public class Article {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "like_count", columnDefinition = "integer default 0")
-    private int likeCount;
-
-    @Column(name = "reply_count", columnDefinition = "integer default 0")
-    private int replyCount;
+//    @Column(name = "like_count", columnDefinition = "integer default 0")
+//    private int likeCount;
+//
+//    @Column(name = "reply_count", columnDefinition = "integer default 0")
+//    private int replyCount;
 
     @OneToMany(mappedBy = "article")
     private List<Image> imageList;
@@ -55,7 +55,12 @@ public class Article {
     private User user;
 
     public void update(String contents) {
-        this.contents = contents;
+        this.contents = contents; // 내용은 항상 업데이트
+    }
+
+    //기존 게시글에 이미지 수정
+    public void addImage(Image image) {
+        this.imageList.add(image);
     }
 
     public ArticleResponseDto toDto() {

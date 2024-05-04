@@ -4,7 +4,7 @@ import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
-import com.example.oneinkedoneproject.repository.UserRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

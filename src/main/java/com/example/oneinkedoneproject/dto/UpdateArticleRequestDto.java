@@ -16,5 +16,5 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateArticleRequestDto {
     private String contents;
-    private List<MultipartFile> images;
+    private List<MultipartFile> files;
 }

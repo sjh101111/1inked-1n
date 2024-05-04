@@ -39,6 +39,7 @@ public class ImageRepositoryUnitTest {
                 .email("test@test.com")
                 .password("test")
                 .withdraw(false)
+                .passwordQuestion("A")
                 .build();
 
         article = Article.builder()
