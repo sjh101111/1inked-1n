@@ -2,9 +2,9 @@ package com.example.oneinkedoneproject.service;
 
 
 import com.example.oneinkedoneproject.domain.*;
-import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
-import com.example.oneinkedoneproject.dto.ArticleResponseDto;
-import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.follow.FollowRepository;

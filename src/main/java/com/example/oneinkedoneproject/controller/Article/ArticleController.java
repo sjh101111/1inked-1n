@@ -1,9 +1,9 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.Article;
 
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
-import com.example.oneinkedoneproject.dto.ArticleResponseDto;
-import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

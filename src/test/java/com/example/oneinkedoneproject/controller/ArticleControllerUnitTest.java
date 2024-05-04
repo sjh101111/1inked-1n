@@ -1,9 +1,10 @@
 package com.example.oneinkedoneproject.controller;
 
+import com.example.oneinkedoneproject.controller.Article.ArticleController;
 import com.example.oneinkedoneproject.domain.*;
-import com.example.oneinkedoneproject.dto.AddArticleRequestDto;
-import com.example.oneinkedoneproject.dto.ArticleResponseDto;
-import com.example.oneinkedoneproject.dto.UpdateArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
+import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.BeforeEach;

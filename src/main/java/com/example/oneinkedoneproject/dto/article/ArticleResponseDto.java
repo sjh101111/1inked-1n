@@ -1,6 +1,4 @@
-package com.example.oneinkedoneproject.dto;
-
-import com.example.oneinkedoneproject.domain.Article;
+package com.example.oneinkedoneproject.dto.article;
 
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Image;
@@ -9,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;

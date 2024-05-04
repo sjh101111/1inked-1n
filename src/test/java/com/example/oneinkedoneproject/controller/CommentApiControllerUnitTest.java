@@ -168,7 +168,7 @@ public class CommentApiControllerUnitTest {
 
     @Test
     @DisplayName("댓글 수정")
-    @WithMockCustomUser
+//    @WithMockCustomUser
     void updateComment() throws Exception {
         // given
         Comment comment = buildComment("바뀐 댓글 내용");

@@ -1,6 +1,6 @@
 package com.example.oneinkedoneproject.domain;
 
-import com.example.oneinkedoneproject.dto.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

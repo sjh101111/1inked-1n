@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, String> {
         void deleteByArticle(Article article);
+
+        void deleteByArticleIdAndImageId(String articleId, String imageId);
 }

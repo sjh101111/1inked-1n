@@ -1,13 +1,11 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.article;
 
-import com.example.oneinkedoneproject.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
