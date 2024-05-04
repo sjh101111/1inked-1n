@@ -10,7 +10,10 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "article")
@@ -20,7 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class Article {
 
     @Id
@@ -44,12 +46,15 @@ public class Article {
 //    @Column(name = "reply_count", columnDefinition = "integer default 0")
 //    private int replyCount;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
     private List<Image> imageList;
 
-    @OneToMany(mappedBy = "article")
-    private List<Comment> commentList;
+    @JsonIgnore
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -69,4 +74,5 @@ public class Article {
                 .updatedAt(updatedAt).images(imageList)
                 .user(user).build();
     }
+    
 }
