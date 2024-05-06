@@ -27,13 +27,13 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws IOException, ServletException {
 
-        /*
-        //액세스 토큰이 있다면 다음 필터체인으로 이동
-        final String accessHeader = request.getHeader("Authorization");
-        if(accessHeader!=null){
-            doFilter(request,response,filterChain);
+
+        //경로에 /refresh가 없다면 다음 필터체인으로 이동
+        final String requestURI = request.getRequestURI();
+        if(!"/refresh".equals(requestURI)){
+            filterChain.doFilter(request, response);
         }
-*/
+
         final String authHeader = request.getHeader("Refresh-Token");
 
         if (authHeader == null || !authHeader.startsWith(("Bearer "))) {//일단 토큰은 존재
