@@ -89,7 +89,7 @@ public class JwTRefreshTokenFilterUnitTest {
         when(jwtService.extractUsername("validToken")).thenReturn("user@example.com");
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(userDetails);
-        when(jwtService.isTokenValid("validToken", userDetails)).thenThrow(new UnsupportedJwtException("Unsupported JWT Token"));//valid 메소드에서 false 반환
+        when(jwtService.isTokenValid("validToken", userDetails)).thenThrow(new UnsupportedJwtException("Unsupported JWT Token"));
 
         jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
         assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response.getStatus());

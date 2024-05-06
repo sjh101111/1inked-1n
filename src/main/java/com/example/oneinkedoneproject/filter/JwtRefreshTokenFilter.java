@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.filter;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -24,8 +25,17 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
-            throws IOException {
+            throws IOException, ServletException {
+
+        /*
+        //액세스 토큰이 있다면 다음 필터체인으로 이동
+        final String accessHeader = request.getHeader("Authorization");
+        if(accessHeader!=null){
+            doFilter(request,response,filterChain);
+        }
+*/
         final String authHeader = request.getHeader("Refresh-Token");
+
         if (authHeader == null || !authHeader.startsWith(("Bearer "))) {//일단 토큰은 존재
             unauthorizedResponse(response, "Unauthorized: No valid Bearer token provided");
             return;
