@@ -17,8 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class JwTRefreshTokenFilterUnitTest {
     @Mock
@@ -26,6 +25,9 @@ public class JwTRefreshTokenFilterUnitTest {
 
     @Mock
     private UserDetailsService userDetailsService;
+
+    @Mock
+    private FilterChain filterChain;
 
     @InjectMocks
     private JwtRefreshTokenFilter jwtRefreshTokenFilter;
@@ -38,6 +40,32 @@ public class JwTRefreshTokenFilterUnitTest {
         MockitoAnnotations.openMocks(this);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
+    }
+
+    @Test
+    @DisplayName("경로가 /refresh 가 아닐 때 필터체인 호출 확인")
+    void testPassToNextFilterIfNotRefreshPath() throws Exception {
+        // Set up a request that does not match the "/refresh" path
+        request.setRequestURI("/api/data");
+
+        // Execute the filter method
+        jwtRefreshTokenFilter.doFilterInternal(request, response, filterChain);
+
+        // Verify that the filter chain's doFilter method was called, indicating that the request was passed along the chain
+        verify(filterChain, times(1)).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("경로가 /refresh일 때 필터체인 비호출 확인")
+    void testNotPassToNextFilterIfRefreshPath() throws Exception {
+        // Set up a request that matches the "/refresh" path
+        request.setRequestURI("/refresh");
+
+        // Execute the filter method
+        jwtRefreshTokenFilter.doFilterInternal(request, response, filterChain);
+
+        // Verify that the filter chain's doFilter method was not called
+        verify(filterChain, never()).doFilter(request, response);
     }
 
     @Test
