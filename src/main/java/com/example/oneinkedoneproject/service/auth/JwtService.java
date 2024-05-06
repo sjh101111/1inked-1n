@@ -55,18 +55,6 @@ public class JwtService {
     }
 
     //accsess토큰만 리턴
-    public String generateToken(
-            UserDetails userDetails
-    ){
-        //JWT 토큰 반환
-        return Jwts
-                .builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000*60*24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
 
     public Boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUsername(token);
