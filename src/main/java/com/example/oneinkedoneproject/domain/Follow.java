@@ -2,6 +2,7 @@ package com.example.oneinkedoneproject.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Follow {
     @Id
     @Column(name = "follow_id" , nullable = false)
@@ -16,7 +18,7 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
     @JoinColumn(name = "to_user", nullable = false)
-    private User toUser;//팔로웅 대상
+    private User toUser;//팔로우 대상
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_user", nullable = false)
@@ -38,7 +40,5 @@ public class Follow {
     public void setFollowed(User toUser) {
         this.toUser = toUser;
     }
-    public Follow(){
-        //생성자
-    }
+
 }

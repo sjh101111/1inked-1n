@@ -19,6 +19,8 @@ public class GenerateIdUtils {
         return "comment_" + generateId();
     }
 
+    public static String generateFollowId() {return "follow_" + generateId();}
+
     public static String generateId() {
         UUID uuid = UUID.randomUUID();
         // "-" 제외하고 문자열 추출
