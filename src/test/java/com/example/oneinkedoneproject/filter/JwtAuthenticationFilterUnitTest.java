@@ -32,9 +32,13 @@ class JwtAuthenticationFilterUnitTest {
     @InjectMocks
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private MockHttpServletRequest request;
+    private MockHttpServletResponse response;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+         request = new MockHttpServletRequest();
+         response = new MockHttpServletResponse();
         SecurityContextHolder.clearContext(); // Ensure it is clean before each test
 
     }
@@ -42,9 +46,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("Valid Access Token 테스트")
     void testValidAccessToken() throws Exception {
-        //mock request, response 객체 생성
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String jwt  = "validToken";
         //리퀘스트 헤더에 액세스 토큰 추가
         request.addHeader("Authorization", "Bearer "+ jwt);
@@ -73,9 +74,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("Invalid Access Token 테스트")
     void testInvalidAccessToken() throws Exception {
-        //mock request, response 객체 생성
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String jwt = "invalidToken";
         //invalid한 토큰 생성
         request.addHeader("Authorization", "Bearer "+jwt);
@@ -100,9 +98,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("Invalid Access Token Error 테스트")
     void testInvalidAccessTokenError() throws Exception {
-        //mock request, response 객체 생성
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String errorToken = "errorToken";
         //invalid한 토큰 생성
         request.addHeader("Authorization", "Bearer "+ errorToken);
@@ -127,8 +122,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("Token does not exist 테스트")
     void testNonExistingToken() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String BlankToken = "";
         //비어있는 토큰 전달
         request.addHeader("Authorization", BlankToken);
@@ -144,8 +137,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("Token does not start with Bearer 테스트")
     void testNonBearerToken() throws Exception{
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String errorToken = "does not start with Bearer";
         request.addHeader("Authorization", errorToken);
 
@@ -160,8 +151,6 @@ class JwtAuthenticationFilterUnitTest {
     @Test
     @DisplayName("token claim 내에 이메일이 없을때 테스트 테스트")
     void testNonNoEmailInToken() throws Exception{
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         String errorToken = "Bearer "+"noEmail";
         request.addHeader("Authorization", errorToken);
 
