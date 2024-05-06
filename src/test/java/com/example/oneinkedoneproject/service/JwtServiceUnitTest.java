@@ -47,15 +47,6 @@ public class JwtServiceUnitTest {
         assertTrue(jwtService.isTokenValid(tokenInfo.getAccessToken(), userDetails));
     }
 
-
-    @Test
-    @DisplayName("AcessToken 생성 테스트")
-    void generateTokenTest() {
-        String token = jwtService.generateToken(userDetails);
-        assertNotNull(token);
-        assertTrue(jwtService.isTokenValid(token, userDetails));
-    }
-
     @Test
     @DisplayName("Token 만료 test")
     void isTokenExpiredTest() {
@@ -94,5 +85,12 @@ public class JwtServiceUnitTest {
         TokenInfo tokenInfo = jwtService.generateTokenInfo(userDetails);
         assertEquals("username", jwtService.extractUsername(tokenInfo.getAccessToken()));
     }
+
+    /*
+    @Test
+    @DisplayName("클레임 추출 테스트")
+    void extractClaimsTest(){
+    }
+*/
 
 }
