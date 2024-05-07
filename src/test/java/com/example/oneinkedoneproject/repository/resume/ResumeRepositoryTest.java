@@ -35,7 +35,7 @@ public class ResumeRepositoryTest {
 	@BeforeEach
 	void init(){
 		pwdQuestion = new PasswordQuestion("1", "질문1");
-		user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+		user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, null, Grade.ROLE_BASIC);
 		passwordRepository.save(pwdQuestion);
 		userRepository.save(user);
 	}

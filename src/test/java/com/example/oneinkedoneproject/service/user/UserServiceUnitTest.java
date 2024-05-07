@@ -2,11 +2,9 @@ package com.example.oneinkedoneproject.service.user;
 
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.ChangePasswordRequestDto;
-import com.example.oneinkedoneproject.dto.FindUserRequestDto;
-import com.example.oneinkedoneproject.dto.SignupUserRequestDto;
-import com.example.oneinkedoneproject.dto.WithdrawUserRequestDto;
+import com.example.oneinkedoneproject.dto.*;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +16,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import static com.example.oneinkedoneproject.service.user.UserService.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -99,6 +101,151 @@ public class UserServiceUnitTest {
 
 	/**
 	 * 회원 조회 TEST END
+	 */
+
+	/**
+	 * 유저 프로필 저장 TEST START
+	 */
+
+	@Test
+	@DisplayName("유저 프로필 저장 성공 테스트")
+	void saveProfileSuccessTest(){
+		//given
+		String email = "test@naver.com";
+		String identity = "test";
+		String location = "서울";
+		String description = "테스트 설명";
+
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description);
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("afweifm"))
+				.withdraw(false)
+				.build();
+
+		//when
+		doReturn(Optional.of(user))
+			.when(userRepository)
+			.findByEmail(email);
+		User returnUser = userService.saveProfile(requestDto, file);
+
+		//then
+		assertThat(returnUser.getIdentity()).isEqualTo(identity);
+		assertThat(returnUser.getLocation()).isEqualTo(location);
+		assertThat(returnUser.getDescription()).isEqualTo(description);
+	}
+
+	@Test
+	@DisplayName("유저 프로필 저장 identity 길이 제한 초과")
+	void saveProfileIdentityLengthExceedTest(){
+		//given
+		String email = "test@naver.com";
+		String exceedIdentity = RandomStringUtils.random(MAX_LENGTH_IDENTITY + 1);
+		String location = "서울";
+		String description = "테스트 설명";
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, exceedIdentity, location, description);
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("afweifm"))
+				.withdraw(false)
+				.build();
+		//when
+		doReturn(Optional.of(user))
+			.when(userRepository)
+			.findByEmail(email);
+
+		//then
+		assertThrows(IllegalArgumentException.class, () ->{
+			userService.saveProfile(requestDto, file);
+		});
+	}
+
+	@Test
+	@DisplayName("유저 프로필 저장 위치 글자수 제한 초과")
+	void saveProfileLocationLengthExceedTest(){
+		//given
+		String email = "test@naver.com";
+		String identity = "test";
+		String exceedLocation = RandomStringUtils.random(MAX_LENGTH_LOCATION + 1);
+		String description = "테스트 설명";
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, exceedLocation, description);
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("afweifm"))
+				.withdraw(false)
+				.build();
+		//when
+		doReturn(Optional.of(user))
+				.when(userRepository)
+				.findByEmail(email);
+
+		//then
+		assertThrows(IllegalArgumentException.class, () ->{
+			userService.saveProfile(requestDto, file);
+		});
+	}
+
+	@Test
+	@DisplayName("유저 프로필 저장 description 글자수 제한 초과")
+	void saveProfileDescriptionLengthExceedTest(){
+		//given
+		String email = "test@naver.com";
+		String identity = "test";
+		String location = "서울";
+		String exceedDescription = RandomStringUtils.random(MAX_LENGTH_DESCRIPTION + 1);
+		String description = "테스트 설명";
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, exceedDescription);
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("afweifm"))
+				.withdraw(false)
+				.build();
+
+		//when
+		doReturn(Optional.of(user))
+			.when(userRepository)
+			.findByEmail(email);
+
+		//then
+		assertThrows(IllegalArgumentException.class, () ->{
+			userService.saveProfile(requestDto, file);
+		});
+	}
+
+	/**
+	 * 유저 프로필 저장 TEST END
 	 */
 
 	/**
@@ -496,5 +643,63 @@ public class UserServiceUnitTest {
 	}
 	/**
 	 * 회원 비밀번호 변경 TEST END
+	 */
+
+	/**
+	 * 유저 사진 업로드 TEST START
+	 */
+	@Test
+	@DisplayName("유저 사진 업로드 정상 동작")
+	void uploadImageSuccessTest(){
+		//given
+		String email = "test@naver.com";
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email);
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("1aw9!wWem23"))
+				.withdraw(false)
+				.build();
+		//when
+		doReturn(Optional.of(user))
+			.when(userRepository)
+			.findByEmail(email);
+		User returnUser = userService.uploadImage(file, request);
+
+		//then
+		assertThat(returnUser.getImage()).isNotNull();
+	}
+
+	@Test
+	@DisplayName("이메일로 user entity를 가져오지 못한 경우")
+	void uploadImageInvalidEmailTest(){
+		//given
+		String email = "test@naver.com";
+		MultipartFile file = new MockMultipartFile("test",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email);
+
+		//when
+		doReturn(Optional.empty())
+			.when(userRepository)
+			.findByEmail(email);
+
+		//then
+		assertThrows(IllegalArgumentException.class, ()->{
+			userService.uploadImage(file, request);
+		});
+	}
+
+	/**
+	 * 유저 사진 업로드 TEST END
 	 */
 }

@@ -36,7 +36,7 @@ public class UserRepositoryTest {
     @DisplayName("User 저장 확인")
     void saveMember(){
         // given
-        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, null, Grade.ROLE_BASIC);
 
         //when
         User savedUser = userRepository.save(user);
@@ -61,7 +61,7 @@ public class UserRepositoryTest {
     @DisplayName("User 조회 확인")
     void findUser(){
         // given
-        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, null, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
@@ -88,7 +88,7 @@ public class UserRepositoryTest {
     @DisplayName("User 수정 확인")
     void updateUser(){
         // given
-        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1","김","2","123",pwdQuestion,"아","학생","서울","hi",false, null, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
@@ -105,7 +105,7 @@ public class UserRepositoryTest {
     @DisplayName("User 삭제 확인")
     void deleteUser() {
         // given
-        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, null, Grade.ROLE_BASIC);
         User savedUser = userRepository.save(user);
 
         // when
@@ -119,7 +119,7 @@ public class UserRepositoryTest {
     @DisplayName("Email db존재 여부 확인")
     void existEmailTest(){
         //given
-        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, null, Grade.ROLE_BASIC);
         boolean isExist = false;
         userRepository.save(user);
 
@@ -134,7 +134,7 @@ public class UserRepositoryTest {
     @DisplayName("email로 select 확인")
     void findByEmailTest(){
         //given
-        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, (byte) 10, Grade.ROLE_BASIC);
+        User user = new User("1", "김", "2", "123", pwdQuestion, "아", "학생", "서울", "hi", false, null, Grade.ROLE_BASIC);
         userRepository.save(user);
 
         //when

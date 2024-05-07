@@ -2,10 +2,7 @@ package com.example.oneinkedoneproject.service.user;
 
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.ChangePasswordRequestDto;
-import com.example.oneinkedoneproject.dto.FindUserRequestDto;
-import com.example.oneinkedoneproject.dto.SignupUserRequestDto;
-import com.example.oneinkedoneproject.dto.WithdrawUserRequestDto;
+import com.example.oneinkedoneproject.dto.*;
 import com.example.oneinkedoneproject.utils.regxUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +13,9 @@ import com.example.oneinkedoneproject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,11 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordRepository passwordRepository;
 	private final BCryptPasswordEncoder encoder;
+
+	public static final int MAX_LENGTH_IDENTITY = 100;
+	public static final int MAX_LENGTH_LOCATION = 50;
+	public static final int MAX_LENGTH_DESCRIPTION = 2000;
+
 
 	//1. 유저 프로필 조회
 	public User findUser(FindUserRequestDto requestDto){
@@ -46,12 +51,52 @@ public class UserService {
 		return user;
 	}
 
-	//2. 유저 프로필 수정
+	//2. 유저 프로필 저장
+	//dto와 file은 multipart/form-data로 분리해서 받는다.
+	//RequestPart 어노테이션 사용
+	@Transactional
+	public User saveProfile(SaveProfileRequestDto requestDto, MultipartFile file){
+		User user = null;
+
+		//1. 이메일 유효성 검증
+		// 정규식 테스트로 스킵
+		if(!regxUtils.emailRegxCheck(requestDto.getEmail())){
+			throw new IllegalArgumentException("email is invalid");
+		}
+
+		//2. 이메일로 user를 찾았을 때 실제 존재하는 유저인지 확인
+		user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() ->new IllegalArgumentException("not found email matched user"));
+
+		//3.identity 글자수 제한 확인
+		if(requestDto.getIdentity().length() > MAX_LENGTH_IDENTITY){
+			throw new IllegalArgumentException("identity max length exceed");
+		}
+
+		//4. location 글자수 제한 확인
+		if(requestDto.getLocation().length() > MAX_LENGTH_LOCATION){
+			throw new IllegalArgumentException("location max length exceed");
+		}
+
+		//5. description 글자수 제한 확인
+		if(requestDto.getDescription().length() > MAX_LENGTH_DESCRIPTION){
+			throw new IllegalArgumentException("description max length exceed");
+		}
+
+		user.updateIdentity(requestDto.getIdentity());
+		user.updateLocation(requestDto.getLocation());
+		user.updateDescription(requestDto.getDescription());
+		try{
+			user.updateImage(file.getBytes());
+		}catch (IOException e){
+			//nginx같은 웹서버에서 커버..?
+			throw new IllegalArgumentException("file doesn't validate");
+		}
+
+		return user;
+	}
 
 
-	//3. 유저 프로필 저장
-
-	//4. 유저 비밀번호 변경
+	//3. 유저 비밀번호 변경
 	// 기능명세서 수정 예정
 	@Transactional
 	public User changePassword(ChangePasswordRequestDto requestDto){
@@ -81,7 +126,7 @@ public class UserService {
 		return user;
 	}
 
-	//5. 회원 탈퇴
+	//4. 회원 탈퇴
 	@Transactional
 	public User withDraw(WithdrawUserRequestDto requestDto){
 		User user;
@@ -110,8 +155,7 @@ public class UserService {
 		return user;
 	}
 
-
-	//6. 회원 가입
+	//5. 회원 가입
 	@Transactional
 	public User signUp(SignupUserRequestDto requestDto){
 		String passwordQuestionId = requestDto.getPasswordQuestionId();
@@ -146,9 +190,29 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	//7. 유저 사진 업로드
+	//6. 유저 사진 업로드
+	@Transactional
+	public User uploadImage(MultipartFile file, UploadUserImageRequestDto request){
+		String userEmail = request.getEmail();
+		byte[] image = null;
 
-	//8. userEmail duplication check
+		try{
+			//파일 상태를 어떻게 확인하지?
+			image = file.getBytes();
+
+			//1. 유저 존재하는지 확인
+			User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("not found user"));
+
+			//2. 존재한다면, UserEntity 수정
+			user.updateImage(image);
+
+			return user;
+		}catch (IOException e){
+			throw new IllegalArgumentException("file is unacceptable");
+		}
+	}
+
+	//7. userEmail duplication check
 	public boolean emailDupCheck(String email){
 		return userRepository.existsByEmail(email);
 	}
