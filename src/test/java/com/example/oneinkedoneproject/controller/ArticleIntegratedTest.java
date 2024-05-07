@@ -135,7 +135,7 @@ public class ArticleIntegratedTest {
                         .with(request -> {
                             request.setMethod("POST");
                             return request;
-                        }).with(user())
+                        }))
         .andExpect(status().isCreated());
         Article createdArticle = articleRepository.findByUserId(user.getId());
 
