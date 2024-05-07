@@ -4,6 +4,7 @@ import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
+import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.service.image.ImageService;
@@ -34,6 +35,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,6 +65,9 @@ public class ArticleIntegratedTest {
     @Autowired
     ImageService imageService;
 
+    @Autowired
+    PasswordRepository passwordRepository;
+
     private User user;
 
     private Article article;
@@ -81,18 +86,19 @@ public class ArticleIntegratedTest {
         this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).
                 apply(SecurityMockMvcConfigurers.springSecurity()).build();
 
-        user = User.builder()
+        this.user = userRepository.save(User.builder()
                 .withdraw(false)
                 .email("test@test.com")
                 .password("1234")
                 .id("1")
                 .realname("name")
                 .grade(Grade.ROLE_BASIC)
-                .passwordQuestion(PasswordQuestion.builder()
-                        .id("1")
-                        .question("?")
-                        .build())
-                .build();
+                .passwordQuestion(
+                        passwordRepository.save(PasswordQuestion.builder()
+                                .id("1")
+                                .question("?")
+                                .build()))
+                .build());
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
@@ -129,8 +135,8 @@ public class ArticleIntegratedTest {
                         .with(request -> {
                             request.setMethod("POST");
                             return request;
-                        })
-        ).andExpect(status().isCreated());
+                        }).with(user())
+        .andExpect(status().isCreated());
         Article createdArticle = articleRepository.findByUserId(user.getId());
 
         assertThat(createdArticle.getImageList().size()).isEqualTo(2);
