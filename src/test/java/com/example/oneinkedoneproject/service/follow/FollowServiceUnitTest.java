@@ -43,7 +43,22 @@ public class FollowServiceUnitTest {
 
         // given
 
-        AddFollowRequestDto request = new AddFollowRequestDto("1", "2");
+        AddFollowRequestDto request = new AddFollowRequestDto("testUser");
+
+        User fromUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("lee")
+                .email("test2")
+                .password("12345")
+                .passwordQuestion(null)
+                .passwordAnswer("답변2")
+                .identity("직장인")
+                .location("부산")
+                .description("hi2")
+                .withdraw(false)
+                .image((byte) 10)
+                .grade(Grade.ROLE_BASIC)
+                .build();
 
         when(userRepository.findById(any(String.class))).thenReturn(
                 Optional.of(User.builder()
@@ -63,23 +78,6 @@ public class FollowServiceUnitTest {
         );
 
 
-//        when(userRepository.findById(any(String.class))).thenReturn(
-//                Optional.of(User.builder()
-//                        .id(GenerateIdUtils.generateUserId())
-//                        .realname("lee")
-//                        .email("test2")
-//                        .password("12345")
-//                        .passwordQuestion(null)
-//                        .passwordAnswer("답변2")
-//                        .identity("직장인")
-//                        .location("부산")
-//                        .description("hi2")
-//                        .withdraw(false)
-//                        .image((byte) 10)
-//                        .grade(Grade.ROLE_BASIC)
-//                        .build())
-//        );
-
         Follow follow = Follow.builder()
                 .id(GenerateIdUtils.generateFollowId())
                 .toUser(null)
@@ -90,7 +88,7 @@ public class FollowServiceUnitTest {
 //        doReturn(follow).when(followRepository).save(any(Follow.class));
 
         // when
-        Follow savedFollow = followService.follow(request);
+        Follow savedFollow = followService.follow(fromUser, request);
 
         // then
         assertThat(savedFollow).isNotNull();
@@ -104,12 +102,27 @@ public class FollowServiceUnitTest {
     void followFail(){
         // given
         // 없는 Follow , Follower user를 찾는다고 가정
-        AddFollowRequestDto request = new AddFollowRequestDto("notExistUser", "notExistUser");
+        AddFollowRequestDto request = new AddFollowRequestDto("notExistUser");
+
+        User fromUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("lee")
+                .email("test2")
+                .password("12345")
+                .passwordQuestion(null)
+                .passwordAnswer("답변2")
+                .identity("직장인")
+                .location("부산")
+                .description("hi2")
+                .withdraw(false)
+                .image((byte) 10)
+                .grade(Grade.ROLE_BASIC)
+                .build();
 
         doReturn(Optional.empty()).when(userRepository).findById(any(String.class));
 
         //when
-        assertThatThrownBy(() -> followService.follow(request)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> followService.follow(fromUser, request)).isInstanceOf(IllegalArgumentException.class);
 
 
     }

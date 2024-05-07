@@ -11,7 +11,7 @@ public class AddFollowRequestDto {
 
     private String FollowUserId;
 
-    private String FollowedUserId;
+
 
 
 }
