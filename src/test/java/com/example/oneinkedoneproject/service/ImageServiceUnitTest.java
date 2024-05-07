@@ -70,12 +70,12 @@ public class ImageServiceUnitTest {
             String imageId = invocation.getArgument(1);
             imageList.removeIf(img -> img.getId().equals(imageId));
             return null;
-        }).when(imageRepository).deleteByArticleIdAndImageId(any(String.class), any(String.class));
+        }).when(imageRepository).deleteByArticleIdAndId(any(String.class), any(String.class));
         //when
         imageService.deleteEachImageOfArticle(article.getId(), imageList.get(0).getId());
 
         //then
-        verify(imageRepository).deleteByArticleIdAndImageId(any(String.class), any(String.class));
+        verify(imageRepository).deleteByArticleIdAndId(any(String.class), any(String.class));
         assertThat(imageList).isEmpty();
     }
 }

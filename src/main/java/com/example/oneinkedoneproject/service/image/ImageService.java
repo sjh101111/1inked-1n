@@ -13,7 +13,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
 
     public void deleteEachImageOfArticle(String articleId, String imageId) {
-        imageRepository.deleteByArticleIdAndImageId(articleId, imageId);
+        imageRepository.deleteByArticleIdAndId(articleId, imageId);
     }
 
 }
