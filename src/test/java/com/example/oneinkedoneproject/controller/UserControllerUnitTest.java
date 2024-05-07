@@ -121,7 +121,7 @@ public class UserControllerUnitTest {
     }
 
     @Test
-    @DisplayName("유저 프로필 저장 API 호출")
+    @DisplayName("유저 프로필 저장 API 실패 호출")
     void saveUserProfileFailTest() throws Exception {
         //given
         String email = "test@naver.com";
@@ -274,22 +274,14 @@ public class UserControllerUnitTest {
                 .content(requestString));
 
         //then
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isCreated());
     }
     @Test
     @DisplayName("회원가입 API 실패 테스트")
     void signupUserFailTest() throws Exception {
         //given
         SignupUserRequestDto request = new SignupUserRequestDto("","","","","");
-        User user = User.builder()
-                .id(GenerateIdUtils.generateUserId())
-                .realname("익명")
-                .passwordQuestion(pwdQuestion)
-                .passwordAnswer("aw")
-                .email("emfawoeim")
-                .password("aweoim")
-                .withdraw(false)
-                .build();
+
         String requestString = om.writeValueAsString(request);
 
         //when
@@ -301,6 +293,58 @@ public class UserControllerUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestString));
 
+        //then
+        actions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("유저 사진 업로드 성공 테스트")
+    void uploadImageSuccessTest() throws Exception {
+        //given
+        String email = "test@naver.com";
+        UploadUserImageRequestDto requestDto = new UploadUserImageRequestDto(email);
+
+        MockMultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "image png".getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json",om.writeValueAsString(requestDto).getBytes());
+        User user = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("익명")
+                .passwordQuestion(pwdQuestion)
+                .passwordAnswer("aw")
+                .email("test@naver.com")
+                .password("aweoim")
+                .withdraw(false)
+                .build();
+
+        //when
+        doReturn(user)
+            .when(userService)
+            .uploadImage(any(MultipartFile.class), any(UploadUserImageRequestDto.class));
+
+       ResultActions actions = mockMvc.perform(multipart("/api/user/image")
+                    .file(file)
+                    .file(requestFile));
+        //then
+        actions.andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("유저 사진 업로드 실패 테스트")
+    void uploadImageFailTest() throws Exception {
+        //given
+        String email = "test@naver.com";
+        UploadUserImageRequestDto requestDto = new UploadUserImageRequestDto(email);
+        MockMultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "image png".getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json",om.writeValueAsString(requestDto).getBytes());
+
+        //when
+        doReturn(null)
+            .when(userService)
+            .uploadImage(any(MultipartFile.class), any(UploadUserImageRequestDto.class));
+
+       ResultActions actions = mockMvc.perform(multipart("/api/user/image")
+                    .file(file)
+                    .file(requestFile));
         //then
         actions.andExpect(status().isBadRequest());
     }

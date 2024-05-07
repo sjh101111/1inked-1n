@@ -76,14 +76,22 @@ public class UserController {
                     .body("회원가입에 실패하였습니다.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body("회원가입에 성공했습니다.");
     }
 
     //6. 유저 사진 업로드
     @PostMapping("/api/user/image")
-    public ResponseEntity<String> uploadImage(){
+    public ResponseEntity<String> uploadImage(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "dto") UploadUserImageRequestDto request){
+        User user = userService.uploadImage(file, request);
 
+       if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("유저 사진 업로드에 실패하였습니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("유저 사진 업로드에 성공했습니다.");
     }
 
 }
