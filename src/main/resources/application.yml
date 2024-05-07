@@ -4,12 +4,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/1inked1n?serverTimezone=Asia/Seoul
     username: root
-    password:
+    password: "gnlxmsltm12!"
 
   jpa:
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: create
