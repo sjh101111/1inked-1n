@@ -3,9 +3,11 @@ package com.example.oneinkedoneproject.dto;
 import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class SaveProfileRequestDto {
     private String email;
     //100자 제한
