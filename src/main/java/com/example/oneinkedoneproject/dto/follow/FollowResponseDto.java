@@ -11,7 +11,7 @@ public class FollowResponseDto {
 
     private String identity;
 
-    private Byte image;
+    private byte[] image;
 
 
 

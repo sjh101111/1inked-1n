@@ -61,7 +61,7 @@ public class CommentServiceUnitTest {
                 .build())
         ).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         Comment comment = Comment.builder()
                 .id(GenerateIdUtils.generateCommentId())
@@ -87,7 +87,7 @@ public class CommentServiceUnitTest {
         // given
         doReturn(Optional.empty()).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         // when
         assertThatThrownBy(() -> commentService.save(null, "123", addCommentRequestDto)).isInstanceOf(IllegalArgumentException.class);
@@ -140,9 +140,9 @@ public class CommentServiceUnitTest {
 
 
         // when
-        List<Comment> rootCommentList = commentService.getRootComments(articleId);
+        List<Comment> rootCommentList = commentService.getComments(articleId);
         // then
-        assertThat(rootCommentList.size()).isEqualTo(1);
+        assertThat(rootCommentList.size()).isEqualTo(4);
         assertThat(rootCommentList.get(0).getComments()).isEqualTo(comments);
     }
 

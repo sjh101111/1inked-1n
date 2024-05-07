@@ -41,8 +41,8 @@ public class FollowRepositoryTest {
 	@BeforeEach
 	void init(){
 		passwordQuestion = new PasswordQuestion("1", "질문");
-		fromUser = new User("1","김","2","123",passwordQuestion,"아","학생","서울","hi",false, (byte) 10, Grade.ROLE_BASIC);
-		toUser = new User("2","김민","3","1234",passwordQuestion,"아1","학생1","부산","hi2",false, (byte) 10, Grade.ROLE_BASIC);
+		fromUser = new User("1","김","2","123",passwordQuestion,"아","학생","서울","hi",false, null, Grade.ROLE_BASIC);
+		toUser = new User("2","김민","3","1234",passwordQuestion,"아1","학생1","부산","hi2",false, null, Grade.ROLE_BASIC);
 		passwordRepository.save(passwordQuestion);
 		userRepository.save(fromUser);
 		userRepository.save(toUser);
@@ -86,7 +86,7 @@ public class FollowRepositoryTest {
     @DisplayName("Follow 수정 확인")
     void updateFollow() {
         // given
-		User updateUser = new User("3","김민구","4","12345",passwordQuestion,"아12","학생12","경기도","hi23",false, (byte) 10, Grade.ROLE_BASIC);
+		User updateUser = new User("3","김민구","4","12345",passwordQuestion,"아12","학생12","경기도","hi23",false, null, Grade.ROLE_BASIC);
         Follow follow = new Follow("1", fromUser, toUser);
 		User savedUser3 = userRepository.save(updateUser);
         Follow savedFollow = followRepository.save(follow);

@@ -2,7 +2,7 @@ package com.example.oneinkedoneproject.service.auth;
 
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
-import com.example.oneinkedoneproject.repository.UserRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import io.jsonwebtoken.*;
 
 import java.security.Key;

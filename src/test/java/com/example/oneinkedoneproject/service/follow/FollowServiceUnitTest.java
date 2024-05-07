@@ -56,7 +56,6 @@ public class FollowServiceUnitTest {
                 .location("부산")
                 .description("hi2")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
@@ -72,7 +71,6 @@ public class FollowServiceUnitTest {
                         .location("서울")
                         .description("hi")
                         .withdraw(false)
-                        .image((byte) 10)
                         .grade(Grade.ROLE_BASIC)
                         .build())
         );
@@ -115,7 +113,6 @@ public class FollowServiceUnitTest {
                 .location("부산")
                 .description("hi2")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
@@ -145,7 +142,6 @@ public class FollowServiceUnitTest {
                 .location("서울")
                 .description("hi")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
@@ -160,7 +156,6 @@ public class FollowServiceUnitTest {
                 .location("부산")
                 .description("hi2")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
@@ -202,7 +197,6 @@ public class FollowServiceUnitTest {
                 .location("서울")
                 .description("hi")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
@@ -217,7 +211,6 @@ public class FollowServiceUnitTest {
                 .location("부산")
                 .description("hi2")
                 .withdraw(false)
-                .image((byte) 10)
                 .grade(Grade.ROLE_BASIC)
                 .build();
 

@@ -1,6 +1,9 @@
 package com.example.oneinkedoneproject.config;
 
 import com.example.oneinkedoneproject.filter.JwtAuthenticationFilter;
+import com.example.oneinkedoneproject.filter.JwtRefreshTokenFilter;
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @EnableWebSecurity
 @Configuration
@@ -19,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtRefreshTokenFilter jwtRefreshTokenFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -28,28 +33,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .csrf(auth -> auth.disable())
+                .sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않도록 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                         //"/login", "/signup", "/user", "/findId", "/findPw", "/user/find/id","/user/find/email", "/user/find/pw" , "/api/v1/auth/**")
-                        "/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .formLogin(auth -> auth.loginPage("/login")
-                        .defaultSuccessUrl("/"))
-                .logout(auth -> auth.logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true))
-                .csrf(auth -> auth.disable())
-                .sessionManagement(auth -> auth
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않도록 설정
+                        "/login","/").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(auth -> auth.loginPage("/login").defaultSuccessUrl("/"))
+                .logout(auth -> auth.logoutSuccessUrl("/login").invalidateHttpSession(true))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtRefreshTokenFilter, UsernamePasswordAuthenticationFilter.class)  // JwtAuthenticationFilter 적용
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // JwtRefreshTokenFilter 적용
 
         return httpSecurity.build();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
