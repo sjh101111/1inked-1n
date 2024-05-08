@@ -30,14 +30,16 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
         //경로에 /refresh가 없다면 다음 필터체인으로 이동
         final String requestURI = request.getRequestURI();
+
         if(!"/refresh".equals(requestURI)){
             filterChain.doFilter(request, response);
+            return;
         }
 
         final String authHeader = request.getHeader("Refresh-Token");
 
         if (authHeader == null || !authHeader.startsWith(("Bearer "))) {//일단 토큰은 존재
-            unauthorizedResponse(response, "Unauthorized: No valid Bearer token provided");
+            unauthorizedResponse(response, "Unauthorized: No valid refresh Bearer token provided");
             return;
         }
         String refreshToken = authHeader.substring(7);

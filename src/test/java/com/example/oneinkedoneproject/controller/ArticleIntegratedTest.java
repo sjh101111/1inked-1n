@@ -289,7 +289,6 @@ public class ArticleIntegratedTest {
 
         articleRepository.save(article);
 
-
         follow = new Follow("1", toUser, user);
         followRepository.save(follow);
         ResultActions resultActions = mvc.perform(get("/api/mainFeedArticles")
