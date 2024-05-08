@@ -34,23 +34,23 @@ public class FollowService {
     // 팔로우 생성 기능
 
     @Transactional(readOnly = true)
-    public List<FollowResponseDto> getFollows(){
-        List<Follow> follows = followRepository.findAll();
+    public List<FollowResponseDto> getFollows(User toUser){
+        String curUserEmail = toUser.getEmail();
+        List<Follow> follows = followRepository.findAllByFromUser_Email(curUserEmail);
         return follows.stream()
                 .map(follow -> new FollowResponseDto(follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage()))
                 .collect(Collectors.toList());
-
     }
 
     // 팔로우 목록 조회 기능
 
     @Transactional(readOnly = true)
-    public List<FollowResponseDto> getFollowers(){
-        List<Follow> follows = followRepository.findAll();
+    public List<FollowResponseDto> getFollowers(User fromUser){
+        String curUserEmail = fromUser.getUsername();
+        List<Follow> follows = followRepository.findAllByToUser_Email(curUserEmail); // To
         return follows.stream()
                 .map(follow -> new FollowResponseDto(follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage()))
                 .collect(Collectors.toList());
-
     }
 
     // 팔로워 목록 조회 기능

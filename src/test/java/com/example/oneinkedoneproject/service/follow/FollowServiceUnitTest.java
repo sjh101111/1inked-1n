@@ -145,7 +145,7 @@ public class FollowServiceUnitTest {
                 .grade(Grade.ROLE_BASIC)
                 .build();
 
-        User followedUser = User.builder()
+        User curUser = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("lee")
                 .email("test2")
@@ -162,16 +162,16 @@ public class FollowServiceUnitTest {
         Follow follow = Follow.builder()
                 .id(GenerateIdUtils.generateFollowId())
                 .toUser(followUser)
-                .fromUser(followedUser)
+                .fromUser(curUser)
                 .build();
 
         followList.add(follow);
 
-        when(followRepository.findAll()).thenReturn(followList);
+        when(followRepository.findAllByFromUser_Email("test2")).thenReturn(followList);
 
 
         // when
-        List<FollowResponseDto> followsList = followService.getFollows();
+        List<FollowResponseDto> followsList = followService.getFollows(curUser);
 
         //then
         assertThat(followsList.size()).isEqualTo(1);
@@ -186,7 +186,7 @@ public class FollowServiceUnitTest {
         List<Follow> followList = new ArrayList<>();
 
         //given
-        User followUser = User.builder()
+        User curUser = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("kim")
                 .email("test")
@@ -216,17 +216,17 @@ public class FollowServiceUnitTest {
 
         Follow follow = Follow.builder()
                 .id(GenerateIdUtils.generateFollowId())
-                .toUser(followUser)
+                .toUser(curUser)
                 .fromUser(followedUser)
                 .build();
 
         followList.add(follow);
 
-        when(followRepository.findAll()).thenReturn(followList);
+        when(followRepository.findAllByToUser_Email("test")).thenReturn(followList);
 
 
         // when
-        List<FollowResponseDto> followsList = followService.getFollowers();
+        List<FollowResponseDto> followsList = followService.getFollowers(curUser);
 
         //then
         assertThat(followsList.size()).isEqualTo(1);
