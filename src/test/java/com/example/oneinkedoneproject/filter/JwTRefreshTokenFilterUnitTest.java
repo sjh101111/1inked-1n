@@ -1,7 +1,9 @@
 package com.example.oneinkedoneproject.filter;
 
+import com.example.oneinkedoneproject.dto.auth.ErrorResult;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.service.auth.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,8 +15,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.io.DataInput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -32,6 +37,7 @@ public class JwTRefreshTokenFilterUnitTest {
     @InjectMocks
     private JwtRefreshTokenFilter jwtRefreshTokenFilter;
 
+    private ObjectMapper objectMapper= new ObjectMapper();
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
@@ -40,6 +46,8 @@ public class JwTRefreshTokenFilterUnitTest {
         MockitoAnnotations.openMocks(this);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
+        request.setRequestURI("/refresh");
+        SecurityContextHolder.clearContext(); // Ensure it is clean before each test
     }
 
     @Test
@@ -70,11 +78,14 @@ public class JwTRefreshTokenFilterUnitTest {
 
     @Test
     @DisplayName("토큰이 존재하지 않을떄")
-    void testNoTokenProvided() throws Exception {
-        //아무 값도 없는 reauest, response 전달
+    void testNoTokenProvided() throws Exception {//아무 값도 없는 reauest, response 전달
         jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
+
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
+
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-        assertEquals("Unauthorized: No valid Bearer token provided", response.getContentAsString());
+        assertEquals("JWT refresh Token Error", errorResult.getError());
+        assertEquals("No token provided",  errorResult.getMessage());
     }
 
     @Test
@@ -82,8 +93,13 @@ public class JwTRefreshTokenFilterUnitTest {
     void testInvalidTokenFormat() throws Exception {
         request.addHeader("Refresh-Token", "InvalidTokenFormat");//Bearer로 시작하지 않는 토큰
         jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
+
+
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
+
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-        assertEquals("Unauthorized: No valid Bearer token provided", response.getContentAsString());
+        assertEquals("JWT refresh Token Error", errorResult.getError());
+        assertEquals("No valid Bearer token provided",  errorResult.getMessage());
     }
 
     @Test
@@ -92,9 +108,13 @@ public class JwTRefreshTokenFilterUnitTest {
         request.addHeader("Refresh-Token", "Bearer validToken");
         when(jwtService.extractUsername("validToken")).thenReturn(null);//이메일이 추출되지 않음
         jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
+
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
+
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-        assertEquals("Unauthorized: token does not contain a valid email", response.getContentAsString());
-    }
+        assertEquals("JWT refresh Token Error", errorResult.getError());
+        assertEquals("token does not contain a valid email",  errorResult.getMessage());
+        }
 
     @Test
     @DisplayName("invalid한 refresh token")
@@ -105,9 +125,14 @@ public class JwTRefreshTokenFilterUnitTest {
         when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(userDetails);
         when(jwtService.isTokenValid("validToken", userDetails)).thenReturn(false);//valid 메소드에서 false 반환
 
-        jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
+        jwtRefreshTokenFilter.doFilterInternal(request, response,  mock(FilterChain.class));
+
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
+
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-        assertEquals("Refresh token is invalid or expired", response.getContentAsString());
+        assertEquals("JWT refresh Token Error", errorResult.getError());
+        assertEquals("Refresh token is invalid or expired",  errorResult.getMessage());
+
     }
 
     @Test
@@ -120,8 +145,10 @@ public class JwTRefreshTokenFilterUnitTest {
         when(jwtService.isTokenValid("validToken", userDetails)).thenThrow(new UnsupportedJwtException("Unsupported JWT Token"));
 
         jwtRefreshTokenFilter.doFilterInternal(request, response, mock(FilterChain.class));
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response.getStatus());
-        assertEquals("Could not gain Authentication", response.getContentAsString());
+        assertEquals("JWT refresh Token Error", errorResult.getError());
+        assertEquals("Could not gain Authentication",  errorResult.getMessage());
     }
 
     @Test
