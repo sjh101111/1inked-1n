@@ -67,7 +67,7 @@ class JwtAuthenticationFilterUnitTest {
         when(jwtService.isTokenValid(jwt, mockUserDetails)).thenReturn(true);
 
         //필터 실행
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
         //인증객체가 null이 아닌지 검증
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNotNull();
@@ -93,7 +93,7 @@ class JwtAuthenticationFilterUnitTest {
         //istokenValid에서. false 반환하도록 모의
         when(jwtService.isTokenValid(jwt, mockUserDetails)).thenReturn(false);
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
         ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //응답 상태코드가 401인지 검증
@@ -118,7 +118,7 @@ class JwtAuthenticationFilterUnitTest {
         when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(mockUserDetails);
         //istokenValid에서. false 반환하도록 모의
         when(jwtService.isTokenValid(errorToken, mockUserDetails)).thenThrow(new RuntimeException("Unexpected error"));
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
         ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //응답 상태코드가 500인지 검증
@@ -132,7 +132,7 @@ class JwtAuthenticationFilterUnitTest {
     @DisplayName("Token does not exist 테스트")
     void testNonExistingToken() throws Exception {
         //비어있는 토큰 전달 아예 x
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
         //401 상태코드 실행
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
         //응답 메세지가 제대로 전달됐는지 검증
@@ -147,7 +147,7 @@ class JwtAuthenticationFilterUnitTest {
         String errorToken = "does not start with Bearer";
         request.addHeader("Authorization", errorToken);
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response,mock(FilterChain.class));
         ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //401 상태코드 실행
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
@@ -164,7 +164,7 @@ class JwtAuthenticationFilterUnitTest {
 
         when(jwtService.extractUsername(errorToken)).thenReturn("");
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
         ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
 
         //401 상태코드 실행
