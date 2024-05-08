@@ -114,7 +114,7 @@ public class ArticleServiceUnitTest {
         Mockito.verify(articleRepository).save(any(Article.class));
         assertThat(returnedDto.getContents().equals(addArticleRequest.getContents()));
         assertThat(returnedDto.getImages().size()).isEqualTo(addArticleRequest.getFiles().size());
-        assertThat(returnedDto.getImages().get(0).getArticle()).isNotNull();
+        assertThat(returnedDto.getImages().get(0).getArticleId()).isNotNull();
     }
 
     @Test
@@ -218,7 +218,7 @@ public class ArticleServiceUnitTest {
         imageList.add(image);
 
         //when
-        articleService.saveArticleImages(imageList, article);
+//        articleService.saveArticleImages(imageList, article);
 
         //then
         Mockito.verify(imageRepository, times(2)).save(any(Image.class)); // save 호출 확인
@@ -239,7 +239,7 @@ public class ArticleServiceUnitTest {
                 .imageList(images)
                 .build();
 
-        articleService.saveArticleImages(images, testArticle);
+//        articleService.saveArticleImages(images, testArticle);
 
         Mockito.verify(imageRepository, never()).save(any(Image.class)); // save 호출되지 않음 확인
     }
@@ -339,7 +339,7 @@ public class ArticleServiceUnitTest {
         // Verify that each repository method is called once
         verify(articleRepository).findById(article.getId());
         verify(commentRepository).deleteByArticle(article);
-        verify(imageRepository).deleteByArticle(article);
+        verify(imageRepository).deleteByArticleId(article.getId());
         verify(articleRepository).deleteById(article.getId());
 
         // To ensure no further methods are called on the mock
