@@ -1,11 +1,16 @@
 package com.example.oneinkedoneproject.filter;
+import com.example.oneinkedoneproject.dto.auth.ErrorResult;
 import com.example.oneinkedoneproject.service.auth.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,28 +26,44 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private HttpServletResponse response;
     @Override
     protected void doFilterInternal(
             @NonNull final HttpServletRequest request,
-            @NonNull final HttpServletResponse response,
+            @NonNull final HttpServletResponse responseParam,
             @NonNull final FilterChain filterChain)
             throws ServletException, IOException {
+        this.response = responseParam;
 
         final String authHeader = request.getHeader("Authorization");//액세스 토큰 찾음
         final String jwt;
         final String userEmail;
+        ResponseEntity<ErrorResult> unauthorizedResponse;
 
-        if(authHeader == null || !authHeader.startsWith(("Bearer "))){ // 액세스 토큰이  아예 존재하지 않거나, Bearer로 시작하지 않고있다면
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
-            response.getWriter().write("Unauthorized: No valid Bearer token provided"); // 오류 메시지 작성
-            response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
+        if(authHeader == null){ // 액세스 토큰이  아예 존재하지  않고있다면
+            createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
+                    "JWT Access Token Error", "No token provided");
             return;
         }
-        jwt = authHeader.substring(7); //Bearer 제외한 액세스 토큰 저장
 
+        if(!authHeader.startsWith(("Bearer "))){ // 액세스 토큰이 Bearer로 시작하지 않고있다면
+                createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
+                        "JWT Access Token Error", "No valid Bearer token provided");
+                return;
+
+        }
+
+        jwt = authHeader.substring(7); //Bearer 제외한 액세스 토큰 저장
         userEmail = jwtService.extractUsername(jwt);//토큰의 claim에서 유저 이메일을 추출
 
-        if(userEmail !=null && SecurityContextHolder.getContext().getAuthentication()==null) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
+        if(userEmail==null){//claim에서 추출한 userEmail이 null일때
+            createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
+                    "JWT Access Token Error", "token does not contain a valid email");
+            return;
+        }
+
+        if(SecurityContextHolder.getContext().getAuthentication()==null) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail); //유저 디테일 클래스 생성
             try {
                 if (jwtService.isTokenValid(jwt, userDetails)) { //토큰이 valid하다면
@@ -59,25 +80,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);//토큰을 security contextholder에 업데이트. 인증 해준거임.
                 } else {//액세스 토큰이 valid하지 않다면 invalid 메세지 추가
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().write("Access token is invalid or expired");
-                    response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
+                    createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
+                            "JWT Access Token Error",  "Access token is invalid or expired");
                     return;
                 }
             }
             catch (Exception e) { //토큰이 valid하지 않아 에러가 났다면
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Could not gain Authentication");
-                response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
+                createUnauthorizedResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "JWT Access Token Error",  e.getMessage());
                 return;
             }
         }
-        else if(userEmail==null){//claim에서 추출한 userEmail이 null일때
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: token does not contain a valid email");
-            response.getWriter().flush();
-            return;
-        }
         filterChain.doFilter(request, response);
+    }
+
+    private void createUnauthorizedResponse(int httpResponse, String Error, String message) throws IOException {
+
+        ResponseEntity<ErrorResult> unauthorizedResponse =  ResponseEntity.status(httpResponse)
+                .body(new ErrorResult(Error,  message));
+        response.setStatus(httpResponse);
+        response.setContentType( MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(objectMapper.writeValueAsString(unauthorizedResponse.getBody()));
+        response.getWriter().flush();
     }
 }
