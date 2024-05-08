@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -42,11 +44,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
         userEmail = jwtService.extractUsername(jwt);//토큰의 claim에서 유저 이메일을 추출
 
-        if(userEmail !=null && SecurityContextHolder.getContext().getAuthentication()==null) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
+        if(userEmail==null){//claim에서 추출한 userEmail이 null일때
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: token does not contain a valid email");
+            response.getWriter().flush();
+            return;
+        }
+
+        if(SecurityContextHolder.getContext().getAuthentication()==null) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail); //유저 디테일 클래스 생성
             try {
                 if (jwtService.isTokenValid(jwt, userDetails)) { //토큰이 valid하다면
-
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -71,12 +79,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
                 return;
             }
-        }
-        else if(userEmail==null){//claim에서 추출한 userEmail이 null일때
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: token does not contain a valid email");
-            response.getWriter().flush();
-            return;
         }
         filterChain.doFilter(request, response);
     }
