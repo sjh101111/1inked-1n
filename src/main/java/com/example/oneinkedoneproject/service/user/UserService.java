@@ -5,6 +5,7 @@ import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.*;
 import com.example.oneinkedoneproject.utils.regxUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
@@ -23,7 +24,7 @@ import java.io.IOException;
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordRepository passwordRepository;
-	private final BCryptPasswordEncoder encoder;
+	private final PasswordEncoder encoder;
 
 	public static final int MAX_LENGTH_IDENTITY = 100;
 	public static final int MAX_LENGTH_LOCATION = 50;
