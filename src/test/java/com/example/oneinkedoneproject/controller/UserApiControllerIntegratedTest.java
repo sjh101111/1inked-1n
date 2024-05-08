@@ -20,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -113,16 +112,17 @@ public class UserApiControllerIntegratedTest {
                 .password("1aw9!wWem23")
                 .withdraw(false)
                 .build();
-        SaveProfileRequestDto request = new SaveProfileRequestDto(email, identity, location,description);
         userRepository.save(user);
 
         MockMultipartFile file = new MockMultipartFile("file", "image.png", "image/png", "<<image>>".getBytes());
-        MockMultipartFile dto = new MockMultipartFile("dto", "", "application/json", om.writeValueAsString(request).getBytes());
 
         //when
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
                 .file(file)
-                .file(dto));
+                .param("email",email)
+                .param("identity",identity)
+                .param("location",location)
+                .param("description",description));
 
         //then
         actions.andExpect(status().isOk());
@@ -216,15 +216,13 @@ public class UserApiControllerIntegratedTest {
                 .password("123")
                 .withdraw(false)
                 .build();
-        UploadUserImageRequestDto request = new UploadUserImageRequestDto(email);
         MockMultipartFile file = new MockMultipartFile("file", "image.png", "image/png", "<<image>>".getBytes());
-        MockMultipartFile dto = new MockMultipartFile("dto","", "application/json", om.writeValueAsString(request).getBytes());
         userRepository.save(user);
 
         //when
         ResultActions actions = mockMvc.perform(multipart("/api/user/image")
                 .file(file)
-                .file(dto));
+                .param("email",email));
 
         //then
         actions.andExpect(status().isOk());
