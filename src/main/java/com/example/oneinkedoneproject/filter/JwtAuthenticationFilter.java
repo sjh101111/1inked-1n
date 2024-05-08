@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,13 +93,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         filterChain.doFilter(request, response);
     }
 
-    private void createUnauthorizedResponse(int httpResponse, String Error, String message) throws IOException {
-
-        ResponseEntity<ErrorResult> unauthorizedResponse =  ResponseEntity.status(httpResponse)
-                .body(new ErrorResult(Error,  message));
+    private void createUnauthorizedResponse(int httpResponse, String error, String message) throws IOException {
         response.setStatus(httpResponse);
         response.setContentType( MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(unauthorizedResponse.getBody()));
+        response.getWriter().write(objectMapper.writeValueAsString(new ErrorResult(error,  message)));
         response.getWriter().flush();
     }
 }
