@@ -89,13 +89,10 @@ public class UserControllerUnitTest {
         String identity = "test";
         String location = "서울";
         String description = "테스트 설명";
-
-        SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description);
         MockMultipartFile file = new MockMultipartFile("file",
                 "test.png",
                 "image/png",
                 "test".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json", om.writeValueAsString(requestDto).getBytes());
 
         User user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
@@ -110,12 +107,15 @@ public class UserControllerUnitTest {
         //when
         doReturn(user)
             .when(userService)
-            .saveProfile(any(SaveProfileRequestDto.class), any(MultipartFile.class));
+            .saveProfile(any(SaveProfileRequestDto.class));
 
 
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
-                        .file(file)
-                        .file(requestFile));
+                .file(file)
+                .param("email", email)
+                .param("identity", identity)
+                .param("location", location)
+                .param("description", description));
         //then
         actions.andExpect(status().isOk());
     }
@@ -129,22 +129,23 @@ public class UserControllerUnitTest {
         String location = "서울";
         String description = "테스트 설명";
 
-        SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description);
         MockMultipartFile file = new MockMultipartFile("file",
                 "test.png",
                 "image/png",
                 "test".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json", om.writeValueAsString(requestDto).getBytes());
 
         //when
         doReturn(null)
                 .when(userService)
-                .saveProfile(any(SaveProfileRequestDto.class), any(MultipartFile.class));
+                .saveProfile(any(SaveProfileRequestDto.class));
 
 
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
                 .file(file)
-                .file(requestFile));
+                .param("email", email)
+                .param("identity", identity)
+                .param("location", location)
+                .param("description", description));
         //then
         actions.andExpect(status().isBadRequest());
     }
@@ -302,10 +303,7 @@ public class UserControllerUnitTest {
     void uploadImageSuccessTest() throws Exception {
         //given
         String email = "test@naver.com";
-        UploadUserImageRequestDto requestDto = new UploadUserImageRequestDto(email);
-
         MockMultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "image png".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json",om.writeValueAsString(requestDto).getBytes());
         User user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("익명")
@@ -319,11 +317,11 @@ public class UserControllerUnitTest {
         //when
         doReturn(user)
             .when(userService)
-            .uploadImage(any(MultipartFile.class), any(UploadUserImageRequestDto.class));
+            .uploadImage(any(UploadUserImageRequestDto.class));
 
        ResultActions actions = mockMvc.perform(multipart("/api/user/image")
                     .file(file)
-                    .file(requestFile));
+                    .param("email",email));
         //then
         actions.andExpect(status().isOk());
     }
@@ -333,18 +331,16 @@ public class UserControllerUnitTest {
     void uploadImageFailTest() throws Exception {
         //given
         String email = "test@naver.com";
-        UploadUserImageRequestDto requestDto = new UploadUserImageRequestDto(email);
         MockMultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "image png".getBytes(StandardCharsets.UTF_8));
-        MockMultipartFile requestFile = new MockMultipartFile("dto","","application/json",om.writeValueAsString(requestDto).getBytes());
 
         //when
         doReturn(null)
             .when(userService)
-            .uploadImage(any(MultipartFile.class), any(UploadUserImageRequestDto.class));
+            .uploadImage(any(UploadUserImageRequestDto.class));
 
        ResultActions actions = mockMvc.perform(multipart("/api/user/image")
                     .file(file)
-                    .file(requestFile));
+                    .param("email", email));
         //then
         actions.andExpect(status().isBadRequest());
     }

@@ -26,8 +26,8 @@ public class UserController {
 
     //2. 유저 프로필 저장
     @PostMapping("/api/profile")
-    public ResponseEntity<String> saveProfile(@RequestPart(value = "dto") SaveProfileRequestDto request, @RequestPart(value ="file") MultipartFile file){
-        User user = userService.saveProfile(request, file);
+    public ResponseEntity<String> saveProfile(@ModelAttribute SaveProfileRequestDto request){
+        User user = userService.saveProfile(request);
 
         if(user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -82,8 +82,8 @@ public class UserController {
 
     //6. 유저 사진 업로드
     @PostMapping("/api/user/image")
-    public ResponseEntity<String> uploadImage(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "dto") UploadUserImageRequestDto request){
-        User user = userService.uploadImage(file, request);
+    public ResponseEntity<String> uploadImage(@ModelAttribute UploadUserImageRequestDto request){
+        User user = userService.uploadImage(request);
 
        if(user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
