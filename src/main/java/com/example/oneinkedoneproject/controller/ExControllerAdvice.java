@@ -27,20 +27,20 @@ public class ExControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResult> runtimeExHandle(RuntimeException e) {
         log.error("[exceptionHandle] RuntimeExHandle", e);
-        return new ResponseEntity<ErrorResult>( new ErrorResult("잘못된 사용자", e.getMessage()),HttpStatus.BAD_REQUEST) ;
+        return new ResponseEntity<ErrorResult>( new ErrorResult("내부 서버 오류", e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR) ;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResult> NotFoundExHandle(EntityNotFoundException e) {
+    public ResponseEntity<ErrorResult> notFoundExHandle(EntityNotFoundException e) {
         log.error("[exceptionHandle] EntityNotFoundExHandle", e);
-        return new ResponseEntity<ErrorResult>(  new ErrorResult("존재하지 않는 데이터", e.getMessage()),HttpStatus.BAD_REQUEST) ;
+        return new ResponseEntity<ErrorResult>(  new ErrorResult("존재하지 않는 데이터", e.getMessage()),HttpStatus.NOT_FOUND) ;
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResult> AccessDeniedExHandle(AccessDeniedException e) {
+    public ResponseEntity<ErrorResult> accessDeniedExHandle(AccessDeniedException e) {
         log.error("[exceptionHandle] AccessDeniedExHandle", e);
-        return new ResponseEntity<ErrorResult>( new ErrorResult("권한 오류", "접근 권한이 없습니다."),HttpStatus.BAD_REQUEST) ;
+        return new ResponseEntity<ErrorResult>( new ErrorResult("권한 오류", e.getMessage()),HttpStatus.FORBIDDEN) ;
     }
 }
