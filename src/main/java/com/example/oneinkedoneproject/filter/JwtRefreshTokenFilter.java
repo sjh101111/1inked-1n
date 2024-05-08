@@ -32,6 +32,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
         final String requestURI = request.getRequestURI();
         if(!"/refresh".equals(requestURI)){
             filterChain.doFilter(request, response);
+            return;
         }
 
         final String authHeader = request.getHeader("Refresh-Token");
