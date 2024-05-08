@@ -96,10 +96,10 @@ public class ArticleIntegratedTest {
 
     @BeforeEach
     void setUp() {
+        followRepository.deleteAll();
         imageRepository.deleteAll();
         articleRepository.deleteAll();
         userRepository.deleteAll();
-        followRepository.deleteAll();
         this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).
                 apply(SecurityMockMvcConfigurers.springSecurity()).build();
 
