@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.dto.article;
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Image;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.dto.image.ImageResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class ArticleResponseDto {
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Image> images;
+    private List<ImageResponseDto> images;
     private User user;
     private List<Comment> comments;
 }

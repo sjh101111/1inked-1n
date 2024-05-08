@@ -1,11 +1,11 @@
 package com.example.oneinkedoneproject.domain;
 
 import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
+import com.example.oneinkedoneproject.dto.image.ImageResponseDto;
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "article")
 @Entity
 @Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,8 +27,9 @@ import java.util.List;
 public class Article {
 
     @Id
+    @Builder.Default
     @Column(name = "article_id", updatable = false, nullable = false)
-    private String id;
+    private String id = GenerateIdUtils.generateArticleId();
 
     @Column(name = "contents", nullable = false)
     private String contents;
@@ -45,8 +47,8 @@ public class Article {
 //
 //    @Column(name = "reply_count", columnDefinition = "integer default 0")
 //    private int replyCount;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "article", cascade = CascadeType.ALL)
     private List<Image> imageList;
 
     @JsonIgnore
@@ -55,7 +57,7 @@ public class Article {
     private List<Comment> commentList = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -69,10 +71,12 @@ public class Article {
     }
 
     public ArticleResponseDto toDto() {
-        return ArticleResponseDto.builder()
+        return ArticleResponseDto.builder().id(id)
                 .contents(contents).createdAt(createdAt)
-                .updatedAt(updatedAt).images(imageList)
-                .user(user).build();
+                .updatedAt(updatedAt).images(imageList.stream().map(
+                        x -> x.toDto()
+                ).toList())
+                .build();
     }
     
 }
