@@ -1,11 +1,9 @@
 package com.example.oneinkedoneproject.domain;
 
 
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +12,16 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name= "users")
-
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Builder
 public class User implements UserDetails {
     @Id
+    @Builder.Default
     @Column(name = "user_id", nullable = false)
-    private String id;
+    private String id = GenerateIdUtils.generateUserId();
 
     @Column(name = "username", nullable = false)
     private String realname;

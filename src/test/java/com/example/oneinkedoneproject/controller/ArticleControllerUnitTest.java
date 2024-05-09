@@ -86,7 +86,7 @@ public class ArticleControllerUnitTest {
     public void createArticleTest() throws Exception {
         ArticleResponseDto responseDto = ArticleResponseDto.builder()
                 .contents("contents")
-                .images(images)
+                .images(images.stream().map(x->x.toDto()).toList())
                 .build();
         Mockito.doReturn(responseDto)
                 .when(articleService).createArticle(any(AddArticleRequestDto.class), any(User.class));
@@ -105,9 +105,7 @@ public class ArticleControllerUnitTest {
         List<Article> articles = new ArrayList<>();
         articles.add(article);
         List<ArticleResponseDto> responseDtos = articles.stream()
-                .map(article -> ArticleResponseDto.builder().id(article.getId()).contents(article.getContents())
-                        .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
-                        .images(article.getImageList()).user(article.getUser()).build())
+                .map(article -> article.toDto())
                 .toList();
         Mockito.doReturn(responseDtos).when(articleService).readMyAllArticles(any(User.class));
 
@@ -176,7 +174,7 @@ public class ArticleControllerUnitTest {
 
         ArticleResponseDto articleResponseDto = ArticleResponseDto.builder().id(article.getId()).contents(updateArticleRequestDto.getContents())
                 .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
-                .images(updatedimages).user(article.getUser()).build();
+                .images(updatedimages.stream().map(x->x.toDto()).toList()).user(article.getUser()).build();
 
         Mockito.doReturn(articleResponseDto).when(articleService).updateArticle(any(String.class), any(UpdateArticleRequestDto.class));
 

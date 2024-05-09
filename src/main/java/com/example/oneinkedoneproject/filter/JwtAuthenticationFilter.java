@@ -34,12 +34,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         final String jwt;
         final String userEmail;
 
-        if(authHeader == null || !authHeader.startsWith(("Bearer "))){ // 액세스 토큰이  아예 존재하지 않거나, Bearer로 시작하지 않고있다면
+        if(authHeader == null){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
+            response.getWriter().write("Unauthorized: No token provided"); // 오류 메시지 작성
+            response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
+            return;
+        }
+
+        if(!authHeader.startsWith(("Bearer "))){ // 액세스 토큰이  아예 존재하지 않거나, Bearer로 시작하지 않고있다면
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
             response.getWriter().write("Unauthorized: No valid Bearer token provided"); // 오류 메시지 작성
             response.getWriter().flush(); //클라이언트에게 바로 리스폰스 전달
             return;
         }
+
         jwt = authHeader.substring(7); //Bearer 제외한 액세스 토큰 저장
 
         userEmail = jwtService.extractUsername(jwt);//토큰의 claim에서 유저 이메일을 추출
