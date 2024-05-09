@@ -33,6 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             @NonNull final HttpServletResponse responseParam,
             @NonNull final FilterChain filterChain)
             throws ServletException, IOException {
+
+        final String requestURI = request.getRequestURI();
+        if("/login".equals(requestURI) || "/".equals(requestURI) ||"/api/user".equals(requestURI)){
+            filterChain.doFilter(request, responseParam);
+            return;
+        }
+
         this.response = responseParam;
 
         final String authHeader = request.getHeader("Authorization");//액세스 토큰 찾음
