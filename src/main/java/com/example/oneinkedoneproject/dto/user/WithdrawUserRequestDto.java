@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
