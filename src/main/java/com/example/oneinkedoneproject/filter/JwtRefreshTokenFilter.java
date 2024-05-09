@@ -36,16 +36,21 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
         //경로에 /refresh가 없다면 다음 필터체인으로 이동
         final String requestURI = request.getRequestURI();
+
         if(!"/refresh".equals(requestURI)){
+
             filterChain.doFilter(request, responseParam);
+
             return;
         }
 
         final String authHeader = request.getHeader("Refresh-Token");
 
+
         if(authHeader == null){ // 액세스 토큰이  아예 존재하지 않거나, Bearer로 시작하지 않고있다면
             createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
                     "JWT refresh Token Error", "No token provided");
+
             return;
         }
 

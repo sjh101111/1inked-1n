@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -47,11 +49,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         final String userEmail;
         ResponseEntity<ErrorResult> unauthorizedResponse;
 
+
         if(authHeader == null){ // 액세스 토큰이  아예 존재하지  않고있다면
             createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
                     "JWT Access Token Error", "No token provided");
             return;
         }
+
 
         if(!authHeader.startsWith(("Bearer "))){ // 액세스 토큰이 Bearer로 시작하지 않고있다면
                 createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
@@ -64,8 +68,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         userEmail = jwtService.extractUsername(jwt);//토큰의 claim에서 유저 이메일을 추출
 
         if(userEmail==null){//claim에서 추출한 userEmail이 null일때
+
             createUnauthorizedResponse(HttpServletResponse.SC_UNAUTHORIZED,
                     "JWT Access Token Error", "token does not contain a valid email");
+
             return;
         }
 
@@ -73,7 +79,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail); //유저 디테일 클래스 생성
             try {
                 if (jwtService.isTokenValid(jwt, userDetails)) { //토큰이 valid하다면
-
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,

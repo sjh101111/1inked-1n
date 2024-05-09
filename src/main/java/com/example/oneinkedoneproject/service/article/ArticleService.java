@@ -27,36 +27,44 @@ public class ArticleService {
 
     private final CommentRepository commentRepository;
 
+    @Transactional
     public ArticleResponseDto createArticle(AddArticleRequestDto addArticleRequestDto, User user) {
         List<Image> images = new ArrayList<>();
+        String contents = addArticleRequestDto.getContents();
+
+        if (contents == null || contents.trim().isEmpty()) {
+            throw new IllegalArgumentException("Article contents cannot be null or empty");
+        }
+
+        // 1. Article 생성
+        Article article = Article.builder()
+                .contents(contents)
+                .imageList(images)
+                .user(user)
+                .build();
+
+        // 2. MultipartFile에서 Image 엔티티 생성 및 Article에 추가
         if (addArticleRequestDto.getFiles() != null && !addArticleRequestDto.getFiles().isEmpty()) {
             try {
                 for (MultipartFile file : addArticleRequestDto.getFiles()) {
                     Image image = Image.builder()
-                            .img(file.getBytes())
+                            .img(file.getBytes()).article(article)
                             .build();
-                    images.add(image);
+                    article.addImage(image); // 편의 메서드로 Article에 Image 추가
+                    // 이후 용도로 저장;
                 }
             } catch (IOException e) {
                 throw new RuntimeException("Failed to process image files", e);
             }
         }
 
-        if (!images.isEmpty()) {
-            Article article = Article.builder()
-                    .contents(addArticleRequestDto.getContents())
-                    .imageList(images).user(user)
-                    .build();
-            Article savedArticle = articleRepository.save(article);
-            saveArticleImages(images, savedArticle);
-            return savedArticle.toDto();
-        } else {
-            Article article = Article.builder().user(user).contents(addArticleRequestDto.getContents()).build();
-            Article savedArticle = articleRepository.save(article);
-            return savedArticle.toDto();
-        }
+        // 3. 최종 Article을 저장하여 이미지와 연결
+        Article savedArticle = articleRepository.save(article);
+//        saveArticleImages(images, savedArticle);
+        return savedArticle.toDto();
     }
 
+    @Transactional
     public void saveArticleImages(List<Image> images, Article article) {
         if (images != null && !images.isEmpty()) {
             for (Image image : images) {
@@ -68,22 +76,21 @@ public class ArticleService {
         if (images == null) {
             throw new IllegalArgumentException("Images list cannot be null.");
         }
+//        imageRepository.save(Image.builder().img(image.getImg()).article(article).build());
     }
 
+    @Transactional
     public List<ArticleResponseDto> readMyAllArticles(User user) {
         String userId = user.getId();
         return articleRepository.findAllByUser_Id(userId).stream()
-                .map(article -> ArticleResponseDto.builder().id(article.getId()).contents(article.getContents())
-                        .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt()).comments(article.getCommentList())
-                        .images(article.getImageList()).user(article.getUser()).build())
+                .map(article -> article.toDto())
                 .toList();
     }
 
+    @Transactional
     public List<ArticleResponseDto> readMainFeedArticles(User user) {
         return articleRepository.findFollowedUserArticlesOrdered(user.getId()).stream()
-                .map(article -> ArticleResponseDto.builder().id(article.getId()).contents(article.getContents())
-                        .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt()).comments(article.getCommentList())
-                        .images(article.getImageList()).user(article.getUser()).build())
+                .map(article -> article.toDto())
                 .toList();
     }
 
@@ -93,12 +100,21 @@ public class ArticleService {
                 () -> new IllegalArgumentException("not found article")
         );
 
+        String contents = updateArticleRequestDto.getContents();
+
+        if (contents == null || contents.trim().isEmpty()) {
+            throw new IllegalArgumentException("Article contents cannot be null or empty");
+        }
+
+        // 1. Article 생성
+        updatedArticle.update(contents);
+
         List<Image> images = new ArrayList<>();
         if (updateArticleRequestDto.getFiles() != null && !updateArticleRequestDto.getFiles().isEmpty()) {
             try {
                 for (MultipartFile file : updateArticleRequestDto.getFiles()) {
                     Image image = Image.builder()
-                            .img(file.getBytes())
+                            .img(file.getBytes()).article(updatedArticle)
                             .build();
                     images.add(image);
                     updatedArticle.addImage(image);
@@ -106,13 +122,6 @@ public class ArticleService {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to process image files", e);
             }
-        }
-
-        updatedArticle.update(updateArticleRequestDto.getContents());
-
-        //이미지 수정
-        if (!images.isEmpty()) {
-            saveArticleImages(images, updatedArticle);
         }
         return updatedArticle.toDto();
     }
@@ -124,7 +133,7 @@ public class ArticleService {
         );
 
         commentRepository.deleteByArticle(article);
-        imageRepository.deleteByArticle(article);
+        imageRepository.deleteByArticleId(article.getId());
         articleRepository.deleteById(articleId);
     }
 

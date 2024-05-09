@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.oneinkedoneproject.dto.auth.TokenInfo;
+import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -50,15 +55,22 @@ public class CommentApiControllerIntegratedTest {
     
     @Autowired
     private CommentService commentService;
+
     @Autowired
     private CommentRepository commentRepository;
-    
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+
     @Autowired
     MockMvc mockMvc;
     
     private User mockedUser;
     private Article article;
     private Gson gson;
+    private String accessToken;
+
 
     private Comment buildComment(String comments, Comment parent) {
         return Comment.builder()
@@ -97,7 +109,18 @@ public class CommentApiControllerIntegratedTest {
                 .grade(Grade.ROLE_BASIC)
                 .passwordQuestion(pq)
                 .build());
-    	
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(mockedUser, null, mockedUser.getAuthorities());
+
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+        String accessToken = tokenInfo.getAccessToken();
+
+        // Set the JWT token in the security context (for internal use)
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // Store the accessToken for use in requests
+        this.accessToken = accessToken;
+
         article = articleRepository.save(Article.builder()
                 .id("1")
                 .contents("게시글 내용")
@@ -126,7 +149,7 @@ public class CommentApiControllerIntegratedTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/comment/1")
-        		.with(user(mockedUser))
+                .header("Authorization", "Bearer " + accessToken)
         		.contentType(MediaType.APPLICATION_JSON)
         		.content(gson.toJson(requestDto))
         		)
@@ -141,7 +164,7 @@ public class CommentApiControllerIntegratedTest {
     	commentService.save(mockedUser, "1", new AddCommentRequestDto("댓글 내용", null));
     	//when
     	ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/1")
-    			.with(user(mockedUser))
+                .header("Authorization", "Bearer " + accessToken)
     			);
     	
     	//then
@@ -155,13 +178,13 @@ public class CommentApiControllerIntegratedTest {
     	 Comment saved = commentService.save(mockedUser, "1", new AddCommentRequestDto("댓글 내용", null));
     	 
     	 //when
-    	 mockMvc.perform(MockMvcRequestBuilders.post("/api/comment/1")
-          		.with(user(mockedUser))
-          		.contentType(MediaType.APPLICATION_JSON)
-          		.content(gson.toJson(new AddCommentRequestDto("Root 댓글", saved.getId())))
-          		)
-    	 		//then
-          		.andExpect(status().isCreated()).andDo(print());    
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/comment/1")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(new AddCommentRequestDto("Root 댓글", saved.getId())))
+                )
+                //then
+                .andExpect(status().isCreated()).andDo(print());
     }
     
     @Test
@@ -175,13 +198,13 @@ public class CommentApiControllerIntegratedTest {
     	
     	System.out.println("WHEN");
     	//when
-    	mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/1")
-    			.with(user(mockedUser))
-    			)
-   	 		//then
-         		.andExpect(status().isOk())
-         		
-         		.andDo(print());  
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/1")
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                //then
+                .andExpect(status().isOk())
+
+                .andDo(print());
     	
     }
     @Test
@@ -191,13 +214,13 @@ public class CommentApiControllerIntegratedTest {
    	 Comment saved = commentService.save(mockedUser, "1", new AddCommentRequestDto("댓글 내용", null));
    	 
    	 //when
-   	 mockMvc.perform(MockMvcRequestBuilders.patch("/api/comment/" + saved.getId())
-         		.with(user(mockedUser))
-         		.contentType(MediaType.APPLICATION_JSON)
-         		.content(gson.toJson(new UpdateCommentRequestDto("바뀐 내용")))
-         		)
-   	 		//then
-         		.andExpect(status().isOk()).andDo(print());    
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/comment/" + saved.getId())
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(new UpdateCommentRequestDto("바뀐 내용")))
+                )
+                //then
+                .andExpect(status().isOk()).andDo(print());
     }
     
     @Test
@@ -207,10 +230,10 @@ public class CommentApiControllerIntegratedTest {
    	 Comment saved = commentService.save(mockedUser, "1", new AddCommentRequestDto("댓글 내용", null));
    	 
    	 //when
-   	 mockMvc.perform(MockMvcRequestBuilders.delete("/api/comment/" + saved.getId())
-         		.with(user(mockedUser))
-         		)
-   	 		//then
-         		.andExpect(status().isOk()).andDo(print());    
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/comment/" + saved.getId())
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                //then
+                .andExpect(status().isOk()).andDo(print());
     }
 }

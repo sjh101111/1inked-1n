@@ -1,5 +1,6 @@
 package com.example.oneinkedoneproject.config;
 
+import com.example.oneinkedoneproject.AllenAiApi.AllenAi;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,10 @@ public class ApplicationConfig {
         authProvider.setUserDetailsService(userDetailsService());//UserDetailsService를 적용
         authProvider.setPasswordEncoder(passwordEncoder());// 패스워드 인코더 적용
         return authProvider; //해당 내용들이 정의된 인증 프로바이더 리턴
+    }
+
+    @Bean
+    public AllenAi allenAi() {
+        return new AllenAi();
     }
 }

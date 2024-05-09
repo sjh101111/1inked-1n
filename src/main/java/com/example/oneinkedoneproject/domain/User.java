@@ -1,11 +1,9 @@
 package com.example.oneinkedoneproject.domain;
 
 
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +12,16 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name= "users")
-
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Builder
 public class User implements UserDetails {
     @Id
+    @Builder.Default
     @Column(name = "user_id", nullable = false)
-    private String id;
+    private String id = GenerateIdUtils.generateUserId();
 
     @Column(name = "username", nullable = false)
     private String realname;
@@ -54,8 +53,9 @@ public class User implements UserDetails {
     private Boolean withdraw;
 
     // 프로필 사진
+    @Lob
     @Column(name = "image", nullable = true)
-    private Byte image;
+    private byte[] image;
 
     @Enumerated(EnumType.STRING)
     private Grade grade;
@@ -66,7 +66,8 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Article> articleList;
 
-    public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
+    public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, byte[] image, Grade grade) {
+
         this.id = id;
         this.realname = username;
 
@@ -116,5 +117,16 @@ public class User implements UserDetails {
         this.realname = realname;
 
     }
+    public void updateWithdraw(boolean isWithdraw){this.withdraw = isWithdraw;}
 
+    public void updatePassword(String password){this.password = password;}
+
+    public void updateImage(byte[] image){ this.image = image;}
+
+    public void updateIdentity(String identity){ this.identity = identity; }
+
+    public void updateLocation(String location){ this.location = location; }
+
+
+    public void updateDescription(String description){ this.description = description; }
 }
