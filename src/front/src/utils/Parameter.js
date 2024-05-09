@@ -1,3 +1,4 @@
+/** User ReqParam START */
 export const loginReqParam = (email, password) =>{
     const reqParam = {};
     reqParam.email = email;
@@ -76,3 +77,67 @@ export const userImageUploadReqParam = (email, file) =>{
 
     return reqFormData;
 }
+
+/** User ReqParam End */
+
+/** Article ReqParam START */
+
+/**
+ * @param {String} contents 
+ * @param {File[]} files 
+ * @returns 
+ */
+export const createArticleReqParam = (contents, files) =>{
+    const reqFormData = new FormData();
+
+    reqFormData.append('contents', contents);
+
+    files.forEach(file => {
+        reqFormData.append("files", file);
+    });
+
+    return reqFormData;
+}
+
+/**
+ * @param {String} contents 
+ * @param {File[]} files 
+ */
+export const updateArticleReqParam = (contents, files) =>{
+    const reqFormData = new FormData();
+
+    reqFormData.append('contents', contents)
+    
+    files.forEach(file =>{
+        reqFormData.append('file', file);
+    });
+
+    return reqFormData;
+}
+/** Article ReqParam END */
+
+/** Comment ReqParam START */
+
+/**
+ * 
+ * @param {String} comments 
+ * @param {String} parentId 
+ */
+export const addCommentReqParam = (comments, parentId) =>{
+    const reqParam = {};
+    
+    reqParam.comments = comments;
+    reqParam.parentId = parentId;
+
+    return reqParam;
+}
+
+export const updateCommentReqParam = (comments) =>{
+    const reqParam = {};
+
+    reqParam.comments = comments;
+
+    return reqParam;
+}
+
+/** Comment ReqParam END */
