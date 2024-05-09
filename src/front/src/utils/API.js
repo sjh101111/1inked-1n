@@ -14,7 +14,7 @@ instance.interceptors.request.use((config) =>{
         config.headers['Authorization'] = `Bearer ${accessToken}`
     }
     if(refreshToken){
-        config.headers['x-refresh-token'] = refreshToken;
+        config.headers['Refresh-Token'] = refreshToken;
     }
 
     return config;
@@ -23,7 +23,6 @@ instance.interceptors.request.use((config) =>{
 instance.interceptors.response.use(
     (res) => res,
     async (err) => {
-        console.log(err);
         const { config, response: {status, data} } = err;
 
         if(status === 401 && data.message === "Access token is invalid or expired"){
@@ -85,12 +84,15 @@ export const getNewAccessToken = mem(async () =>{
     return OneinkedPost(newAccessTokenURL);
 }, {memAge: 1000});
 
+
+//회원가입
 export const signup = async (signupReqParam) =>{
     const signupURL = URL + "/api/user";
     return OneinkedPut(signupURL, signupReqParam)
     .then((response) => response.data);
 }
 
+//로그인
 export const login = async (loginReqParam) =>{
     const loginURL = URL + "/login";
     return OneinkedPost(loginURL, loginReqParam)
@@ -101,6 +103,50 @@ export const login = async (loginReqParam) =>{
     });
 }
 
+//비밀번호 찾기 질문 리스트 조회
+/**
+ * @returns { {id: String, question: String} Array}
+ */
+export const fetchPasswordQuestions = async () =>{
+    const passwordQuestionURL = URL + "/api/passwordquestion";
+
+    return OneinkedGet(passwordQuestionURL)
+    .then((response) => response.data);
+}
+
+/**
+ * 
+ * @param {{email: String, passwordQuestionId: String, passwordQuestionAnswer: String, newPassword: String}} changePasswordReqParam 
+ * @returns 
+ */
+export const changePassword = async (changePasswordReqParam) =>{
+    const changePasswordURL = URL + "/api/password";
+
+    return OneinkedPost(changePasswordURL, changePasswordReqParam)
+    .then((response) => response.data);
+}
+
+
+export const saveProfile = async (saveProfileReqParam) =>{
+    const saveProfileURL = URL + "/api/profile";
+
+    return OneinkedMultipart(saveProfileURL, saveProfileReqParam)
+    .then((response) => response.data);
+}
+
+export const withdraw = async (withdrawReqParam) =>{
+    const withdrawURL = URL + "/api/withdraw";
+
+    return OneinkedPost(withdrawURL, withdrawReqParam)
+    .then((response) => response.data);
+}
+
+export const userImageUpload = async (userImageUploadReqParam) =>{
+    const userImageUploadURL = URL + "/api/user/image";
+
+    return OneinkedMultipart(userImageUploadURL, userImageUploadReqParam)
+    .then((response) => response.data);
+}
 
 export const logout = () =>{
     //토큰 삭제 이후 "/"로 이동
