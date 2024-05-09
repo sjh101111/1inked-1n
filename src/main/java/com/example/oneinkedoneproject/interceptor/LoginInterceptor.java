@@ -29,7 +29,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper= new ObjectMapper();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("LoginInterceptor preHandle()");
