@@ -19,6 +19,10 @@ public class GenerateIdUtils {
         return "comment_" + generateId();
     }
 
+    public static String generateResumeId() {
+        return "resume_" + generateId();
+    }
+
     public static String generateId() {
         UUID uuid = UUID.randomUUID();
         // "-" 제외하고 문자열 추출

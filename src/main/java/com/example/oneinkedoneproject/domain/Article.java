@@ -31,7 +31,7 @@ public class Article {
     @Column(name = "article_id", updatable = false, nullable = false)
     private String id = GenerateIdUtils.generateArticleId();
 
-    @Column(name = "contents", nullable = false)
+    @Column(name = "contents", nullable = false, length = 3000)
     private String contents;
 
     @CreatedDate
