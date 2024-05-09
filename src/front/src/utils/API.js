@@ -23,6 +23,7 @@ instance.interceptors.request.use((config) =>{
 instance.interceptors.response.use(
     (res) => res,
     async (err) => {
+        console.log(err);
         const { config, response: {status, data} } = err;
 
         if(status === 401 && data.message === "Access token is invalid or expired"){
@@ -46,21 +47,17 @@ instance.interceptors.response.use(
             logout();
         }
 
-        return Promise.reject(res);       
+        return Promise.reject(err);       
     }
 )
 
 /**
  * 
  * @param {*} url 
- * @param {{file: Blob, dto: Object}} reqParam 
+ * @param { FormData } formData 
  * @brief 이미지 파일과 reqParam을 같이 보내야할 때 사용
  */
-export const OneinkedMultipart = (url, {file, dto}) =>{
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('dto', JSON.stringify(dto));
-
+export const OneinkedMultipart = (url, formData) =>{
     return instance.post(url, formData, {
         headers: { "Content-Type" : "multipart/form-data"}
     });
@@ -87,6 +84,22 @@ export const getNewAccessToken = mem(async () =>{
     const newAccessTokenURL = URL + "/refresh";
     return OneinkedPost(newAccessTokenURL);
 }, {memAge: 1000});
+
+export const signup = async (signupReqParam) =>{
+    const signupURL = URL + "/api/user";
+    return OneinkedPut(signupURL, signupReqParam)
+    .then((response) => response.data);
+}
+
+export const login = async (loginReqParam) =>{
+    const loginURL = URL + "/login";
+    return OneinkedPost(loginURL, loginReqParam)
+    .then((response) => response.data)
+    .then(json =>{
+        setAccessToken(json.accessToken);
+        setRefreshToken(json.refreshToken);
+    });
+}
 
 
 export const logout = () =>{
