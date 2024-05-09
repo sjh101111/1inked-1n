@@ -6,7 +6,7 @@ import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Test from "./routes/Test";
 import ChatBox from "./components/ChatBox";
-import MyPage from "./routes/MyPage";
+import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
 
 

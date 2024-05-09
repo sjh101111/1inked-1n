@@ -49,7 +49,7 @@ public class CommentApiController {
     }
 
     @PatchMapping("/api/comment/{commentId}")
-    public ResponseEntity<Comment> updateComment(
+    public ResponseEntity<UpdateCommentRequestDto> updateComment(
             @PathVariable(value = "commentId") String commentId,
             @RequestBody UpdateCommentRequestDto requestDto
     ) {
@@ -57,13 +57,13 @@ public class CommentApiController {
         if (updateComment == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.ok().body(updateComment);
+        return ResponseEntity.ok().body(new UpdateCommentRequestDto(updateComment.getComments()));
     }
 
     @DeleteMapping("/api/comment/{commentId}")
     public ResponseEntity<Void> deleteComment(
             @PathVariable(value = "commentId") String commentId) {
         commentService.deleteComment(commentId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().build();
     }
 }

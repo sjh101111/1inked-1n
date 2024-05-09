@@ -116,11 +116,11 @@ public class UserServiceUnitTest {
 		String location = "서울";
 		String description = "테스트 설명";
 
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description);
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description, file);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -135,7 +135,7 @@ public class UserServiceUnitTest {
 		doReturn(Optional.of(user))
 			.when(userRepository)
 			.findByEmail(email);
-		User returnUser = userService.saveProfile(requestDto, file);
+		User returnUser = userService.saveProfile(requestDto);
 
 		//then
 		assertThat(returnUser.getIdentity()).isEqualTo(identity);
@@ -151,11 +151,12 @@ public class UserServiceUnitTest {
 		String exceedIdentity = RandomStringUtils.random(MAX_LENGTH_IDENTITY + 1);
 		String location = "서울";
 		String description = "테스트 설명";
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, exceedIdentity, location, description);
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, exceedIdentity, location, description, file);
+
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -172,7 +173,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto, file);
+			userService.saveProfile(requestDto);
 		});
 	}
 
@@ -184,11 +185,12 @@ public class UserServiceUnitTest {
 		String identity = "test";
 		String exceedLocation = RandomStringUtils.random(MAX_LENGTH_LOCATION + 1);
 		String description = "테스트 설명";
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, exceedLocation, description);
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, exceedLocation, description, file);
+
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -205,7 +207,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto, file);
+			userService.saveProfile(requestDto);
 		});
 	}
 
@@ -218,11 +220,12 @@ public class UserServiceUnitTest {
 		String location = "서울";
 		String exceedDescription = RandomStringUtils.random(MAX_LENGTH_DESCRIPTION + 1);
 		String description = "테스트 설명";
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, exceedDescription);
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, exceedDescription, file);
+
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -240,7 +243,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto, file);
+			userService.saveProfile(requestDto);
 		});
 	}
 
@@ -653,11 +656,11 @@ public class UserServiceUnitTest {
 	void uploadImageSuccessTest(){
 		//given
 		String email = "test@naver.com";
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email);
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email, file);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -671,7 +674,7 @@ public class UserServiceUnitTest {
 		doReturn(Optional.of(user))
 			.when(userRepository)
 			.findByEmail(email);
-		User returnUser = userService.uploadImage(file, request);
+		User returnUser = userService.uploadImage(request);
 
 		//then
 		assertThat(returnUser.getImage()).isNotNull();
@@ -682,11 +685,11 @@ public class UserServiceUnitTest {
 	void uploadImageInvalidEmailTest(){
 		//given
 		String email = "test@naver.com";
-		MultipartFile file = new MockMultipartFile("test",
+		MultipartFile file = new MockMultipartFile("file",
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email);
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email, file);
 
 		//when
 		doReturn(Optional.empty())
@@ -695,7 +698,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, ()->{
-			userService.uploadImage(file, request);
+			userService.uploadImage(request);
 		});
 	}
 

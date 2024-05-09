@@ -6,6 +6,7 @@ import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.service.article.ArticleService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

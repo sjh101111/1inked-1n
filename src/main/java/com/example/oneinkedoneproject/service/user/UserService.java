@@ -5,6 +5,7 @@ import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.*;
 import com.example.oneinkedoneproject.utils.regxUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
@@ -23,7 +24,7 @@ import java.io.IOException;
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordRepository passwordRepository;
-	private final BCryptPasswordEncoder encoder;
+	private final PasswordEncoder encoder;
 
 	public static final int MAX_LENGTH_IDENTITY = 100;
 	public static final int MAX_LENGTH_LOCATION = 50;
@@ -55,7 +56,7 @@ public class UserService {
 	//dto와 file은 multipart/form-data로 분리해서 받는다.
 	//RequestPart 어노테이션 사용
 	@Transactional
-	public User saveProfile(SaveProfileRequestDto requestDto, MultipartFile file){
+	public User saveProfile(SaveProfileRequestDto requestDto){
 		User user = null;
 
 		//1. 이메일 유효성 검증
@@ -86,7 +87,7 @@ public class UserService {
 		user.updateLocation(requestDto.getLocation());
 		user.updateDescription(requestDto.getDescription());
 		try{
-			user.updateImage(file.getBytes());
+			user.updateImage(requestDto.getFile().getBytes());
 		}catch (IOException e){
 			//nginx같은 웹서버에서 커버..?
 			throw new IllegalArgumentException("file doesn't validate");
@@ -192,21 +193,25 @@ public class UserService {
 
 	//6. 유저 사진 업로드
 	@Transactional
-	public User uploadImage(MultipartFile file, UploadUserImageRequestDto request){
+	public User uploadImage(UploadUserImageRequestDto request){
 		String userEmail = request.getEmail();
 		byte[] image = null;
 
 		try{
 			//파일 상태를 어떻게 확인하지?
-			image = file.getBytes();
+			if(request.getFile() != null){
+				image = request.getFile().getBytes();
 
-			//1. 유저 존재하는지 확인
-			User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("not found user"));
+				//1. 유저 존재하는지 확인
+				User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("not found user"));
 
-			//2. 존재한다면, UserEntity 수정
-			user.updateImage(image);
+				//2. 존재한다면, UserEntity 수정
+				user.updateImage(image);
 
-			return user;
+				return user;
+			}else{
+				throw new IllegalArgumentException();
+			}
 		}catch (IOException e){
 			throw new IllegalArgumentException("file is unacceptable");
 		}

@@ -1,6 +1,7 @@
 package com.example.oneinkedoneproject.domain;
 
 
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,8 +18,9 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
     @Id
+    @Builder.Default
     @Column(name = "user_id", nullable = false)
-    private String id;
+    private String id = GenerateIdUtils.generateUserId();
 
     @Column(name = "username", nullable = false)
     private String realname;

@@ -2,12 +2,9 @@ package com.example.oneinkedoneproject.controller.follow;
 
 import com.example.oneinkedoneproject.domain.Follow;
 import com.example.oneinkedoneproject.domain.Grade;
-import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.follow.AddFollowRequestDto;
 import com.example.oneinkedoneproject.dto.follow.FollowResponseDto;
-import com.example.oneinkedoneproject.repository.follow.FollowRepository;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.follow.FollowService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.google.gson.Gson;
@@ -29,7 +26,6 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.only;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -116,8 +112,6 @@ public class FollowControllerUnitTest {
                     .toUser(followUser)
                     .fromUser(followedUser)
                     .build();
-
-
 
     }
 
