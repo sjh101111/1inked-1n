@@ -16,7 +16,6 @@ import ChatDialog from "@/components/ChatDialog";
 import ChatBox from "@/components/ChatBox";
 import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
-import MyPage from "./MyPage";
 import UserPage from "./UserPage";
 
 
