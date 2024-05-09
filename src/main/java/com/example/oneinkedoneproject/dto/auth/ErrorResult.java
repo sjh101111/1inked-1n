@@ -1,29 +1,17 @@
 package com.example.oneinkedoneproject.dto.auth;
 
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ErrorResult {
     private String error;
     private String message;
-
-    public ErrorResult(String error, String message) {
-        this.error = error;
-        this.message = message;
-    }
-
-    // Getters and setters
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

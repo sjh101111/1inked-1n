@@ -1,6 +1,9 @@
 package com.example.oneinkedoneproject.filter;
 
+import com.example.oneinkedoneproject.dto.auth.ErrorResult;
 import com.example.oneinkedoneproject.service.auth.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +19,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.io.DataInput;
 import java.io.IOException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class JwtAuthenticationFilterUnitTest {
@@ -34,6 +39,7 @@ class JwtAuthenticationFilterUnitTest {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
+    private ObjectMapper objectMapper= new ObjectMapper();
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -61,7 +67,7 @@ class JwtAuthenticationFilterUnitTest {
         when(jwtService.isTokenValid(jwt, mockUserDetails)).thenReturn(true);
 
         //필터 실행
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
         //인증객체가 null이 아닌지 검증
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNotNull();
@@ -87,12 +93,14 @@ class JwtAuthenticationFilterUnitTest {
         //istokenValid에서. false 반환하도록 모의
         when(jwtService.isTokenValid(jwt, mockUserDetails)).thenReturn(false);
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //응답 상태코드가 401인지 검증
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
         //응답 메세지가 제대로 전달됐는지 검증
-        assertThat(response.getContentAsString()).contains("Access token is invalid or expired");
+        assertEquals("JWT Access Token Error", errorResult.getError());
+        assertEquals("Access token is invalid or expired",  errorResult.getMessage());
     }
 
     @Test
@@ -110,28 +118,27 @@ class JwtAuthenticationFilterUnitTest {
         when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(mockUserDetails);
         //istokenValid에서. false 반환하도록 모의
         when(jwtService.isTokenValid(errorToken, mockUserDetails)).thenThrow(new RuntimeException("Unexpected error"));
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
-
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //응답 상태코드가 500인지 검증
-        assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response.getStatus());
         //응답 메세지가 제대로 전달됐는지 검증
-        assertThat(response.getContentAsString()).contains("Could not gain Authentication");
+        assertEquals("JWT Access Token Error", errorResult.getError());
+        assertEquals("Unexpected error",  errorResult.getMessage());
     }
 
     @Test
     @DisplayName("Token does not exist 테스트")
     void testNonExistingToken() throws Exception {
-        String BlankToken = "";
-        //비어있는 토큰 전달
-        request.addHeader("Authorization", BlankToken);
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
-
+        //비어있는 토큰 전달 아예 x
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
         //401 상태코드 실행
-        assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
         //응답 메세지가 제대로 전달됐는지 검증
-        assertThat(response.getContentAsString()).contains("Unauthorized: No valid Bearer token provided");
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
+        assertEquals("JWT Access Token Error", errorResult.getError());
+        assertEquals("No token provided",  errorResult.getMessage());
     }
 
     @Test
@@ -140,12 +147,13 @@ class JwtAuthenticationFilterUnitTest {
         String errorToken = "does not start with Bearer";
         request.addHeader("Authorization", errorToken);
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
-
+        jwtAuthenticationFilter.doFilterInternal(request, response,mock(FilterChain.class));
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
         //401 상태코드 실행
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
         //응답 메세지가 제대로 전달됐는지 검증
-        assertThat(response.getContentAsString()).contains("Unauthorized: No valid Bearer token provided");
+        assertEquals("JWT Access Token Error", errorResult.getError());
+        assertEquals("No valid Bearer token provided",  errorResult.getMessage());
     }
 
     @Test
@@ -156,12 +164,14 @@ class JwtAuthenticationFilterUnitTest {
 
         when(jwtService.extractUsername(errorToken)).thenReturn("");
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, (req, res) -> {});
+        jwtAuthenticationFilter.doFilterInternal(request, response, mock(FilterChain.class));
+        ErrorResult errorResult = objectMapper.readValue(response.getContentAsString(), ErrorResult.class);
 
         //401 상태코드 실행
         assertThat(response.getStatus()).isEqualTo(HttpServletResponse.SC_UNAUTHORIZED);
         //응답 메세지가 제대로 전달됐는지 검증
-        assertThat(response.getContentAsString()).contains("Unauthorized: token does not contain a valid email");
+        assertEquals("JWT Access Token Error", errorResult.getError());
+        assertEquals("token does not contain a valid email",  errorResult.getMessage());
     }
 
 }
