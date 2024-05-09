@@ -108,7 +108,8 @@ public class ArticleService {
 
         // 1. Article 생성
         updatedArticle.update(contents);
-
+        imageRepository.deleteByArticleId(updatedArticle.getId());
+        updatedArticle.getImageList().clear();
         List<Image> images = new ArrayList<>();
         if (updateArticleRequestDto.getFiles() != null && !updateArticleRequestDto.getFiles().isEmpty()) {
             try {
