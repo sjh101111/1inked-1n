@@ -19,7 +19,6 @@ public class GenerateIdUtils {
         return "comment_" + generateId();
     }
 
-
     public static String generateFollowId() {
       return "follow_" + generateId();
     }
@@ -28,6 +27,7 @@ public class GenerateIdUtils {
         return "resume_" + generateId();
     }
 
+    public static String generateChatId() {return "chat_" + generateId(); }
 
     public static String generateId() {
         UUID uuid = UUID.randomUUID();

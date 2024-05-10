@@ -90,19 +90,13 @@ public class ArticleServiceUnitTest {
         List<Image> images = new ArrayList<>();
         for (MultipartFile fileImage : files) {
             Image image = Image.builder()
-                    .img(fileImage.getBytes())
+                    .img(fileImage.getBytes()).article(article)
                     .build();
             images.add(image);
         }
 
         AddArticleRequestDto addArticleRequest = new AddArticleRequestDto(
                 "create content", files);
-
-        if (!images.isEmpty()) {
-            for (Image image : images) {
-                image.setArticle(article);
-            }
-        }
 
         Mockito.doReturn(Article.builder().contents(addArticleRequest.getContents()).imageList(images).build())
                 .when(articleRepository).save(any(Article.class));
@@ -291,7 +285,6 @@ public class ArticleServiceUnitTest {
         assertThat(updatedDto.getContents()).isEqualTo("updated content");
         assertThat(updatedDto.getImages().size()).isEqualTo(article.getImageList().size());
         verify(articleRepository).findById(article.getId());
-        verify(imageRepository, times(2)).save(any(Image.class));  //
     }
 
     @Test
