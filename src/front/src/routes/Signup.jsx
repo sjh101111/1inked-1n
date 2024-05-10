@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "..";
 import { Link } from "react-router-dom";
@@ -7,18 +7,29 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup } from "@/components/ui/select";
 import LabelSection from "@/components/Layout/LabelSection";
 import { correctRegxEmail, correctRegxPwd } from "@/utils/common";
+import { fetchPasswordQuestions, signup } from "@/utils/API";
+import { signupReqParam } from "@/utils/Parameter";
+import { getPasswordQuestionItems } from "@/utils/Items";
 
 const Signup = () =>{
     //라우팅 네비게이터
     const nevigate = useNavigate();
 
     const [passwordQuestions, setPasswordQuestions] = useState([]);
-    const [pwdQVal, setPwdQVal] = useState();
+    const [pwdQId, setpwdQId] = useState("1");
     // 유저정보
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [pwd, setPwd] = useState("");
     const [pwdConfirm, setPwdConfirm] = useState("");
+    const [pwdQAnswer, setPwdQAnswer] = useState("");
+
+    useEffect(() =>{
+        fetchPasswordQuestions()
+        .then(resultQuestions =>{
+            setPasswordQuestions(getPasswordQuestionItems(resultQuestions));
+        })
+    },[]);
 
     //메서드
     const doSignup = () =>{
@@ -37,23 +48,33 @@ const Signup = () =>{
             return ;
         }
 
-        if(!correctRegxEmail(tBox_email.value)){
+        if(!correctRegxEmail(email)){
             alert("이메일 형식이 올바르지 않습니다.");
             return ;
         }
 
-        if(!correctRegxPwd(tBox_password.value)){
+        if(!correctRegxPwd(pwd)){
             alert("비밀번호는 영어 대문자,소문자,특수기호,숫자를 반드시 포함한 8 ~ 16자리 문자여야합니다.");
             return ;
         }
 
-        if(!pwdQVal){
+        if(!pwdQId){
             alert("비밀번호 찾기 질문을 선택해주세요.");
             return ;
         }
 
+        const reqParam = signupReqParam(username, email, pwd, pwdQId, pwdQAnswer);
+
         // signup API 호출
-        nevigate("/");
+
+        signup(reqParam)
+        .then(() =>{
+            alert("회원가입이 정상적으로 완료되었습니다.");
+            nevigate("/");
+        })
+        .catch(err =>{
+            console.log(err);
+        });
     }
 
     const doLogin = () =>{
@@ -78,18 +99,21 @@ const Signup = () =>{
                     <Input type="password" placeholder="비밀번호를 입력해주세요." onChange={(ev) => setPwdConfirm(ev.target.value)}></Input>
                 </LabelSection>
                 <LabelSection asChild label="비밀번호 찾기 질문" className="mt-2">
-                    <Select onValueChange={setPwdQVal}>
+                    <Select onValueChange={setpwdQId}>
                         <SelectTrigger>
                             <SelectValue placeholder="선택"></SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
                                 {
-                                    passwordQuestions.map(passwordQuestion => <SelectItem key={passwordQuestion.passwordQuestionId} value={passwordQuestion.passwordQuestionId}>{passwordQuestion.passwordQuestion}</SelectItem>)
+                                    passwordQuestions   
                                 }
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+                </LabelSection>
+                <LabelSection asChild label="비밀번호 찾기 질문 응답" className="mt-2">
+                    <Input type="text" placeholder="비밀번호 찾기 질문 응답을 입력해주세요." onChange={(ev) => setPwdQAnswer(ev.target.value)}></Input>
                 </LabelSection>
                 <Button asChild className="text-white bg-[#6866EB] mt-4 w-full hover:bg-violet-600">
                     <div onClick={doSignup}>
