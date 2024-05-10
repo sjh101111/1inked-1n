@@ -9,6 +9,7 @@ import ChatBox from "./components/ChatBox";
 import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
 import PasswordFind from "./routes/PasswordFind";
+import Resign from "./routes/Resign";
 
 
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/chat",
         element: <ChatBox></ChatBox>
+      },
+      {
+        path: "/resign",
+        element: <Resign></Resign>
       },
       {
         path: "/mypage",

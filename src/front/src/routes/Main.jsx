@@ -28,12 +28,12 @@ const Main = () =>{
         <div>로그인 된거</div> :
         (<main className="flex h-screen">
             <section className=" flex-grow-[6] bg-[#6866EB] px-16 py-24 text-white">
-                <h1 className="text-6xl font-bold">About Us</h1>
+                <h1 className="text-6xl font-bold">1inked 1n</h1>
                 <div className="mt-48 text-4xl font-bold grid gap-4">
-                    <h2>1</h2>
-                    <h2>2</h2>
-                    <h2>3</h2>
-                    <h2>4</h2>
+                    <h2>해외 취업 고민하는 우리</h2>
+                    <h2>1inked 1n에서</h2>
+                    <h2>자소서 첨삭부터</h2>
+                    <h2>전문가 매칭까지</h2>
                 </div>
             </section>
             <section className="flex-grow-[4] login flex flex-col items-center justify-center">
