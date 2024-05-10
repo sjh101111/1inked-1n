@@ -19,7 +19,6 @@ public class GenerateIdUtils {
         return "comment_" + generateId();
     }
 
-
     public static String generateFollowId() {
       return "follow_" + generateId();
     }
