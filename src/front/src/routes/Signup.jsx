@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "..";
 import { Link } from "react-router-dom";
@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup } from "@/components/ui/select";
 import LabelSection from "@/components/Layout/LabelSection";
 import { correctRegxEmail, correctRegxPwd } from "@/utils/common";
-import { signup } from "@/utils/API";
+import { fetchPasswordQuestions, signup } from "@/utils/API";
 import { signupReqParam } from "@/utils/Parameter";
+import { getPasswordQuestionItems } from "@/utils/Items";
 
 const Signup = () =>{
     //라우팅 네비게이터
@@ -22,6 +23,13 @@ const Signup = () =>{
     const [pwd, setPwd] = useState("");
     const [pwdConfirm, setPwdConfirm] = useState("");
     const [pwdQAnswer, setPwdQAnswer] = useState("");
+
+    useEffect(() =>{
+        fetchPasswordQuestions()
+        .then(resultQuestions =>{
+            setPasswordQuestions(getPasswordQuestionItems(resultQuestions));
+        })
+    },[]);
 
     //메서드
     const doSignup = () =>{
@@ -56,8 +64,6 @@ const Signup = () =>{
         }
 
         const reqParam = signupReqParam(username, email, pwd, pwdQId, pwdQAnswer);
-
-        console.log(reqParam);
 
         // signup API 호출
 
@@ -100,7 +106,7 @@ const Signup = () =>{
                         <SelectContent>
                             <SelectGroup>
                                 {
-                                    passwordQuestions.map(passwordQuestion => <SelectItem key={passwordQuestion.passwordQuestionId} value={passwordQuestion.passwordQuestionId}>{passwordQuestion.passwordQuestion}</SelectItem>)
+                                    passwordQuestions   
                                 }
                             </SelectGroup>
                         </SelectContent>
