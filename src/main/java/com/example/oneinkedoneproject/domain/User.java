@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name= "users")
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
@@ -31,7 +30,6 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
-
 
     @ManyToOne
     @JoinColumn(name = "password_question", nullable = false)
@@ -70,7 +68,6 @@ public class User implements UserDetails {
 
         this.id = id;
         this.realname = username;
-
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
