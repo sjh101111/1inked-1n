@@ -44,7 +44,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/user",
+                                "/api/user","/api/**",
                                 //"/login", "/signup", "/user", "/findId", "/findPw", "/user/find/id","/user/find/email", "/user/find/pw" , "/api/v1/auth/**")
                                 "/login","/").permitAll()
                         .anyRequest().authenticated())
