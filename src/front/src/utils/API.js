@@ -11,7 +11,7 @@ instance.interceptors.request.use((config) =>{
     const refreshToken = getRefreshToken();
 
     if(accessToken){
-        config.headers['Authorization'] = `Bearer ${accessToken}`
+        config.headers['Authorization'] = accessToken;
     }
     if(refreshToken){
         config.headers['Refresh-Token'] = refreshToken;
@@ -103,10 +103,10 @@ export const signup = async (signupReqParam) =>{
 export const login = async (loginReqParam) =>{
     const loginURL = URL + "/login";
     return OneinkedPost(loginURL, loginReqParam)
-    .then((response) => response.data)
-    .then(json =>{
-        setAccessToken(json.accessToken);
-        setRefreshToken(json.refreshToken);
+    .then((response) => {
+        setAccessToken(response.headers['authorization']);
+        setRefreshToken(response.headers['refresh-token']);
+        return response.data;
     });
 }
 

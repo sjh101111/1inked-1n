@@ -40,16 +40,8 @@ const Main = () =>{
                 <div className="w-full text-4xl font-bold text-white">
                     <h2 className="text-center text-black">Get Started</h2>
                     <div className="flex justify-center gap-4 mt-4">
-                        <Button className="bg-[#6866EB] w-48 hover:bg-violet-600">
-                            <div onClick={doLogin}>
-                                Login
-                            </div>
-                        </Button>
-                        <Button className="bg-[#6866EB] w-48 hover:bg-violet-600">
-                            <div onClick={goSignup}>
-                                Signup
-                            </div>
-                        </Button>
+                        <Button onClick={doLogin }className="bg-[#6866EB] w-48 hover:bg-violet-600">Login</Button>
+                        <Button onClick={goSignup} className="bg-[#6866EB] w-48 hover:bg-violet-600">Signup</Button>
                     </div>
                 </div>
             </section>
