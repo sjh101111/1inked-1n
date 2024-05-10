@@ -24,7 +24,6 @@ public class FollowService {
 
     @Transactional
     public Follow follow(User fromUser, AddFollowRequestDto request){
-
         User followUser = userRepository.findById(request.getFollowUserId())
                 .orElseThrow(IllegalArgumentException::new);
 

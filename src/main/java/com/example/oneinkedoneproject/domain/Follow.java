@@ -16,11 +16,11 @@ public class Follow {
     @Column(name = "follow_id" , nullable = false)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩
+    @ManyToOne(fetch = FetchType.EAGER) // 지연 로딩
     @JoinColumn(name = "to_user", nullable = false)
     private User toUser;//팔로우 대상
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "from_user", nullable = false)
     private User fromUser;//팔로워
 

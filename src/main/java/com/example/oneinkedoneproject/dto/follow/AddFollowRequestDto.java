@@ -1,16 +1,15 @@
 package com.example.oneinkedoneproject.dto.follow;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+//@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddFollowRequestDto {
+public class
+AddFollowRequestDto {
 
-    private String FollowUserId;
+    private String followUserId;
 
 
 

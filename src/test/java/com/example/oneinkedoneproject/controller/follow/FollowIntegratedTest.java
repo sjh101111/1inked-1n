@@ -13,6 +13,7 @@ import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import com.example.oneinkedoneproject.service.follow.FollowService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,8 +31,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Optional;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -149,24 +154,77 @@ public class FollowIntegratedTest {
         //given
         AddFollowRequestDto request = new AddFollowRequestDto("1");
 
-        //when
         ResultActions resultActions = mockMvc.perform(post(url)
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(request))
+
                 )
                 // then
                 .andExpect(status().isCreated()).andDo(print());
-        
+        //when
+
     }
 
+    @Test
+    @DisplayName("팔로우 조회")
+    void showFollows() throws Exception {
+        //given
+        AddFollowRequestDto request = new AddFollowRequestDto("1");
+        followService.follow(curUser, request);
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(getUrl1)
+                .header("Authorization", "Bearer " + accessToken)
+        );
+        //then
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$[0].realname").value("lee"));
+    }
 
+    @Test
+    @DisplayName("팔로워 조회")
+    void showFollowers() throws Exception {
+        //given
+        AddFollowRequestDto request = new AddFollowRequestDto("3");
+        followService.follow(followedUser, request);
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(getUrl2)
+                .header("Authorization", "Bearer " + accessToken)
+        );
+        //then
+        resultActions.andExpect(status().isOk()).andDo(print())
+                .andExpect(jsonPath("$[0].realname").value("park"));
+    }
 
+    @Test
+    @DisplayName("팔로우 삭제")
+    void testunfollow() throws Exception{
+        //given
+        AddFollowRequestDto request = new AddFollowRequestDto("1");
+        Follow follow = followService.follow(curUser, request);
 
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/follow/" + follow.getId())
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                //then
+                .andExpect(status().isOk()).andDo(print());
 
+        Optional<Follow> deleteVerify = followRepository.findById(follow.getId());
 
-
-
-
-
+        Assertions.assertFalse(deleteVerify.isPresent());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
