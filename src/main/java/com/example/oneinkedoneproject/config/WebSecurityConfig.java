@@ -54,11 +54,11 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtRefreshTokenFilter, UsernamePasswordAuthenticationFilter.class)  // JwtAuthenticationFilter 적용
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // JwtRefreshTokenFilter 적용
 
-        /*
+
         httpSecurity.cors(httpSecurityCorsConfigurer -> {
             httpSecurityCorsConfigurer.configurationSource(configurationSource());
         });
-        */
+
 
         return httpSecurity.build();
     }
