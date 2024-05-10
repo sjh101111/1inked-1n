@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.user;
 
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
@@ -19,13 +19,14 @@ public class SignupUserRequestDto {
 	private String passwordQuestionId;
 	private String passwordQuestionAnswer;
 
-	public User toEntity(PasswordQuestion pwdQuestion, String endcodePassword){
+	public User toEntity(PasswordQuestion pwdQuestion, String encodePassword){
 		return	User.builder()
 			.id(GenerateIdUtils.generateUserId())
 			.realname(realName)
 			.email(email)
-			.password(endcodePassword)
+			.password(encodePassword)
 			.passwordQuestion(pwdQuestion)
+			.passwordAnswer(passwordQuestionAnswer)
 			.grade(Grade.ROLE_BASIC)
 			.withdraw(false)
 			.build();

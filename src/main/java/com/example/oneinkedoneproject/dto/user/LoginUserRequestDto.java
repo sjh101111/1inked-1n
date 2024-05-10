@@ -1,12 +1,13 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class WithdrawUserRequestDto {
+@NoArgsConstructor
+public class LoginUserRequestDto {
     private String email;
     private String password;
-    private Boolean isWithdraw;
 }

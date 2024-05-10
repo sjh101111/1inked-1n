@@ -19,7 +19,15 @@ public class GenerateIdUtils {
         return "comment_" + generateId();
     }
 
-    public static String generateFollowId() {return "follow_" + generateId();}
+
+    public static String generateFollowId() {
+      return "follow_" + generateId();
+    }
+
+    public static String generateResumeId() {
+        return "resume_" + generateId();
+    }
+
 
     public static String generateId() {
         UUID uuid = UUID.randomUUID();

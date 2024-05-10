@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.service.user;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.*;
+import com.example.oneinkedoneproject.dto.user.*;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,8 +76,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		User returnUser = userService.findUser(request);
 
@@ -133,8 +134,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 		User returnUser = userService.saveProfile(requestDto);
 
 		//then
@@ -168,8 +169,8 @@ public class UserServiceUnitTest {
 				.build();
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -238,8 +239,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -323,8 +324,8 @@ public class UserServiceUnitTest {
 
 		//dupEmail사용시 existsByEmail 무조건 true반환
 		lenient().doReturn(true)
-			.when(userRepository)
-			.existsByEmail(dupEmail);
+				.when(userRepository)
+				.existsByEmail(dupEmail);
 
 		doReturn(returnUser)
 				.when(userRepository)
@@ -380,8 +381,8 @@ public class UserServiceUnitTest {
 				.findById(any(String.class));
 
 		doReturn(user)
-			.when(userRepository)
-			.save(any(User.class));
+				.when(userRepository)
+				.save(any(User.class));
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -493,8 +494,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -570,8 +571,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(false)
-			.when(passwordRepository)
-			.existsById(any(String.class));
+				.when(passwordRepository)
+				.existsById(any(String.class));
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -603,8 +604,8 @@ public class UserServiceUnitTest {
 				.existsById(any(String.class));
 
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
@@ -672,8 +673,8 @@ public class UserServiceUnitTest {
 				.build();
 		//when
 		doReturn(Optional.of(user))
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 		User returnUser = userService.uploadImage(request);
 
 		//then
@@ -693,8 +694,8 @@ public class UserServiceUnitTest {
 
 		//when
 		doReturn(Optional.empty())
-			.when(userRepository)
-			.findByEmail(email);
+				.when(userRepository)
+				.findByEmail(email);
 
 		//then
 		assertThrows(IllegalArgumentException.class, ()->{

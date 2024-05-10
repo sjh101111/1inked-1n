@@ -2,9 +2,8 @@ package com.example.oneinkedoneproject.service.user;
 
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.*;
+import com.example.oneinkedoneproject.dto.user.*;
 import com.example.oneinkedoneproject.utils.regxUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import com.example.oneinkedoneproject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -25,7 +23,6 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordRepository passwordRepository;
 	private final PasswordEncoder encoder;
-
 	public static final int MAX_LENGTH_IDENTITY = 100;
 	public static final int MAX_LENGTH_LOCATION = 50;
 	public static final int MAX_LENGTH_DESCRIPTION = 2000;
@@ -127,6 +124,8 @@ public class UserService {
 		return user;
 	}
 
+
+
 	//4. 회원 탈퇴
 	@Transactional
 	public User withDraw(WithdrawUserRequestDto requestDto){
@@ -191,6 +190,7 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+
 	//6. 유저 사진 업로드
 	@Transactional
 	public User uploadImage(UploadUserImageRequestDto request){
@@ -217,7 +217,7 @@ public class UserService {
 		}
 	}
 
-	//7. userEmail duplication check
+	//8. userEmail duplication check
 	public boolean emailDupCheck(String email){
 		return userRepository.existsByEmail(email);
 	}
