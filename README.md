@@ -40,7 +40,10 @@
 ## 🏭 시스템 구성도
 
 ## 🍻 ERD 구성도
-![ERD.png](readme/ERD.png)
+
+<p align="center">
+  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8ae0142c-98c3-451e-b438-9ae721266310">
+</p>
 
 ## API 명세서
 
