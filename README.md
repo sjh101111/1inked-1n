@@ -34,7 +34,7 @@
 [1inked 1n 개발 일정](https://www.notion.so/oreumi/1-1inked-1n-d09992fed57c4e0e980acc4107a55e2d)
 
 ## 🏙️ 화면 설계서
-[1inkend 1n 화면 설계(figma)](https://www.notion.so/oreumi/figma-d7fad806eab643a1a4312c5b9fd72728)
+[1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
 
 ## 프로젝트 구조
 
