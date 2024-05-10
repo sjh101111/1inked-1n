@@ -34,6 +34,7 @@
 
 
 ## 🏙️ 화면 설계서
+[화면 설계(figma)](https://www.notion.so/oreumi/figma-d7fad806eab643a1a4312c5b9fd72728)
 
 ## 프로젝트 구조
 
