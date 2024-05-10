@@ -1,20 +1,20 @@
 package com.example.oneinkedoneproject.controller.user;
 
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.*;
+import com.example.oneinkedoneproject.dto.user.*;
 import com.example.oneinkedoneproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService userService;
+
     //1. 유저 프로필 조회
     @GetMapping("/api/user")
     public ResponseEntity<FindUserResponseDto> findUser(@ModelAttribute FindUserRequestDto request){
@@ -79,6 +79,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("회원가입에 성공했습니다.");
     }
+
+
 
     //6. 유저 사진 업로드
     @PostMapping("/api/user/image")

@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.user;
 
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
