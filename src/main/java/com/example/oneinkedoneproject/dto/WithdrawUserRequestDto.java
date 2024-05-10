@@ -8,5 +8,9 @@ import lombok.Getter;
 public class WithdrawUserRequestDto {
     private String email;
     private String password;
-    private Boolean isWithdraw;
+    private boolean isWithdraw;
+
+    public boolean getIsWithdraw(){
+        return this.isWithdraw;
+    }
 }

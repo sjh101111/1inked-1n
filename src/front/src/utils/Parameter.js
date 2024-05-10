@@ -18,8 +18,9 @@ export const signupReqParam = (realName, email, password, passwordQuestionId, pa
     return reqParam;
 }
 
-export const changePasswordReqParam = () =>{
-    const reqParam = {}
+export const changePasswordReqParam = (email, passwordQuestionId, passwordQuestionAnswer, newPassword) =>{
+    const reqParam = {};
+
     reqParam.email = email;
     reqParam.passwordQuestionId = passwordQuestionId;
     reqParam.passwordQuestionAnswer = passwordQuestionAnswer;
@@ -46,7 +47,7 @@ export const saveProfileReqParam = (email, identity, location, description, file
     reqFormData.append('description', description);
     reqFormData.append('file', file);
 
-    return reqParam;
+    return reqFormData;
 }
 
 /**
