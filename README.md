@@ -31,7 +31,7 @@
 [1inked 1n 기능 정의서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
 
 ### 3. 개발 일정
-
+[1inked 1n 개발 일정](https://www.notion.so/oreumi/1-1inked-1n-d09992fed57c4e0e980acc4107a55e2d)
 
 ## 🏙️ 화면 설계서
 [1inkend 1n 화면 설계(figma)](https://www.notion.so/oreumi/figma-d7fad806eab643a1a4312c5b9fd72728)
