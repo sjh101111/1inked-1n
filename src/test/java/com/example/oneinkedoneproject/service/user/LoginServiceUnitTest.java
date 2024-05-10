@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.service.user;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.dto.user.LoginUserRequestDto;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
@@ -26,7 +27,7 @@ public class LoginServiceUnitTest {
 
     private PasswordQuestion pwdQuestion;
 
-    @InjectMocks
+
     private LoginService loginService;
 
     @Autowired
@@ -45,6 +46,7 @@ public class LoginServiceUnitTest {
         encoder = new BCryptPasswordEncoder();
         pwdQuestion = new PasswordQuestion("1", "질문");
         passwordRepository.save(pwdQuestion);
+        loginService = new LoginService(authenticationManager);
     }
 
     @Test
@@ -64,8 +66,8 @@ public class LoginServiceUnitTest {
         userRepository.deleteAll();
         userRepository.save(user);
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("test123@naver.com", "1aw9!wWem23"));
-
+        //Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("test123@naver.com", "1aw9!wWem23"));
+        Authentication auth = loginService.login(new LoginUserRequestDto(email, "1aw9!wWem23"));
 
         assertNotEquals(auth, null);
         assertTrue(auth.isAuthenticated());
