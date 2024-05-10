@@ -9,6 +9,7 @@ import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.auth.JwtService;
 import com.example.oneinkedoneproject.service.user.LoginService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Login", description = "로그인 API")
 public class LoginController {
     private final JwtService jwtService;
     private final LoginService loginService;
