@@ -41,7 +41,6 @@ const Login = () =>{
         .catch((err) =>{
             alert("로그인에 실패하였습니다.");
         })
-
     }
 
     return (
@@ -54,9 +53,7 @@ const Login = () =>{
                     <Input id="tBox_pwd" onChange={(ev) => setPwd(ev.target.value)} type="password" placeholder="password"></Input>
                 </LabelSection>
                 {/* 버튼은 onClick 콜백 동작 불가 */}
-                <Button asChild className="bg-[#6866EB] mt-4 w-full hover:bg-violet-600">
-                    <div onClick={doLogin}>로그인</div>
-                </Button>
+                <Button onClick={doLogin} className="bg-[#6866EB] mt-4 w-full hover:bg-violet-600">로그인</Button>
                 <div className="flex justify-center mt-4">
                     <Link to="/findPassword" className="text-black/65">비밀번호를 잊으셨나요?</Link>
                 </div>

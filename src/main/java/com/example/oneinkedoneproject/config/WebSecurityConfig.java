@@ -54,11 +54,9 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtRefreshTokenFilter, UsernamePasswordAuthenticationFilter.class)  // JwtAuthenticationFilter 적용
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // JwtRefreshTokenFilter 적용
 
-        /*
         httpSecurity.cors(httpSecurityCorsConfigurer -> {
             httpSecurityCorsConfigurer.configurationSource(configurationSource());
         });
-        */
 
         return httpSecurity.build();
     }
@@ -68,11 +66,14 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "Refresh-Token"));
         configuration.setAllowCredentials(true);
+
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers", "Refresh-Token"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
