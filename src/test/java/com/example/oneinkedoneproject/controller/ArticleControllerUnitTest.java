@@ -63,15 +63,7 @@ public class ArticleControllerUnitTest {
                 .build();
 //        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 //        SecurityContextHolder.getContext().setAuthentication(auth);
-
         images = new ArrayList<>();
-        for (MultipartFile fileImage : files) {
-            Image image = Image.builder()
-                    .img(fileImage.getBytes())
-                    .build();
-            images.add(image);
-        }
-
         article = Article.builder()
                 .id(GenerateIdUtils.generateArticleId())
                 .contents("test content")
@@ -80,6 +72,16 @@ public class ArticleControllerUnitTest {
                 .createdAt(null)
                 .imageList(images)
                 .build();
+
+
+        for (MultipartFile fileImage : files) {
+            Image image = Image.builder()
+                    .img(fileImage.getBytes()).article(article)
+                    .build();
+            article.addImage(image);
+        }
+
+
     }
 
     @Test

@@ -23,6 +23,8 @@ public class GenerateIdUtils {
         return "resume_" + generateId();
     }
 
+    public static String generateChatId() {return "chat_" + generateId(); }
+
     public static String generateId() {
         UUID uuid = UUID.randomUUID();
         // "-" 제외하고 문자열 추출

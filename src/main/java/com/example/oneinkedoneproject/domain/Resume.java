@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
-@Setter
+
 @Table(name = "resume")
 @Entity
 @Getter

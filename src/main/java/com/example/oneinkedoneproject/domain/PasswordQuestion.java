@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Setter
+
 @Table(name = "password_question")
 @Entity
 @Getter
