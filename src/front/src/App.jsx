@@ -8,6 +8,8 @@ import Test from "./routes/Test";
 import ChatBox from "./components/ChatBox";
 import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
+import PasswordFind from "./routes/PasswordFind";
+import Resign from "./routes/Resign";
 
 
 
@@ -25,8 +27,16 @@ const router = createBrowserRouter([
         element: <Signup></Signup>
       },
       {
+        path: "/findPassword",
+        element: <PasswordFind></PasswordFind>
+      },
+      {
         path: "/chat",
         element: <ChatBox></ChatBox>
+      },
+      {
+        path: "/resign",
+        element: <Resign></Resign>
       },
       {
         path: "/mypage",

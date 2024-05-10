@@ -133,6 +133,13 @@ export const changePassword = async (changePasswordReqParam) =>{
     .then((response) => response.data);
 }
 
+export const fetchUserProfile = async (email) =>{
+    const fetchUserProfileURL = URL + `/api/user?email=${email}`;
+
+    return OneinkedGet(fetchUserProfileURL)
+    .then((response) =>  response.data);
+}
+
 
 export const saveProfile = async (saveProfileReqParam) =>{
     const saveProfileURL = URL + "/api/profile";

@@ -31,7 +31,6 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-
     @ManyToOne
     @JoinColumn(name = "password_question", nullable = false)
     private PasswordQuestion passwordQuestion;
@@ -69,7 +68,6 @@ public class User implements UserDetails {
 
         this.id = id;
         this.realname = username;
-
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -109,7 +107,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return withdraw;
+        return true;
     }
 
     public void updateName(String realname) {
