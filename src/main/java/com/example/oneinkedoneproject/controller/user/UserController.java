@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.controller.user;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.user.*;
 import com.example.oneinkedoneproject.service.user.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "User", description = "유저 API")
 @Slf4j
 public class UserController {
     private final UserService userService;

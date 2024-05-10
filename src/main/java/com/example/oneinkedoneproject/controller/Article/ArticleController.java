@@ -5,6 +5,7 @@ import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.service.article.ArticleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Article", description = "게시글 API")
 public class ArticleController {
     private final ArticleService articleService;
 

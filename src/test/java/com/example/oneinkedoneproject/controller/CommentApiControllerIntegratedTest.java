@@ -134,9 +134,9 @@ public class CommentApiControllerIntegratedTest {
     public void deleteData() throws Exception {
         System.out.println("AfterEach");
 
-//        articleRepository.deleteById("1");
-//        userRepository.deleteById("1");
-//        passwordRepository.deleteById("1");
+        articleRepository.deleteById("1");
+        userRepository.deleteById("1");
+        passwordRepository.deleteById("1");
         
         System.out.println("End AfterEach");
     }
