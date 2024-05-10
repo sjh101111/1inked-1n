@@ -161,10 +161,11 @@ public class ArticleControllerUnitTest {
         List<MultipartFile> updatedfiles = new ArrayList<>();
         updatedfiles.add(file);
         updatedfiles.add(file1);
+
         List<Image> updatedimages = new ArrayList<>();
         for (MultipartFile fileImage : updatedfiles) {
             Image image = Image.builder()
-                    .img(fileImage.getBytes())
+                    .img(fileImage.getBytes()).article(article)
                     .build();
             updatedimages.add(image);
         }

@@ -56,11 +56,13 @@ instance.interceptors.response.use(
  * @param { FormData } formData 
  * @brief 이미지 파일과 reqParam을 같이 보내야할 때 사용
  */
-export const OneinkedMultipart = (url, formData) =>{
-    return instance.post(url, formData, {
+export const OneinkedMultipart = (url, formData, method = false) =>{
+    const requestor = method ? instance.put : instance.post;
+    return requestor(url, formData, {
         headers: { "Content-Type" : "multipart/form-data"}
     });
 }
+
 
 export const OneinkedPost = (url, body) =>{
     return instance.post(url, body);
@@ -78,12 +80,17 @@ export const OneinkedPut = (url, body) =>{
     return instance.put(url, body);
 }
 
+export const OneinkedPatch = (url, body) =>{
+    return instance.patch(url, body);
+}
+
 //메모미제이션을 통한 과도한 AccessToken 재발급 문제 처리
 export const getNewAccessToken = mem(async () =>{
     const newAccessTokenURL = URL + "/refresh";
     return OneinkedPost(newAccessTokenURL);
 }, {memAge: 1000});
 
+/** User API START */
 
 //회원가입
 export const signup = async (signupReqParam) =>{
@@ -154,3 +161,77 @@ export const logout = () =>{
     removeRefreshToken();
     location.href = location.origin;
 }
+/** User API END */
+
+/** Article API START */
+
+// 게시글 생성 API
+export const createArticle = async (createArticleReqParam) =>{
+    const createArticleURL = URL + "/api/article";
+
+    return OneinkedMultipart(createArticleURL, createArticleReqParam)
+    .then((response) => response.data);
+}
+
+//내 게시글 전체 조회 API
+export const readAllMyArticle = async () =>{
+    const readAllMyArticleURL = URL + "/api/myAllArticles";
+
+    return OneinkedGet(readAllMyArticleURL)
+    .then((response) => response.data);
+}
+
+//메인 화면 게시글 조회 API
+export const readMainFeedArticles = async () =>{
+    const readMainFeedArticlesURL = URL + "/api/mainFeedArticles";
+
+    return OneinkedGet(readMainFeedArticlesURL)
+    .then((response) => response.data);
+}
+
+export const updateArticle = async (articleId, updateArticleReqParam) =>{
+    const updateArticleURL = URL + `${articleId}`;
+
+    return OneinkedMultipart(updateArticleURL, updateArticleReqParam, true)
+    .then((response) => response.data);
+}
+
+export const deleteArticle = async (articleId) =>{
+    const deleteArticleURL = URL + `${articleId}`;
+
+    return OneinkedDelete(deleteArticleURL)
+    .then((response) => response.data);
+}
+/** Article API END */
+
+/** Comment API START */
+
+export const addComment = async (articleId, addCommentReqParam) =>{
+    const addCommentURL = URL + `${articleId}`;
+
+    return OneinkedPost(addCommentURL, addCommentReqParam)
+    .then((response) => response.data);
+}
+
+export const readComment = async (articleId) =>{
+    const readCommentURL = URL + `${articleId}`;
+
+    return OneinkedGet(readCommentURL)
+    .then((response) => response.data);
+}
+
+export const updateComment = async (articleId, updateCommentReqParam) =>{
+    const updateCommentURL = URL + `${articleId}`;
+
+    return OneinkedPatch(updateCommentURL, updateCommentReqParam)
+    .then((response) => response.data);
+}
+
+export const deleteComment = async (commentId) =>{
+    const deleteCommentURL = URL + `${commentId}`;
+
+    return OneinkedDelete(deleteCommentURL)
+    .then((response) => response.data);
+}
+
+/** Comment API END */

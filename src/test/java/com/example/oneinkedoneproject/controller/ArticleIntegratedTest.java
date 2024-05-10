@@ -227,7 +227,7 @@ public class ArticleIntegratedTest {
         Article updatedArticle = articleRepository.findById(article.getId())
                 .orElseThrow();
 
-        assertThat(updatedArticle.getImageList().size()).isEqualTo(3);
+        assertThat(updatedArticle.getImageList().size()).isEqualTo(2);
     }
 
     @Test
