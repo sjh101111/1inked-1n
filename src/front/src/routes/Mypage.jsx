@@ -1,6 +1,6 @@
 import Header from "@/components/Layout/Header.jsx";
 import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import { anchorScrollCallback } from "@/utils/common";
+import { saveProfileReqParam } from "@/utils/Parameter";
+import { fetchUserProfile, saveProfile } from "@/utils/API";
 
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
@@ -23,10 +25,35 @@ const MyPage = () => {
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
     const [username, setUsername] = useState('Username');
+    const [file, setFile] = useState(null);
+
+    useEffect(() =>{
+        fetchUserProfile("dlxogml11235@naver.com")
+        .then(async (userInfo) => {
+            setUsername(userInfo.realName);
+            setIdentity(userInfo.identity);
+            setLocation(userInfo.location);
+            setDescription(userInfo.description);
+
+            //user Profile image 설정
+            setProfilePic(`data:image/png;base64,${userInfo.image}`);
+        });
+    },[]);
 
     const toggleEditing = () => {
         setEditing(!editing);
     };
+
+    //프로필 변경 사항 저장 API
+    const doSaveProfile = () =>{
+        const reqParam = saveProfileReqParam("dlxogml11235@naver.com", identity, location, description, file);
+
+        saveProfile(reqParam)
+        .then((response) => {
+            console.log(response);
+            toggleEditing();
+        });
+    }
 
     const handleProfilePicChange = (event) => {
         const file = event.target.files[0];
@@ -53,7 +80,7 @@ const MyPage = () => {
                         <strong>{username}</strong>
                         <div className="flex gap-2 text-black/65">
                             <Link to="/findPassword">비밀번호 변경</Link>
-                            <Link to="">회원 탈퇴</Link>
+                            <Link to="/resign">회원 탈퇴</Link>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4">
@@ -63,8 +90,8 @@ const MyPage = () => {
                                     <Input className="w-full mt-2" maxLength={100} type="text" value={identity} onChange={e => setIdentity(e.target.value)}/>
                                     <Input className="w-full" maxLength={50} type="text" value={location} onChange={e => setLocation(e.target.value)}/>
                                     <Textarea className="w-full resize-none" maxLength={2000} value={description} onChange={e => setDescription(e.target.value)}/>
-                                    <Input type="file" onChange={handleProfilePicChange}/>
-                                    <Button onClick={toggleEditing} variant="ghost" className="text-black text-opacity-40">
+                                    <Input type="file" accept=".png" onChange={(ev) => { handleProfilePicChange(ev); setFile(ev.target.files[0])}}/>
+                                    <Button onClick={doSaveProfile} variant="ghost" className="text-black text-opacity-40">
                                         Save Changes
                                     </Button>
                                 </>) :
