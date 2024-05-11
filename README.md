@@ -6,7 +6,7 @@
 <img alt="HTML" src ="https://img.shields.io/badge/html5-E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white"/>  
 <img alt="CSS" src ="https://img.shields.io/badge/css3-1572B6.svg?&style=for-the-badge&logo=css3&logoColor=white"/>  
 <img alt="tailwind" src ="https://img.shields.io/badge/tailwind-06B6D4.svg?&style=for-the-badge&logo=tailwindcss&logoColor=white"/>  
-<img alt="shadcn-ui" src ="https://img.shields.io/badge/shadcnui-000000.svg?&style=for-the-badge&logo=shadcnui&logoColor=white"/>  
+<img alt="shadcn-ui" src ="https://img.shields.io/badge/shadcn/ui-000000.svg?&style=for-the-badge&logo=shadcnui&logoColor=white"/>  
 <img alt="SpringBoot" src ="https://img.shields.io/badge/SpringBoot-6DB33F.svg?&style=for-the-badge&logo=Spring Boot&logoColor=white"/>  
 <img alt="Hibernate" src ="https://img.shields.io/badge/hibernate-59666C.svg?&style=for-the-badge&logo=hibernate&logoColor=white"/>
 <img alt="JPA" src ="https://img.shields.io/badge/JPA-6DB33F.svg?&style=for-the-badge&logo=jpa&logoColor=white"/>  
