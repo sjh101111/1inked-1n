@@ -3,7 +3,12 @@
 -------------------------  
 <img alt="flyway" src ="https://img.shields.io/badge/Flyway-CC0200.svg?&style=for-the-badge&logo=flyway&logoColor=white"/>  
 <img alt="react" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/>  
+<img alt="HTML" src ="https://img.shields.io/badge/html5-E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white"/>  
+<img alt="CSS" src ="https://img.shields.io/badge/css3-1572B6.svg?&style=for-the-badge&logo=css3&logoColor=white"/>  
+<img alt="tailwind" src ="https://img.shields.io/badge/tailwind-06B6D4.svg?&style=for-the-badge&logo=tailwindcss&logoColor=white"/>  
+<img alt="shadcn-ui" src ="https://img.shields.io/badge/shadcnui-000000.svg?&style=for-the-badge&logo=shadcnui&logoColor=white"/>  
 <img alt="SpringBoot" src ="https://img.shields.io/badge/SpringBoot-6DB33F.svg?&style=for-the-badge&logo=Spring Boot&logoColor=white"/>  
+<img alt="Hibernate" src ="https://img.shields.io/badge/hibernate-59666C.svg?&style=for-the-badge&logo=hibernate&logoColor=white"/>
 <img alt="JPA" src ="https://img.shields.io/badge/JPA-6DB33F.svg?&style=for-the-badge&logo=jpa&logoColor=white"/>  
 <img alt ="JAVA" src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
 <img alt="MYSQL" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/>  
@@ -11,6 +16,7 @@
 <img alt="AmazonEC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/>  
 <img alt="AmazonRDS" src ="https://img.shields.io/badge/Amazon RDS-527FFF.svg?&style=for-the-badge&logo=Amazon RDS&logoColor=white"/>  
 <img alt="Vite" src ="https://img.shields.io/badge/Vite-646CFF.svg?&style=for-the-badge&logo=Vite&logoColor=white"/>  
+<img alt="githubactions" src ="https://img.shields.io/badge/github actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/>
 
 ## 🗒️ 소개
 - 당신의 해외 취업을 도와줄 사이트
