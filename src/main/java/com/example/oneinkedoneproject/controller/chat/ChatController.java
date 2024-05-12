@@ -29,16 +29,16 @@ public class ChatController {
 
     @PutMapping("/api/updateIsDeleted")
     public ResponseEntity<List<ChatResponseDto>> updateIsDeletedOfChat(@AuthenticationPrincipal User user,
-                                                      @RequestBody String chatPartnerEmail) {
-        return ResponseEntity.ok(chatService.updateIsDeletedOfChat(user, chatPartnerEmail)) ;
+                                                      @RequestBody String partnerEmail) {
+        return ResponseEntity.ok(chatService.updateIsDeletedOfChat(user, partnerEmail)) ;
 
     }
 
-    //sender, receiver 각각의 isDeleteTo, isDeleteFrom이 모두 true일 경우 chat 자동 삭제
+    //sender, receiver 각각의 isDeleteTo, isDeleteFrom이 모두 true일 경우 chat 삭제
     @DeleteMapping("/api/deleteChat")
     public ResponseEntity<Void> deleteChat(@AuthenticationPrincipal User user,
-                                           @RequestBody String chatPartnerEmail) {
-        chatService.deleteChat(user, chatPartnerEmail);
+                                           @RequestBody String partnerEmail) {
+        chatService.deleteChat(user, partnerEmail);
         return ResponseEntity.ok().build();
     }
 }

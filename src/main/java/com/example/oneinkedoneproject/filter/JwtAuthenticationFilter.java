@@ -42,6 +42,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             return;
         }
 
+        // 특정 경로에 대해 필터 적용 제외
+//        if (requestURI.startsWith("/api/user") || requestURI.startsWith("/api/passwordquestion") ||
+//                requestURI.startsWith("/api/password") || requestURI.startsWith("/api/withdraw") ||
+//                requestURI.startsWith("/api/profile")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
+        if (requestURI.startsWith("/api")) {
+            filterChain.doFilter(request, responseParam);
+            return;
+        }
+
+
+
         this.response = responseParam;
 
         final String authHeader = request.getHeader("Authorization");//액세스 토큰 찾음

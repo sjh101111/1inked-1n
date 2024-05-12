@@ -68,12 +68,12 @@ export const OneinkedPost = (url, body) =>{
     return instance.post(url, body);
 }
 
-export const OneinkedGet = (url) => {
-    return instance.get(url);
+export const OneinkedGet = (url, params) => {
+    return instance.get(url, params);
 }
 
-export const OneinkedDelete = (url) =>{
-    return instance.delete(url);
+export const OneinkedDelete = (url, params) =>{
+    return instance.delete(url, params);
 }
 
 export const OneinkedPut = (url, body) =>{
@@ -104,6 +104,8 @@ export const login = async (loginReqParam) =>{
     const loginURL = URL + "/login";
     return OneinkedPost(loginURL, loginReqParam)
     .then((response) => {
+        console.log("Authorization:", response.headers['authorization']);
+        console.log("Refresh-Token:", response.headers['refresh-token']);
         setAccessToken(response.headers['authorization']);
         setRefreshToken(response.headers['refresh-token']);
         return response.data;
@@ -242,3 +244,33 @@ export const deleteComment = async (commentId) =>{
 }
 
 /** Comment API END */
+
+/** Chat API START */
+export const createChat = async (addChatReqParam) =>{
+    const createChatURL = URL + "/api/createChat";
+
+    return OneinkedPost(createChatURL, addChatReqParam)
+        .then((response) => response.data)
+}
+
+export const readChatWithPartner = async (partnerEmail) =>{
+    const readChatWithPartnerURL = URL + "/api/chatWithPartner"
+
+    return OneinkedGet(readChatWithPartnerURL, { params: { partnerEmail } })
+        .then((response) => response.data)
+}
+
+export const updateIsDeleted = async (partnerEmail) => {
+    const updateIsDeletedURL = URL + "/api/updateIsDeleted"
+
+    return OneinkedPut(updateIsDeletedURL, partnerEmail)
+        .then((response) => response.data)
+}
+
+export const deleteChat = async (partnerEmail) => {
+    const deleteChatURL = URL + "/api/deleteChat"
+
+    return OneinkedDelete(deleteChatURL, {parmas: {partnerEmail}})
+        .then((response) => response.data)
+}
+/** Chat API END */

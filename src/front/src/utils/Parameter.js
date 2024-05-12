@@ -142,3 +142,15 @@ export const updateCommentReqParam = (comments) =>{
 }
 
 /** Comment ReqParam END */
+
+/** Chat ReqParam START*/
+export const addChatReqParam = (partnerEmail, contents) =>{
+    const reqParam = {};
+
+    reqParam.partnerEmail = partnerEmail;
+    reqParam.contents = contents;
+
+    return reqParam;
+}
+/** Chat ReqParam END*/
+
