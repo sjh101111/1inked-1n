@@ -10,9 +10,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
+
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +27,11 @@ public class NaverNewsApiService {
     @Value("${naver-key}")
     String naverSecret;
 
-    public String apiRequestUrlGenerator(NaverNewsApiRequest request) throws UnsupportedEncodingException {
-        byte[] urlQuery = request.getQuery().getBytes("UTF-8");//검색어를 UTF-8로 인코딩
+    public String apiRequestUrlGenerator(NaverNewsApiRequest request) {
+        byte[] urlQuery = request.getQuery().getBytes(StandardCharsets.UTF_8);//검색어를 UTF-8로 인코딩
 
         int urlDisplay= 20; // 한 페이지 기사 20개, 총 100개의 기사, 5페이지
-        int urlStart = 20*(request.getPage()-1);//
+        int urlStart = 1+20*(request.getPage()-1);//
         String urlSort = request.getSort();
 
         String requestUrl = "https://openapi.naver.com/v1/search/news.json";//요청 URL
@@ -41,11 +43,12 @@ public class NaverNewsApiService {
         return requestUrl;
     }
 
-    public NaverNewsApiResponse fetchNewsFromNaverAPI(String apiUrl){
+    public NaverNewsApiResponse fetchNewsFromNaverAPI(String apiUrl) throws HttpClientErrorException {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", naverClient);
         headers.set("X-Naver-Client-Secret", naverSecret);
         HttpEntity<String> entity = new HttpEntity<>(headers);
+
 
         ResponseEntity<NaverNewsApiResponse> response = restTemplate.exchange(
                 apiUrl,
@@ -54,10 +57,6 @@ public class NaverNewsApiService {
                 NaverNewsApiResponse.class
         );
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return response.getBody();
-        } else {
-            return null;
-        }
+        return response.getBody();
     }
 }
