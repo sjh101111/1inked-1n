@@ -121,7 +121,7 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, description, file);
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(identity, location, description, file);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -136,7 +136,7 @@ public class UserServiceUnitTest {
 		doReturn(Optional.of(user))
 				.when(userRepository)
 				.findByEmail(email);
-		User returnUser = userService.saveProfile(requestDto);
+		User returnUser = userService.saveProfile(requestDto, user);
 
 		//then
 		assertThat(returnUser.getIdentity()).isEqualTo(identity);
@@ -156,7 +156,7 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, exceedIdentity, location, description, file);
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(exceedIdentity, location, description, file);
 
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
@@ -174,7 +174,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto);
+			userService.saveProfile(requestDto, user);
 		});
 	}
 
@@ -190,7 +190,7 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, exceedLocation, description, file);
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(identity, exceedLocation, description, file);
 
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
@@ -208,7 +208,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto);
+			userService.saveProfile(requestDto, user);
 		});
 	}
 
@@ -225,7 +225,7 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(email, identity, location, exceedDescription, file);
+		SaveProfileRequestDto requestDto = new SaveProfileRequestDto(identity, location, exceedDescription, file);
 
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
@@ -244,7 +244,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.saveProfile(requestDto);
+			userService.saveProfile(requestDto, user);
 		});
 	}
 
@@ -418,7 +418,7 @@ public class UserServiceUnitTest {
 		String email = "tea13st@naver.com";
 		String password = "q2imd!qQ23";
 
-		WithdrawUserRequestDto request = new WithdrawUserRequestDto(email, password, true);
+		WithdrawUserRequestDto request = new WithdrawUserRequestDto(password, true);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -433,7 +433,7 @@ public class UserServiceUnitTest {
 		doReturn(Optional.of(user))
 				.when(userRepository)
 				.findByEmail(email);
-		User returnUser = userService.withDraw(request);
+		User returnUser = userService.withDraw(request, user);
 
 		//then
 		assertThat(returnUser.getId()).isEqualTo(user.getId());
@@ -447,13 +447,21 @@ public class UserServiceUnitTest {
 		String email = "naver.com";
 		String password = "q2imd!qQ23";
 
-		WithdrawUserRequestDto request = new WithdrawUserRequestDto(email, password, true);
-
+		WithdrawUserRequestDto request = new WithdrawUserRequestDto( password, true);
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode(password))
+				.withdraw(false)
+				.build();
 		//when
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.withDraw(request);
+			userService.withDraw(request, user);
 		});
 	}
 
@@ -463,14 +471,23 @@ public class UserServiceUnitTest {
 		//given
 		String email = "test@naver.com";
 		String password = "123qqd";
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode(password))
+				.withdraw(false)
+				.build();
 
-		WithdrawUserRequestDto request = new WithdrawUserRequestDto(email, password, true);
+		WithdrawUserRequestDto request = new WithdrawUserRequestDto(password, true);
 
 		//when
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.withDraw(request);
+			userService.withDraw(request, user);
 		});
 	}
 
@@ -481,7 +498,7 @@ public class UserServiceUnitTest {
 		String email = "test@naver.com";
 		String dtoPassword = "1q!w3Rwmfo123";
 		String userPassword = "q2imd!qQ23";
-		WithdrawUserRequestDto request = new WithdrawUserRequestDto(email, dtoPassword, true);
+		WithdrawUserRequestDto request = new WithdrawUserRequestDto(dtoPassword, true);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -499,7 +516,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, () ->{
-			userService.withDraw(request);
+			userService.withDraw(request, user);
 		});
 	}
 	/**
@@ -661,7 +678,7 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email, file);
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(file);
 		User user = User.builder()
 				.id(GenerateIdUtils.generateUserId())
 				.realname("익명")
@@ -675,7 +692,7 @@ public class UserServiceUnitTest {
 		doReturn(Optional.of(user))
 				.when(userRepository)
 				.findByEmail(email);
-		User returnUser = userService.uploadImage(request);
+		User returnUser = userService.uploadImage(request, user);
 
 		//then
 		assertThat(returnUser.getImage()).isNotNull();
@@ -690,8 +707,16 @@ public class UserServiceUnitTest {
 				"test.png",
 				"image/png",
 				"test".getBytes(StandardCharsets.UTF_8));
-		UploadUserImageRequestDto request = new UploadUserImageRequestDto(email, file);
-
+		UploadUserImageRequestDto request = new UploadUserImageRequestDto(file);
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("1aw9!wWem23"))
+				.withdraw(false)
+				.build();
 		//when
 		doReturn(Optional.empty())
 				.when(userRepository)
@@ -699,7 +724,7 @@ public class UserServiceUnitTest {
 
 		//then
 		assertThrows(IllegalArgumentException.class, ()->{
-			userService.uploadImage(request);
+			userService.uploadImage(request, user);
 		});
 	}
 

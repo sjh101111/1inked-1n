@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @ToString
 public class SaveProfileRequestDto {
-    private String email;
     //100자 제한
     private String identity;
     //50자 제한

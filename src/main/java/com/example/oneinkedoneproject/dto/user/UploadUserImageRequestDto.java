@@ -11,6 +11,5 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UploadUserImageRequestDto {
-    private String email;
     private MultipartFile file;
 }
