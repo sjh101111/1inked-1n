@@ -31,17 +31,15 @@ export const changePasswordReqParam = (email, passwordQuestionId, passwordQuesti
 
 /**
  * @brief 프로필 저장 API는 form데이터 형식을 받으므로 이렇게 변경
- * @param {String} email 
  * @param {String} identity 
  * @param {String} location 
  * @param {String} description 
  * @param {File} file 
  * @returns 
  */
-export const saveProfileReqParam = (email, identity, location, description, file) =>{
+export const saveProfileReqParam = (identity, location, description, file) =>{
     const reqFormData = new FormData();
 
-    reqFormData.append('email', email);
     reqFormData.append('identity', identity);
     reqFormData.append('location', location);
     reqFormData.append('description', description);
@@ -52,13 +50,11 @@ export const saveProfileReqParam = (email, identity, location, description, file
 
 /**
  * 
- * @param {String} email 
  * @param {String} password 
  * @param {Boolean} withdraw 
  */
-export const withdrawReqParam = (email, password, withdraw) =>{
+export const withdrawReqParam = (password, withdraw) =>{
     const reqParam = {};
-    reqParam.email = email;
     reqParam.password = password;
     reqParam.withdraw = withdraw;
 
@@ -67,13 +63,11 @@ export const withdrawReqParam = (email, password, withdraw) =>{
 
 /**
  * multipart/form-data형태로 호출하는 API이므로 
- * @param {String} email 
  * @param {File} file 
  */
-export const userImageUploadReqParam = (email, file) =>{
+export const userImageUploadReqParam = (file) =>{
     const reqFormData = new FormData();
 
-    reqFormData.append('email', email);
     reqFormData.append('file', file);
 
     return reqFormData;

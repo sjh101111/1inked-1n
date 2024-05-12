@@ -78,7 +78,7 @@ const Signup = () =>{
     }
 
     const doLogin = () =>{
-        nevigate("/");
+        nevigate("/login");
     };
 
     return (

@@ -10,7 +10,7 @@ import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import { anchorScrollCallback } from "@/utils/common";
 import { saveProfileReqParam } from "@/utils/Parameter";
-import { fetchUserProfile, saveProfile } from "@/utils/API";
+import { fetchLoginUserProfile, saveProfile } from "@/utils/API";
 
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
@@ -28,7 +28,7 @@ const MyPage = () => {
     const [file, setFile] = useState(null);
 
     useEffect(() =>{
-        fetchUserProfile("dlxogml11235@naver.com")
+        fetchLoginUserProfile()
         .then(async (userInfo) => {
             setUsername(userInfo.realName);
             setIdentity(userInfo.identity);
@@ -46,7 +46,7 @@ const MyPage = () => {
 
     //프로필 변경 사항 저장 API
     const doSaveProfile = () =>{
-        const reqParam = saveProfileReqParam("dlxogml11235@naver.com", identity, location, description, file);
+        const reqParam = saveProfileReqParam(identity, location, description, file);
 
         saveProfile(reqParam)
         .then((response) => {

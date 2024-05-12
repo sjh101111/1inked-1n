@@ -14,7 +14,7 @@ const Resign = () => {
 
     const handleResign = () => {
         //가데이터
-        const reqParam = withdrawReqParam("dlxogml11235@naver.com", currentPassword, true);
+        const reqParam = withdrawReqParam(currentPassword, true);
 
         withdraw(reqParam)
         .then((response) => {

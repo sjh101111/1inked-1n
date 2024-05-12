@@ -112,7 +112,7 @@ export const login = async (loginReqParam) =>{
 
 //비밀번호 찾기 질문 리스트 조회
 /**
- * @returns { {id: String, question: String} Array}
+ * @returns { {id: String, question: String}[]}
  */
 export const fetchPasswordQuestions = async () =>{
     const passwordQuestionURL = URL + "/api/passwordquestion";
@@ -133,10 +133,23 @@ export const changePassword = async (changePasswordReqParam) =>{
     .then((response) => response.data);
 }
 
-export const fetchUserProfile = async (email) =>{
-    const fetchUserProfileURL = URL + `/api/user?email=${email}`;
+/**
+ * @breif 로그인한 유저의 profile data load 
+ */
+export const fetchLoginUserProfile = async () =>{
+    const fetchLoginUserProfileURL = `${URL}/api/user`;
 
-    return OneinkedGet(fetchUserProfileURL)
+    return OneinkedGet(fetchLoginUserProfileURL)
+    .then((response) => response.data);
+}
+
+/**
+ * @breif 다른 유저의 profile data load
+ */
+export const fetchAnotherUserProfile = async (email) =>{
+    const fetchAnotherUserProfileURL = URL + `/api/user?email=${email}`;
+
+    return OneinkedGet(fetchAnotherUserProfileURL)
     .then((response) =>  response.data);
 }
 

@@ -4,6 +4,7 @@ import SearchIcon from "../svg/SearchIcon";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import ArticleDialog from "@/components/ArticleDialog";
+import { logout } from "@/utils/API";
 
 const Header = () =>{
     return (
@@ -39,7 +40,7 @@ const Header = () =>{
                 <ArticleDialog>
                     <Button className="bg-[#6866EB] hover:bg-violet-600">Create</Button>
                 </ArticleDialog>
-                <Button className="bg-[#6866EB] hover:bg-violet-600">Logout</Button>
+                <Button onClick={logout} className="bg-[#6866EB] hover:bg-violet-600">Logout</Button>
             </div>
         </header>
     );
