@@ -4,6 +4,7 @@ import com.example.oneinkedoneproject.domain.Chat;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.chat.AddChatRequestDto;
 import com.example.oneinkedoneproject.dto.chat.ChatResponseDto;
+import com.example.oneinkedoneproject.dto.chat.ChatSummariesDto;
 import com.example.oneinkedoneproject.repository.chat.ChatRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Service
@@ -23,6 +25,40 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     private final UserRepository userRepository;
+
+    public List<ChatSummariesDto> readChatSummaries(User currentUser) {
+        Set<User> partners = chatRepository.findAllUniqueChatPartners(currentUser.getId());// Method to find all unique chat partners
+        List<ChatSummariesDto> summaries = new ArrayList<>();
+
+        List<ChatSummariesDto> chatSummaries = new ArrayList<>();
+
+        for (User partner : partners) {
+            List<ChatResponseDto> chatsWithPartner = readChatWithPartner(currentUser, partner.getEmail());
+            if (!chatsWithPartner.isEmpty()) {
+                ChatResponseDto lastChat = chatsWithPartner.get(chatsWithPartner.size() - 1); // Get the last chat message
+
+                User me;
+                if (currentUser.equals(lastChat.getSendUser())) {
+                    me = currentUser;
+
+                } else {
+                    me = partner;
+                    partner = currentUser;
+                }
+
+                ChatSummariesDto summary = new ChatSummariesDto(
+                        lastChat.getId(),
+                        lastChat.getContents(),
+                        lastChat.getSendAt(),
+                        partner, me,
+                        lastChat.getIsDeletedTo() || lastChat.getIsDeletedFrom()
+                );
+
+                chatSummaries.add(summary);
+            }
+        }
+        return chatSummaries;
+    }
 
     public List<ChatResponseDto> readChatWithPartner(User user, String chatPartnerEmail) {
         User chatPartner = userRepository.findByEmail(chatPartnerEmail).orElseThrow(

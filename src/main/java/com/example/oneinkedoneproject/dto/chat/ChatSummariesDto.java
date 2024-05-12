@@ -12,12 +12,15 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatSummeriesDto {
+public class ChatSummariesDto {
     private String id;
     private String lastMessage;
     private LocalDateTime lastMessageAt;
-    private User partenr;
+    private User partner;
     private User me;
-    private String email;
     private boolean isDeleted;
+
+    public boolean getIdDeleted() {
+        return this.isDeleted;
+    }
 }

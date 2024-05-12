@@ -260,6 +260,13 @@ export const readChatWithPartner = async (partnerEmail) =>{
         .then((response) => response.data)
 }
 
+export const readChatSummaries = async () => {
+    const readChatSummariesURL = URL + "/api/chatSummaries"
+
+    return OneinkedGet(readChatSummariesURL)
+        .then((response) => response.data)
+};
+
 export const updateIsDeleted = async (partnerEmail) => {
     const updateIsDeletedURL = URL + "/api/updateIsDeleted"
 

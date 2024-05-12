@@ -3,6 +3,7 @@ package com.example.oneinkedoneproject.controller.chat;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.chat.AddChatRequestDto;
 import com.example.oneinkedoneproject.dto.chat.ChatResponseDto;
+import com.example.oneinkedoneproject.dto.chat.ChatSummariesDto;
 import com.example.oneinkedoneproject.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+
+    @GetMapping("/api/chatSummaries")
+    public ResponseEntity<List<ChatSummariesDto>> readChatSummaries(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(chatService.readChatSummaries(user));
+    }
 
     @GetMapping("/api/chatWithPartner")
     public ResponseEntity<List<ChatResponseDto>> readChatWithPartner(@AuthenticationPrincipal User user,
