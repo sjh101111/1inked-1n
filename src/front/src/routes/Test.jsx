@@ -18,7 +18,7 @@ import ChatBox from "@/components/ChatBox";
 import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import UserPage from "./UserPage";
-import { fetchUserProfile, saveProfile, withdraw } from "@/utils/API";
+import { fetchLoginUserProfile, saveProfile, withdraw } from "@/utils/API";
 import { saveProfileReqParam, withdrawReqParam } from "@/utils/Parameter";
 
 
@@ -37,19 +37,19 @@ const Test =  () => {
 
     const userProfileDemo = () =>{
 
-        fetchUserProfile(email)
+        fetchLoginUserProfile()
         .then((data) => {console.log(data)});
     }
 
     const userWithdraw = (bool) =>{
-        const reqParam = withdrawReqParam("dlxogml11235@naver.com", "Dlxogml!135", bool);
+        const reqParam = withdrawReqParam("Dlxogml!135", bool);
 
         withdraw(reqParam)
         .then(data => console.log(data));
     }
 
     const saveUserProfile = () =>{
-        const reqParam = saveProfileReqParam(email, "123","서울","ㄷㅈ매럊믇ㄹ",file);
+        const reqParam = saveProfileReqParam("123","서울","ㄷㅈ매럊믇ㄹ",file);
 
         saveProfile(reqParam)
         .then(response => console.log(response));
