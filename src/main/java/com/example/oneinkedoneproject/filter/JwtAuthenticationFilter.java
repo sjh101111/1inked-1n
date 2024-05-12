@@ -37,7 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
 
         final String requestURI = request.getRequestURI();
-        if(requestURI.startsWith("/swagger-ui") || requestURI.startsWith("/v3/api-docs") || "/login".equals(requestURI) || "/".equals(requestURI) ||"/api/user".equals(requestURI)){
+        if(requestURI.startsWith("/swagger-ui")
+                || requestURI.startsWith("/v3/api-docs")
+                || "/login".equals(requestURI)
+                || "/".equals(requestURI)
+                ||"/api/user".equals(requestURI)
+                || requestURI.startsWith("/naver-news")){
             filterChain.doFilter(request, responseParam);
             return;
         }
