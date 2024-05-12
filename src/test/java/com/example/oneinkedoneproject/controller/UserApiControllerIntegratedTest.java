@@ -1,8 +1,10 @@
 package com.example.oneinkedoneproject.controller;
 
 
+import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
+import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.dto.user.ChangePasswordRequestDto;
 import com.example.oneinkedoneproject.dto.user.SignupUserRequestDto;
 import com.example.oneinkedoneproject.dto.user.WithdrawUserRequestDto;
@@ -10,6 +12,7 @@ import com.example.oneinkedoneproject.filter.JwtAuthenticationFilter;
 import com.example.oneinkedoneproject.filter.JwtRefreshTokenFilter;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
+import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +25,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,11 +57,15 @@ public class UserApiControllerIntegratedTest {
     @Autowired
     MockMvc mockMvc;
 
-    @MockBean
-    JwtAuthenticationFilter jwtAuthenticationFilter;
+//    @MockBean
+//    JwtAuthenticationFilter jwtAuthenticationFilter;
+//
+//    @MockBean
+//    JwtRefreshTokenFilter jwtRefreshTokenFilter;
 
-    @MockBean
-    JwtRefreshTokenFilter jwtRefreshTokenFilter;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     private PasswordEncoder encoder;
 
@@ -69,7 +80,8 @@ public class UserApiControllerIntegratedTest {
             .id("1")
             .question("?")
             .build());
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
 
     @Test
@@ -85,17 +97,30 @@ public class UserApiControllerIntegratedTest {
 				.email(email)
 				.password("1aw9!wWem23")
 				.withdraw(false)
+                .grade(Grade.ROLE_BASIC)
 				.build();
         userRepository.save(user);
 
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String accessToken = tokenInfo.getAccessToken();
+
         //when
         ResultActions actions = mockMvc.perform(get("/api/user?email=" + email)
-                .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + accessToken));
+
 
         //then
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("email").value(email));
     }
+
+
 
     @Test
     @DisplayName("유저 프로필 저장 API 통합테스트")
@@ -112,15 +137,25 @@ public class UserApiControllerIntegratedTest {
                 .passwordAnswer("aw")
                 .email(email)
                 .password("1aw9!wWem23")
+                .grade(Grade.ROLE_BASIC)
                 .withdraw(false)
                 .build();
         userRepository.save(user);
 
         MockMultipartFile file = new MockMultipartFile("file", "image.png", "image/png", "<<image>>".getBytes());
 
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String accessToken = tokenInfo.getAccessToken();
+
         //when
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
                 .file(file)
+                .header("Authorization", "Bearer " + accessToken)
                 .param("email",email)
                 .param("identity",identity)
                 .param("location",location)
@@ -172,13 +207,23 @@ public class UserApiControllerIntegratedTest {
                 .passwordAnswer("슾튽훈")
                 .email(email)
                 .password(encoder.encode(password))
+                .grade(Grade.ROLE_BASIC)
                 .withdraw(false)
                 .build();
-        WithdrawUserRequestDto request = new WithdrawUserRequestDto(email, password, isWithdraw);
+        WithdrawUserRequestDto request = new WithdrawUserRequestDto(password, isWithdraw);
         userRepository.save(user);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String accessToken = tokenInfo.getAccessToken();
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/withdraw")
+                        .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(request)));
 
@@ -217,13 +262,23 @@ public class UserApiControllerIntegratedTest {
                 .email(email)
                 .password("123")
                 .withdraw(false)
+                .grade(Grade.ROLE_BASIC)
                 .build();
         MockMultipartFile file = new MockMultipartFile("file", "image.png", "image/png", "<<image>>".getBytes());
         userRepository.save(user);
 
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String accessToken = tokenInfo.getAccessToken();
+
         //when
         ResultActions actions = mockMvc.perform(multipart("/api/user/image")
                 .file(file)
+                .header("Authorization", "Bearer " + accessToken)
                 .param("email",email));
 
         //then

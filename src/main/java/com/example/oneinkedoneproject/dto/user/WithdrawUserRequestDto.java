@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class WithdrawUserRequestDto {
-    private String email;
     private String password;
     private boolean isWithdraw;
 

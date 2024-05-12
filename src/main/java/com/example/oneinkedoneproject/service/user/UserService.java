@@ -41,11 +41,6 @@ public class UserService {
 		//email이 실제 존재하는 유저인가?
 		user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() ->new IllegalArgumentException("not found email matched user"));
 
-		//탈퇴한 유저인지 판단
-		//에러로 던질 것이냐, 활동이 정지된 유저다 표기할것인지
-//		if(user.getWithdraw()){
-//		}
-
 		return user;
 	}
 
@@ -53,29 +48,23 @@ public class UserService {
 	//dto와 file은 multipart/form-data로 분리해서 받는다.
 	//RequestPart 어노테이션 사용
 	@Transactional
-	public User saveProfile(SaveProfileRequestDto requestDto){
+	public User saveProfile(SaveProfileRequestDto requestDto, User authUser){
 		User user = null;
 
-		//1. 이메일 유효성 검증
-		// 정규식 테스트로 스킵
-		if(!regxUtils.emailRegxCheck(requestDto.getEmail())){
-			throw new IllegalArgumentException("email is invalid");
-		}
+		//1. 이메일로 user를 찾았을 때 실제 존재하는 유저인지 확인
+		user = userRepository.findByEmail(authUser.getEmail()).orElseThrow(() ->new IllegalArgumentException("not found email matched user"));
 
-		//2. 이메일로 user를 찾았을 때 실제 존재하는 유저인지 확인
-		user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() ->new IllegalArgumentException("not found email matched user"));
-
-		//3.identity 글자수 제한 확인
+		//2.identity 글자수 제한 확인
 		if(requestDto.getIdentity().length() > MAX_LENGTH_IDENTITY){
 			throw new IllegalArgumentException("identity max length exceed");
 		}
 
-		//4. location 글자수 제한 확인
+		//3. location 글자수 제한 확인
 		if(requestDto.getLocation().length() > MAX_LENGTH_LOCATION){
 			throw new IllegalArgumentException("location max length exceed");
 		}
 
-		//5. description 글자수 제한 확인
+		//4. description 글자수 제한 확인
 		if(requestDto.getDescription().length() > MAX_LENGTH_DESCRIPTION){
 			throw new IllegalArgumentException("description max length exceed");
 		}
@@ -128,19 +117,15 @@ public class UserService {
 
 	//4. 회원 탈퇴
 	@Transactional
-	public User withDraw(WithdrawUserRequestDto requestDto){
+	public User withDraw(WithdrawUserRequestDto requestDto, User authUser){
 		User user;
-		//이메일 정규식 체크
-		if(!regxUtils.emailRegxCheck(requestDto.getEmail())){
-			throw new IllegalArgumentException("email is invalid");
-		}
 
 		//비밀번호 정규식 체크가 올바른지 확인
 		if(!regxUtils.pwdRegxCheck(requestDto.getPassword())){
 			throw new IllegalArgumentException("password is invaild");
 		}
 
-		user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("not found match id by email"));
+		user = userRepository.findByEmail(authUser.getEmail()).orElseThrow(() -> new IllegalArgumentException("not found match id by email"));
 
 		//입력한 인자의 비밀번호가 같지 않다면
 		//String.equals사용하면 안됨! BCryptEncoder는 같은 평문이여도 다른 값을 반환
@@ -193,8 +178,8 @@ public class UserService {
 
 	//6. 유저 사진 업로드
 	@Transactional
-	public User uploadImage(UploadUserImageRequestDto request){
-		String userEmail = request.getEmail();
+	public User uploadImage(UploadUserImageRequestDto request, User authUser){
+		String userEmail = authUser.getEmail();
 		byte[] image = null;
 
 		try{

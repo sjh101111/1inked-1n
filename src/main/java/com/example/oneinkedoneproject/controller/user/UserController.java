@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -19,19 +21,29 @@ public class UserController {
 
     //1. 유저 프로필 조회
     @GetMapping("/api/user")
-    public ResponseEntity<FindUserResponseDto> findUser(@ModelAttribute FindUserRequestDto request){
-        User user = userService.findUser(request);
+    public ResponseEntity<FindUserResponseDto> findUser(@AuthenticationPrincipal User user){
+        //혹여 모를 정보이 stale 경계위한 find
+        User returnUser = userService.findUser(new FindUserRequestDto(user.getEmail()));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new FindUserResponseDto(returnUser));
+    }
+
+    @GetMapping("/api/user/{email}")
+    public ResponseEntity<FindUserResponseDto> findAnotherUser(@PathVariable("email") String email){
+        User user = userService.findUser(new FindUserRequestDto(email));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new FindUserResponseDto(user));
     }
 
+
     //2. 유저 프로필 저장
     @PostMapping("/api/profile")
-    public ResponseEntity<String> saveProfile(@ModelAttribute SaveProfileRequestDto request){
-        User user = userService.saveProfile(request);
+    public ResponseEntity<String> saveProfile(@ModelAttribute SaveProfileRequestDto request, @AuthenticationPrincipal User user){
+        User returnUser = userService.saveProfile(request, user);
 
-        if(user == null){
+        if(returnUser == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("저장에 실패했습니다.");
         }
@@ -56,8 +68,8 @@ public class UserController {
 
     //4. 회원 탈퇴
     @PostMapping("/api/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody WithdrawUserRequestDto request){
-        User user = userService.withDraw(request);
+    public ResponseEntity<String> withdraw(@RequestBody WithdrawUserRequestDto request, @AuthenticationPrincipal User authUser){
+        User user = userService.withDraw(request, authUser);
 
         if(user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -86,8 +98,8 @@ public class UserController {
 
     //6. 유저 사진 업로드
     @PostMapping("/api/user/image")
-    public ResponseEntity<String> uploadImage(@ModelAttribute UploadUserImageRequestDto request){
-        User user = userService.uploadImage(request);
+    public ResponseEntity<String> uploadImage(@ModelAttribute UploadUserImageRequestDto request, @AuthenticationPrincipal User authUser){
+        User user = userService.uploadImage(request, authUser);
 
        if(user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
