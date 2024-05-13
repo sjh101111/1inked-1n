@@ -1,6 +1,7 @@
 package com.example.oneinkedoneproject.domain;
 
 
+import com.example.oneinkedoneproject.dto.user.FindUserResponseDto;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
 import lombok.*;
@@ -126,4 +127,15 @@ public class User implements UserDetails {
 
 
     public void updateDescription(String description){ this.description = description; }
+
+    public FindUserResponseDto toUserInfoDto(){
+        return FindUserResponseDto.builder()
+            .realName(realname)
+            .email(email)
+            .identity(identity)
+            .location(location)
+            .description(description)
+            .image(image)
+            .build();
+    }
 }

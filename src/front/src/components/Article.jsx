@@ -6,15 +6,34 @@ import { AlertDialog, AlertDialogTrigger, AlertDialogContent,AlertDialogHeader, 
 import { GenerateLiElUUID } from "@/utils/common";
 import CommentCircleIcon from "./svg/CommentCircleIcon";
 import { Comment } from "./Comment";
+import { useEffect, useState } from "react";
+import { MessageCircleIcon, MessageCircleOffIcon } from "lucide-react";
 
-const Article = (props) =>{
+const Article = ({id, content, createdAt, updatedAt, images, user}) =>{
+    const [commentVisibility, setCommentVisibility] = useState(false);
+    const [profilePic, setProfilePic] = useState("");
+
+    useEffect(() =>{
+        //유저 프로필 이미지가 있다면
+        if(user.image){
+            setProfilePic(`data:image/png;base64,${user.image}`);
+        }
+        
+        //content설정
+
+    },[]);
+
+    const toggleCommentVisibility = () =>{
+        setCommentVisibility(!commentVisibility);
+    }
+
     return (
         <Card key={GenerateLiElUUID()}>
             <CardHeader className="flex-row justify-between">
                 <div className="flex items-center gap-4">
                     <Avatar className="w-20 h-20">
-                        <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
-                        <AvatarFallback>hi</AvatarFallback>
+                        <AvatarImage alt="유저 프로필이미지" src={}/>
+                        <AvatarFallback></AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col justify-center">
                         <h2 className="font-bold text-lg">username</h2>
@@ -50,9 +69,9 @@ const Article = (props) =>{
                     <span className="mt-2">2024.04.29 15:00</span>
                 </div>
             </CardHeader>
-            <CardContent className="p-16">
+            <CardContent className="p-8">
                 <span>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas fuga earum aspernatur ea minus sint voluptatibus voluptates quam aliquid! Placeat, tempora. Corrupti sequi maiores assumenda ullam quasi nesciunt iure quod?
+                   {content} 
                 </span>
                 <ul className="mt-4 list-none grid grid-cols-3 justify-items-center gap-4">
                     <li className="w-[200px] h-[200px] bg-slate-400"></li>
@@ -63,12 +82,25 @@ const Article = (props) =>{
                 </ul>
             </CardContent>
             <CardFooter className="border-t p-3 pl-4 flex gap-4 items-center">
-                <div className="flex items-center mt-1 gap-2 space-x-1 text-sm text-gray-500 cursor-pointer">
-                    <CommentCircleIcon className={`h-6 w-6`} />
-                    댓글보기
+                <div onClick={toggleCommentVisibility} className="flex items-center mt-1 gap-2 space-x-1 text-sm text-gray-500 cursor-pointer">
+                    {
+                        commentVisibility ? 
+                        <>
+                            <MessageCircleOffIcon className={`h-6 w-6`}></MessageCircleOffIcon> 
+                            댓글 닫기
+                        </> :
+                        <>
+                            <MessageCircleIcon className={`h-6 w-6`} />
+                            댓글 보기
+                        </>
+                    }
                 </div>
             </CardFooter>
-            <Comment></Comment>
+            {
+                commentVisibility ? 
+                <Comment articleId={id}></Comment> :
+                <></>
+            }
        </Card> 
     );
 };
