@@ -41,9 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 || requestURI.startsWith("/v3/api-docs")
                 || "/login".equals(requestURI)
                 || "/".equals(requestURI)
-                ||"/api/user".equals(requestURI)
-                || requestURI.startsWith("/naver-news")
-                || "/naver-news/blah".equals(requestURI)){
+                ||"/api/user".equals(requestURI)){
             filterChain.doFilter(request, responseParam);
             return;
         }
