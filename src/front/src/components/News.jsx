@@ -1,13 +1,11 @@
 import React from 'react';
 
-const News = ({ title, description, originallink, pubDate })=> {
+const News = ({ title, description, link})=> {
     return (
-        <div>
-            <h3>
-                <a href={originallink} >{title}</a>
-            </h3>
-            <p>{description}</p>
-            <p className = "opacity-70">{pubDate}</p>
+        <div className="flex flex-col border border-grey rounded-md ">
+            <h1 className ="text-lg font-medium text-[#6866EB]"><a href ={link}> {title}  </a></h1>
+            <p  className = "font-light" dangerouslySetInnerHTML={{ __html:description}}></p>
+
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import News from '../components/News';
-import Header from '../components/Layout/Header'
+import Header from "@/components/Layout/Header.jsx";
+import { fetchNewsItems } from "../utils/API"
 import {
     Select,
     SelectContent,
@@ -13,23 +13,22 @@ import { Button } from "@/components/ui/button"
 
 function NewsPage() {
     const [newsItems, setNewsItems] = useState([]);
-    const [newsQuery, setNewsQuery] = useState(`시사, 경제 ,IT`)
-    const [newsDisplay, setNewsDisplay] = useState(20);
-    const [newsStart, setNewsStart] = useState(1);
+    const [newsQuery, setNewsQuery] = useState(`IT`)
+    const [newsPage, setNewsPage] = useState(1);
     const [newsSort, setNewsSort] = useState(`date`)
 
 
 
     const handleSortChange = (event) => {
-        setNewsStart(1);
-        setNewsSort(event.target.value);
-        fetchNews();
+        setNewsPage(1);
+        setNewsSort(event);
+        //fetchNews();
     };
 
     const handleQueryChange = (event) => {
-        setNewsStart(1);
-        setNewsQuery(event.target.value);
-        fetchNews();
+        setNewsPage(1);
+        setNewsQuery(event);
+       // fetchNews();
     };
     //API에서 뉴스 가져오는거
     useEffect(() => {
@@ -37,26 +36,29 @@ function NewsPage() {
     }, []);
 
     const seeMore = () => {
-        setNewsStart(newsStart += 20);
+        setNewsPage(newsPage + 1);
         fetchNews(true);
+    }
+
+    const serchNews =() =>{
+        setNewsItems([]);
+        fetchNews();
     }
 
     const fetchNews = async (append = false) => {
         try {
             const params = {
+                query: newsQuery,
+                page: newsPage,
                 sort: newsSort,
-                display: newsDisplay,
-                start: newsStart,
-                query: newsQuery
             };
 
-            const response = await axios.get('URL_TO_YOUR_NEWS_API', { params });
+            const response = await fetchNewsItems(params);
 
-            const newItems = response.data.item;
             if (append) {
-                setNewsItems(prev => [...prev, ...newItems]);
+                setNewsItems(prev => [...(prev || []), ...response]);
             } else {
-                setNewsItems(newItems);
+                setNewsItems(response);
             }
         } catch (error) {
             console.error('Error fetching news:', error);
@@ -67,7 +69,7 @@ function NewsPage() {
         <div>
             <Header />
             <div className="flex">
-                <Select onChange={handleSortChange}>
+                <Select onValueChange={handleSortChange}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="정렬" />
                     </SelectTrigger>
@@ -77,7 +79,7 @@ function NewsPage() {
                     </SelectContent>
                 </Select>
 
-                <Select onChange={handleQueryChange}>
+                <Select onValueChange={handleQueryChange}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="키워드" />
                     </SelectTrigger>
@@ -87,23 +89,20 @@ function NewsPage() {
                         <SelectItem value="IT">IT</SelectItem>
                     </SelectContent>
                 </Select>
-                <Button onClick={seeMore} className="bg-[#6866EB] w-48 hover:bg-violet-600">
+                <Button onClick={serchNews} className="bg-[#6866EB] w-48 hover:bg-violet-600">
                     조건에 맞는 기사 찾기
                 </Button>
             </div>
 
-            <div className="flex flex-col items-center">
-
-
-                <article>
-                    {newsItems ? (
+            <div className="flex flex-col items-center gap-4">
+                <article className=" ">
+                    {newsItems.length > 0 ? (
                         newsItems.map((item, index) => (
                             <News
                                 key={index}
                                 title={item.title}
                                 description={item.description}
-                                originallink={item.originallink}
-                                pubDate={item.pubDate}
+                                link={item.link}
                             />
                         ))
                     ) : (
