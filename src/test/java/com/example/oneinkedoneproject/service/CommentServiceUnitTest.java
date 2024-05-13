@@ -1,9 +1,7 @@
 package com.example.oneinkedoneproject.service;
 
-import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
-import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
 import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
@@ -11,8 +9,6 @@ import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.comment.CommentService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
-import org.assertj.core.api.Assertions;
-import org.hibernate.sql.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,15 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.InstanceOfAssertFactories.optional;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -67,7 +61,7 @@ public class CommentServiceUnitTest {
                 .build())
         ).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         Comment comment = Comment.builder()
                 .id(GenerateIdUtils.generateCommentId())
@@ -93,7 +87,7 @@ public class CommentServiceUnitTest {
         // given
         doReturn(Optional.empty()).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         // when
         assertThatThrownBy(() -> commentService.save(null, "123", addCommentRequestDto)).isInstanceOf(IllegalArgumentException.class);
@@ -146,9 +140,9 @@ public class CommentServiceUnitTest {
 
 
         // when
-        List<Comment> rootCommentList = commentService.getRootComments(articleId);
+        List<Comment> rootCommentList = commentService.getComments(articleId);
         // then
-        assertThat(rootCommentList.size()).isEqualTo(1);
+        assertThat(rootCommentList.size()).isEqualTo(4);
         assertThat(rootCommentList.get(0).getComments()).isEqualTo(comments);
     }
 

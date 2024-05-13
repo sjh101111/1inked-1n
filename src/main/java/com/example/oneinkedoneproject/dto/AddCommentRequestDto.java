@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddCommentRequestDto {
     private String comments;
+    private String parentId;
 
-    public Comment toEntity(User user, Article article) {
+    public Comment toEntity(User user, Article article, Comment parentComment) {
         return Comment.builder()
                 .id(GenerateIdUtils.generateCommentId())
                 .comments(comments)
+                .parent(parentComment)
                 .user(user)
                 .article(article)
                 .build();
