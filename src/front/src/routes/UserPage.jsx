@@ -1,20 +1,39 @@
 import Header from "@/components/Layout/Header.jsx";
 import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar.jsx";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import ChatDialog from "@/components/ChatDialog";
 import { Send } from "lucide-react";
 import { anchorScrollCallback } from "@/utils/common";
+import { fetchAnotherUserProfile } from "@/utils/API";
 
 const UserPage = () => {
+    //route 변경시, 값 전달위한 파라미터
+    const {state} = useLocation();
+
     const [profilePic, setProfilePic] = useState('');
     const [identity, setIdentity] = useState('Student');
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
     const [username, setUsername] = useState('Username');
     const [isFollow, setFollow] = useState(false);
+
+    useEffect(() =>{
+        //user Email 조회
+        const queryEmail = state?.email || "dlxogml11235@naver.com";
+
+        fetchAnotherUserProfile(queryEmail)
+        .then(async (userInfo) =>{
+            setUsername(userInfo.realName);
+            setIdentity(userInfo.identity);
+            setLocation(userInfo.location);
+            setDescription(userInfo.description);
+
+            setProfilePic(`data:image/png;base64,${userInfo.image}`);
+        });
+    },[]);
 
     return (
         <>
@@ -36,7 +55,7 @@ const UserPage = () => {
                                 <Button className="text-sm text-black/65 bg-[#6866EB] hover:bg-violet-600" variant="ghost">FOLLOW</Button> :
                                 <Button className="text-sm text-black/65 bg-slate-400 hover:bg-slate-300" variant="ghost">UNFOLLOW</Button>
                             }
-                            <ChatDialog>
+                            <ChatDialog partnereamil={state?.email}>
                                 <Button variant="ghost">
                                     <Send className="mr-2 w-4 h-4" /> 쪽지 보내기
                                 </Button>
