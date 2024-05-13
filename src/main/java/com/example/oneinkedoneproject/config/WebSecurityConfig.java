@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
-        return web -> web.ignoring().requestMatchers("/static/**","/css/**", "/js/**", "/media/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/naver-news/**");
+        return web -> web.ignoring().requestMatchers("/static/**","/css/**", "/js/**", "/media/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html");
     }
     
     @Bean
@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/user",
                                 //"/login", "/signup", "/user", "/findId", "/findPw", "/user/find/id","/user/find/email", "/user/find/pw" , "/api/v1/auth/**")
-                                "/login","/").permitAll()
+                                "/login","/","/naver-news/**").permitAll()
                         .anyRequest().authenticated())
                 .csrf(auth -> auth.disable())
                 .sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않도록 설정
