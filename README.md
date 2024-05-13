@@ -5,6 +5,7 @@
 <img alt="react" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/>  
 <img alt="HTML" src ="https://img.shields.io/badge/html5-E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white"/>  
 <img alt="CSS" src ="https://img.shields.io/badge/css3-1572B6.svg?&style=for-the-badge&logo=css3&logoColor=white"/>  
+<img alt="JavaScript" src ="https://img.shields.io/badge/JavaScript-F7DF1E.svg?&style=for-the-badge&logo=javascript&logoColor=black"/>  
 <img alt="tailwind" src ="https://img.shields.io/badge/tailwind-06B6D4.svg?&style=for-the-badge&logo=tailwindcss&logoColor=white"/>  
 <img alt="shadcn-ui" src ="https://img.shields.io/badge/shadcn/ui-000000.svg?&style=for-the-badge&logo=shadcnui&logoColor=white"/>  
 <img alt="SpringBoot" src ="https://img.shields.io/badge/Spring Boot-6DB33F.svg?&style=for-the-badge&logo=Spring Boot&logoColor=white"/>  
@@ -29,7 +30,7 @@
 ****
 
 ### 1. 💻 개발 환경
-- 프론트엔드: React, HTML, CSS, tailwind, shadcn-ui
+- 프론트엔드: React, HTML, CSS, JavaScript, tailwind, shadcn-ui
 - 백엔드: Spring Boot, Hibernate,
 - DB: MySQL
 - 배포 및 클라우드: AWS EC2, AWS S3, AWS RDS
@@ -50,7 +51,7 @@
 ## 🏭 시스템 구성도
 
 <p align="center">
-  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/68a048e7-7431-4338-92ed-e08eb9814e1e">
+  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8813c156-ae24-4328-8c67-2938730e812d">
 </p>
 
 ## 🍻 ERD 구성도
