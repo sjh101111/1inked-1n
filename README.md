@@ -49,6 +49,10 @@
 
 ## 🏭 시스템 구성도
 
+<p align="center">
+  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/68a048e7-7431-4338-92ed-e08eb9814e1e">
+</p>
+
 ## 🍻 ERD 구성도
 
 <p align="center">
