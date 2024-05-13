@@ -1,4 +1,5 @@
 import { Cookies } from "react-cookie";
+import base64 from "base-64";
 
 const cookies = new Cookies();
 
@@ -59,4 +60,10 @@ export const removeAccessToken = () =>{
 
 export const removeRefreshToken = () =>{
     cookies.remove('refresh_token');
+}
+
+export const getAccessTokenInfo = () =>{
+    const token = getAccessToken().split(" ")[1];
+    const payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+    return base64.decode(payload);
 }

@@ -177,7 +177,7 @@ public class ArticleControllerUnitTest {
 
         ArticleResponseDto articleResponseDto = ArticleResponseDto.builder().id(article.getId()).contents(updateArticleRequestDto.getContents())
                 .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
-                .images(updatedimages.stream().map(x->x.toDto()).toList()).user(article.getUser()).build();
+                .images(updatedimages.stream().map(x->x.toDto()).toList()).user(article.getUser().toUserInfoDto()).build();
 
         Mockito.doReturn(articleResponseDto).when(articleService).updateArticle(any(String.class), any(UpdateArticleRequestDto.class));
 

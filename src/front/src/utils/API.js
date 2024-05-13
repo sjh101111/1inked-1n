@@ -212,14 +212,14 @@ export const readMainFeedArticles = async () =>{
 }
 
 export const updateArticle = async (articleId, updateArticleReqParam) =>{
-    const updateArticleURL = URL + `${articleId}`;
+    const updateArticleURL = `${URL}/api/article/${articleId}`;
 
     return OneinkedMultipart(updateArticleURL, updateArticleReqParam, true)
     .then((response) => response.data);
 }
 
 export const deleteArticle = async (articleId) =>{
-    const deleteArticleURL = URL + `${articleId}`;
+    const deleteArticleURL = `${URL}/api/article/${articleId}`;
 
     return OneinkedDelete(deleteArticleURL)
     .then((response) => response.data);

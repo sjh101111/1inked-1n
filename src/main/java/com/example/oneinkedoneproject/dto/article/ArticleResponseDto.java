@@ -4,6 +4,8 @@ import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Image;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.image.ImageResponseDto;
+import com.example.oneinkedoneproject.dto.user.FindUserResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +24,6 @@ public class ArticleResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<ImageResponseDto> images;
-    private User user;
-    private List<Comment> comments;
+    // private User user;
+    private FindUserResponseDto user;
 }

@@ -104,7 +104,7 @@ export const updateArticleReqParam = (contents, files) =>{
     reqFormData.append('contents', contents)
     
     files.forEach(file =>{
-        reqFormData.append('file', file);
+        reqFormData.append('files', file);
     });
 
     return reqFormData;

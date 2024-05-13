@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+@Builder
 public class FindUserResponseDto {
     private String realName;
     private String email;
