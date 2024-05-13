@@ -10,6 +10,7 @@ import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
 import PasswordFind from "./routes/PasswordFind";
 import Resign from "./routes/Resign";
+import Resume from "@/routes/Resume.jsx";
 
 
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/userpage",
         element: <UserPage></UserPage>
+      },
+      {
+        path: "/resume",
+        element: <Resume></Resume>
       },
       {
         path: "/test",

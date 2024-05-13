@@ -148,3 +148,12 @@ export const addChatReqParam = (partnerEmail, contents) =>{
 }
 /** Chat ReqParam END*/
 
+/** Resume ReqParam START*/
+export const addResumeReqParam = (contents) => {
+    const reqParam = {};
+    reqParam.contents = contents;
+
+    return reqParam;
+}
+/** Resume ReqParam END*/
+
