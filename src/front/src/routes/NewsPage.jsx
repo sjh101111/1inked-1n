@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import News from '../components/News';
-import Header from '../components/Layout/Header'
+import Header from "@/components/Layout/Header.jsx";
+import {fetchNewsItems} from "../utils/API"
 import {
     Select,
     SelectContent,
@@ -13,21 +14,20 @@ import { Button } from "@/components/ui/button"
 
 function NewsPage() {
     const [newsItems, setNewsItems] = useState([]);
-    const [newsQuery, setNewsQuery] = useState(`시사, 경제 ,IT`)
-    const [newsDisplay, setNewsDisplay] = useState(20);
-    const [newsStart, setNewsStart] = useState(1);
+    const [newsQuery, setNewsQuery] = useState(`시사`)
+    const [newsPage, setNewsPage] = useState(1);
     const [newsSort, setNewsSort] = useState(`date`)
 
 
 
     const handleSortChange = (event) => {
-        setNewsStart(1);
+        setNewsPage(1);
         setNewsSort(event.target.value);
         fetchNews();
     };
 
     const handleQueryChange = (event) => {
-        setNewsStart(1);
+        setNewsPage(1);
         setNewsQuery(event.target.value);
         fetchNews();
     };
@@ -37,22 +37,21 @@ function NewsPage() {
     }, []);
 
     const seeMore = () => {
-        setNewsStart(newsStart += 20);
+        setNewsPage(newsPage + 1);
         fetchNews(true);
     }
 
     const fetchNews = async (append = false) => {
         try {
             const params = {
+                query: newsQuery,
+                page: newsPage,
                 sort: newsSort,
-                display: newsDisplay,
-                start: newsStart,
-                query: newsQuery
             };
 
-            const response = await axios.get('URL_TO_YOUR_NEWS_API', { params });
-
-            const newItems = response.data.item;
+            const response = await fetchNewsItems(params);
+            
+            const newItems = response.item;
             if (append) {
                 setNewsItems(prev => [...prev, ...newItems]);
             } else {
@@ -102,8 +101,7 @@ function NewsPage() {
                                 key={index}
                                 title={item.title}
                                 description={item.description}
-                                originallink={item.originallink}
-                                pubDate={item.pubDate}
+                                link={item.link}
                             />
                         ))
                     ) : (
