@@ -10,6 +10,7 @@ import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
 import PasswordFind from "./routes/PasswordFind";
 import Resign from "./routes/Resign";
+import NewsPage from "./routes/NewsPage";
 
 
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "/test",
         element: <Test></Test>
+      },
+      {
+        path: "/newspage",
+        element: <NewsPage></NewsPage>
       }
 ]);
 
