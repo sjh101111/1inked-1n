@@ -44,7 +44,11 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/user",
+                                "/api/user", "/api/user",
+                                "/api/passwordquestion",
+                                "/api/password",
+                                "/api/withdraw",
+                                "/api/profile",
                                 //"/login", "/signup", "/user", "/findId", "/findPw", "/user/find/id","/user/find/email", "/user/find/pw" , "/api/v1/auth/**")
                                 "/login","/").permitAll()
                         .anyRequest().authenticated())
@@ -76,4 +80,5 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }

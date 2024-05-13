@@ -117,7 +117,7 @@ public class ChatServiceTest {
         // Mock chat received by the user
         List<Chat> receiveChatList = List.of(receivechat);
         Mockito.doReturn(receiveChatList).when(chatRepository).findAllBySendUserAndReceiverUser(partner, user);
-        chatService.updateIsDeletedOfChat(user, partner.getEmail());
+        chatService.updateIsDeletedOfChat(user,  partner.getEmail());
         assertThat(sendchat.isDeletedFrom()).isEqualTo(true);
         assertThat(receivechat.isDeletedTo()).isEqualTo(true);
     }
