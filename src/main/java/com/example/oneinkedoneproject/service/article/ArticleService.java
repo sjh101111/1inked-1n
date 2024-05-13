@@ -42,15 +42,16 @@ public class ArticleService {
                 .imageList(images)
                 .user(user)
                 .build();
+        Article savedArticle = articleRepository.save(article);
 
         // 2. MultipartFile에서 Image 엔티티 생성 및 Article에 추가
         if (addArticleRequestDto.getFiles() != null && !addArticleRequestDto.getFiles().isEmpty()) {
             try {
                 for (MultipartFile file : addArticleRequestDto.getFiles()) {
                     Image image = Image.builder()
-                            .img(file.getBytes()).article(article)
+                            .img(file.getBytes()).article(savedArticle)
                             .build();
-                    article.addImage(image); // 편의 메서드로 Article에 Image 추가
+                    savedArticle.addImage(image); // 편의 메서드로 Article에 Image 추가
                     // 이후 용도로 저장;
                 }
             } catch (IOException e) {
@@ -59,7 +60,7 @@ public class ArticleService {
         }
 
         // 3. 최종 Article을 저장하여 이미지와 연결
-        Article savedArticle = articleRepository.save(article);
+//        articleRepository.save(savedArticle);
 //        saveArticleImages(images, savedArticle);
         return savedArticle.toDto();
     }
@@ -112,7 +113,7 @@ public class ArticleService {
         updatedArticle.getImageList().clear();
         List<Image> images = new ArrayList<>();
         if (updateArticleRequestDto.getFiles() != null && !updateArticleRequestDto.getFiles().isEmpty()) {
-            imageRepository.deleteByArticleId(updatedArticle.getId());
+//            imageRepository.deleteByArticleId(updatedArticle.getId());
             try {
                 for (MultipartFile file : updateArticleRequestDto.getFiles()) {
                     Image image = Image.builder()

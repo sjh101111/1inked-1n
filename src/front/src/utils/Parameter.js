@@ -104,7 +104,7 @@ export const updateArticleReqParam = (contents, files) =>{
     reqFormData.append('contents', contents)
     
     files.forEach(file =>{
-        reqFormData.append('file', file);
+        reqFormData.append('files', file);
     });
 
     return reqFormData;
@@ -136,3 +136,24 @@ export const updateCommentReqParam = (comments) =>{
 }
 
 /** Comment ReqParam END */
+
+/** Chat ReqParam START*/
+export const addChatReqParam = (partnerEmail, contents) =>{
+    const reqParam = {};
+
+    reqParam.partnerEmail = partnerEmail;
+    reqParam.contents = contents;
+
+    return reqParam;
+}
+/** Chat ReqParam END*/
+
+/** Resume ReqParam START*/
+export const addResumeReqParam = (contents) => {
+    const reqParam = {};
+    reqParam.contents = contents;
+
+    return reqParam;
+}
+/** Resume ReqParam END*/
+

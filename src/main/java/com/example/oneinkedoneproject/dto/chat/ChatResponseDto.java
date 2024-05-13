@@ -20,6 +20,9 @@ public class ChatResponseDto {
     private LocalDateTime sendAt;
     private User sendUser;
     private User receiveUser;
+    private User me;
+    private User partner;
+    private boolean isDeleted;
 
     //isSomething 불리언 값 직렬화 시 getter가 is를 빼서 반환하는 문제 해결
     public boolean getIsDeletedTo() {
@@ -28,5 +31,9 @@ public class ChatResponseDto {
 
     public boolean getIsDeletedFrom() {
         return this.isDeletedFrom;
+    }
+
+    public boolean getIsDeleted() {
+        return this.isDeleted;
     }
 }

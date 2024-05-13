@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { GlobalContext } from "..";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button"
+import MainFeed from "./MainFeed";
+import { getAccessToken } from "@/utils/Cookie";
 
 
 const Main = () =>{
@@ -13,6 +15,11 @@ const Main = () =>{
 
     //초기 설정
     useEffect(() =>{
+        setLogin(getAccessToken() ? true : false);
+    },[]);
+
+    useEffect(() =>{
+
     },[isLogin]);
 
     const doLogin = () =>{
@@ -25,7 +32,7 @@ const Main = () =>{
 
     return (
         isLogin ?
-        <div>로그인 된거</div> :
+        (<MainFeed></MainFeed>) : 
         (<main className="flex h-screen">
             <section className=" flex-grow-[6] bg-[#6866EB] px-16 py-24 text-white">
                 <h1 className="text-6xl font-bold">1inked 1n</h1>

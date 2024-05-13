@@ -9,9 +9,12 @@ const ArticleDialog = (props) =>{
         btnText: "생성",
         clickCallback: () =>{
             const file = [...document.getElementById('picture').files];
+
+            console.log(file);
             alert("save!")
         },
         initFn: () => {}
+
     }
 
     return (

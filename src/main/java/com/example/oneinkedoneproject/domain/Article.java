@@ -2,6 +2,7 @@ package com.example.oneinkedoneproject.domain;
 
 import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.image.ImageResponseDto;
+import com.example.oneinkedoneproject.dto.user.FindUserResponseDto;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -56,7 +57,7 @@ public class Article {
     private List<Comment> commentList = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -72,6 +73,7 @@ public class Article {
     public ArticleResponseDto toDto() {
         return ArticleResponseDto.builder().id(id)
                 .contents(contents).createdAt(createdAt)
+                .user(user.toUserInfoDto())
                 .updatedAt(updatedAt).images(imageList.stream().map(
                         x -> x.toDto()
                 ).toList())
