@@ -68,15 +68,15 @@ export const OneinkedPost = (url, body) =>{
     return instance.post(url, body);
 }
 
-export const OneinkedGet = (url, params) => {
+export const OneinkedGet = (url, params = {}) => {
     return instance.get(url, params);
 }
 
-export const OneinkedDelete = (url, params) =>{
+export const OneinkedDelete = (url, params = {}) =>{
     return instance.delete(url, params);
 }
 
-export const OneinkedPut = (url, body, params) =>{
+export const OneinkedPut = (url, body, params = {}) =>{
     return instance.put(url, body, params);
 }
 
