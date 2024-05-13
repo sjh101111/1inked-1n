@@ -294,3 +294,23 @@ export const deleteChat = async (partnerEmail) => {
         .then((response) => response.data)
 }
 /** Chat API END */
+
+/** Allen Ai Api START */
+export const getReviewedResumeByAllenAI = async (client_id, content) => {
+    const getReviewedResumeURL = URL + "/api/resumeReview"
+    const params = {
+        client_id: client_id,
+        content: content
+    };
+    return OneinkedGet(getReviewedResumeURL, {params})
+        .then((response) => response.data)
+}
+/** Allen Ai Api END */
+
+/** Resume API START */
+export const saveResume = async (addResumeRequestDto) => {
+    const saveResumeURL = URL + "/api/resume"
+
+    return OneinkedPost(saveResumeURL, addResumeRequestDto)
+        .then((response) => response.data)
+}
