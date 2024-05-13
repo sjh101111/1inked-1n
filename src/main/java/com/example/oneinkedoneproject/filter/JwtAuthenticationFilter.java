@@ -50,12 +50,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 //            return;
 //        }
 
-        if (requestURI.startsWith("/api")) {
+        if ("/api/passwordquestion".equals(requestURI)) {
             filterChain.doFilter(request, responseParam);
             return;
         }
-
-
 
         this.response = responseParam;
 
@@ -90,7 +88,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             return;
         }
 
-        if(SecurityContextHolder.getContext().getAuthentication()==null) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || jwtService.isTokenExpired(jwt)) { //유저의 이메일이 존재하면서 유저가 인증받지 않았다면
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail); //유저 디테일 클래스 생성
             try {
                 if (jwtService.isTokenValid(jwt, userDetails)) { //토큰이 valid하다면
@@ -118,6 +118,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             }
         }
         filterChain.doFilter(request, response);
+
+
     }
 
     private void createUnauthorizedResponse(int httpResponse, String error, String message) throws IOException {

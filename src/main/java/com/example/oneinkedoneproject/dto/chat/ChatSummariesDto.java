@@ -20,7 +20,7 @@ public class ChatSummariesDto {
     private User me;
     private boolean isDeleted;
 
-    public boolean getIdDeleted() {
+    public boolean getIsDeleted() {
         return this.isDeleted;
     }
 }

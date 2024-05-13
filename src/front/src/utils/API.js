@@ -76,8 +76,8 @@ export const OneinkedDelete = (url, params) =>{
     return instance.delete(url, params);
 }
 
-export const OneinkedPut = (url, body) =>{
-    return instance.put(url, body);
+export const OneinkedPut = (url, body, params) =>{
+    return instance.put(url, body, params);
 }
 
 export const OneinkedPatch = (url, body) =>{
@@ -270,14 +270,14 @@ export const readChatSummaries = async () => {
 export const updateIsDeleted = async (partnerEmail) => {
     const updateIsDeletedURL = URL + "/api/updateIsDeleted"
 
-    return OneinkedPut(updateIsDeletedURL, partnerEmail)
+    return OneinkedPut(updateIsDeletedURL,{}, {params : {partnerEmail}})
         .then((response) => response.data)
 }
 
 export const deleteChat = async (partnerEmail) => {
     const deleteChatURL = URL + "/api/deleteChat"
 
-    return OneinkedDelete(deleteChatURL, {parmas: {partnerEmail}})
+    return OneinkedDelete(deleteChatURL, {params: {partnerEmail}})
         .then((response) => response.data)
 }
 /** Chat API END */

@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -28,7 +25,6 @@ public class ChatService {
 
     public List<ChatSummariesDto> readChatSummaries(User currentUser) {
         Set<User> partners = chatRepository.findAllUniqueChatPartners(currentUser.getId());// Method to find all unique chat partners
-        List<ChatSummariesDto> summaries = new ArrayList<>();
 
         List<ChatSummariesDto> chatSummaries = new ArrayList<>();
 
@@ -37,23 +33,22 @@ public class ChatService {
             if (!chatsWithPartner.isEmpty()) {
                 ChatResponseDto lastChat = chatsWithPartner.get(chatsWithPartner.size() - 1); // Get the last chat message
 
-                User me;
-                if (currentUser.equals(lastChat.getSendUser())) {
-                    me = currentUser;
-
+                User chatPartner = lastChat.getSendUser().getEmail().equals(currentUser.getEmail()) ? lastChat.getReceiveUser() : lastChat.getSendUser();
+                ChatResponseDto firstChatForIsDeleted = chatsWithPartner.get(0);
+                boolean isDeleted;
+                if (currentUser.getEmail().equals(firstChatForIsDeleted.getSendUser().getEmail())) {
+                    // currentUser is the sender, check if they have deleted the message
+                    isDeleted = firstChatForIsDeleted.getIsDeletedFrom();
                 } else {
-                    me = partner;
-                    partner = currentUser;
+                    // currentUser is not the sender, thus the receiver, check if they have deleted the message
+                    isDeleted = firstChatForIsDeleted.getIsDeletedTo();
                 }
 
-                ChatSummariesDto summary = new ChatSummariesDto(
-                        lastChat.getId(),
-                        lastChat.getContents(),
-                        lastChat.getSendAt(),
-                        partner, me,
-                        lastChat.getIsDeletedTo() || lastChat.getIsDeletedFrom()
-                );
-
+                ChatSummariesDto summary = ChatSummariesDto.builder().
+                id(lastChat.getId()).lastMessage(lastChat.getContents()).lastMessageAt(lastChat.getSendAt())
+                        .isDeleted(isDeleted).me(currentUser).partner(chatPartner).build();
+                System.out.println(chatPartner.getEmail() + currentUser.getEmail() + lastChat.getSendUser().getEmail()
+                + lastChat.getReceiveUser().getEmail());
                 chatSummaries.add(summary);
             }
         }
@@ -65,9 +60,18 @@ public class ChatService {
                 () ->new IllegalArgumentException("이메일에 해당하는 유저가 없습니다" + chatPartnerEmail)
         );
         List<ChatResponseDto> sendChat = chatRepository.findAllBySendUserAndReceiverUser(user, chatPartner)
-                .stream().map(chat -> chat.toDto()).toList();
+                .stream().map(chat -> ChatResponseDto.builder().
+                        id(chat.getId()).sendAt(chat.getSendAt()).partner(chatPartner).me(user)
+                                .receiveUser(chat.getReceiverUser()).sendUser(chat.getSendUser())
+                                .contents(chat.getContents()).isDeletedTo(chat.isDeletedTo())
+                                .isDeletedFrom(chat.isDeletedFrom()).
+                        build()).toList();
         List<ChatResponseDto> receivedChat = chatRepository.findAllBySendUserAndReceiverUser(chatPartner, user)
-                .stream().map(chat -> chat.toDto()).toList();
+                .stream().map(chat -> ChatResponseDto.builder().
+                        id(chat.getId()).sendAt(chat.getSendAt()).partner(chatPartner).me(user)
+                        .receiveUser(chat.getReceiverUser()).sendUser(chat.getSendUser())
+                        .contents(chat.getContents()).isDeletedTo(chat.isDeletedTo())
+                        .build()).toList();
 
         //Combine and sort messages
         List<ChatResponseDto> allChats = new ArrayList<>(sendChat);
@@ -89,8 +93,9 @@ public class ChatService {
 
     @Transactional
     public List<ChatResponseDto> updateIsDeletedOfChat(User user, String chatPartnerEmail) {
+        System.out.println(chatPartnerEmail);
         User chatPartner = userRepository.findByEmail(chatPartnerEmail).orElseThrow(
-                () ->new IllegalArgumentException("이메일에 해당하는 유저가 없습니다")
+                () ->new IllegalArgumentException("이메일에 해당하는 유저가 없습니다"+chatPartnerEmail)
         );
 
         List<Chat> sentChats = chatRepository.findAllBySendUserAndReceiverUser(user, chatPartner);
