@@ -26,7 +26,6 @@ jobs:
       - name: Change application.yml to deploy version
         run: |
           cd ./src/main/resources
-          rm ./application.yml
           mv ./application-deploy.yml ./application.yml
           cat application.yml
           
