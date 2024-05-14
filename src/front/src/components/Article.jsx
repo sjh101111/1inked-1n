@@ -27,10 +27,10 @@ const Article = ({id, contents, createdAt, updatedAt, images, user, afterDeleteF
 
     useEffect(() =>{
         //유저 프로필 이미지가 있다면
-        if(user.image){
+        if(user?.image){
             setProfilePic(`data:image/png;base64,${user.image}`);
         }
-    
+
         //아티클 첨부 이미지 업데이트
         if(images){
             setArticlePicItems(getArticlePictures(images));
@@ -110,7 +110,7 @@ const Article = ({id, contents, createdAt, updatedAt, images, user, afterDeleteF
             </CardHeader>
             <CardContent className="p-8">
                 <span>
-                   {contents} 
+                   {contents}
                 </span>
                 <ul className="mt-4 list-none grid grid-cols-3 justify-items-center gap-4">
                     {articlePicItems}
