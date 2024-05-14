@@ -36,7 +36,7 @@ public class CommentApiController {
             @Parameter(name = "parentId", description = "부모 댓글 ID", example = "comment_{UUID}")
     })
     @ApiResponse(responseCode = "201", description = "요청에 성공하셨습니다.", content = @Content(mediaType = "application/json"))
-    public ResponseEntity<Comment> addComment(
+    public ResponseEntity<CommentResponseDto> addComment(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "articleId") String articleId,
             @RequestBody AddCommentRequestDto requestDto) {
@@ -44,7 +44,7 @@ public class CommentApiController {
         if (savedComment == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedComment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CommentResponseDto(savedComment));
 
     }
 

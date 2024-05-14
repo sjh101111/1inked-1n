@@ -12,6 +12,8 @@ import PasswordFind from "./routes/PasswordFind";
 import Resign from "./routes/Resign";
 import NewsPage from "./routes/NewsPage";
 import Resume from "@/routes/Resume.jsx";
+import Article from "@/components/Article.jsx";
+import {Comment} from "@/components/Comment.jsx";
 
 
 
@@ -60,7 +62,11 @@ const router = createBrowserRouter([
       {
         path: "/newspage",
         element: <NewsPage></NewsPage>
-      }
+      },
+    {
+        path: "/comment",
+        element: <Comment></Comment>
+    }
 ]);
 
 export default function App(){

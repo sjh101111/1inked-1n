@@ -18,12 +18,16 @@ public class CommentResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String parentId;
+	private byte[] userProfileImage;
+	private String realname;
     
     public CommentResponseDto(Comment comment){
     	id = comment.getId();
     	comments = comment.getComments();
     	createdAt = comment.getCreatedAt();
     	updatedAt = comment.getUpdatedAt();
+		userProfileImage = comment.getUser().getImage();
+		realname = comment.getUser().getRealname();
     	if (comment.getParent() != null)
     		parentId = comment.getParent().getId();
     	else
