@@ -22,11 +22,13 @@ import { createArticle, deleteArticle, fetchLoginUserProfile, readAllMyArticle, 
 import { createArticleReqParam, saveProfileReqParam, updateArticleReqParam, withdrawReqParam } from "@/utils/Parameter";
 import { getAccessToken, getAccessTokenInfo } from "@/utils/Cookie";
 import { getArticleItems } from "@/utils/Items";
+import { useLogin } from "@/utils/store";
 
 
 const Test =  () => {
     const email = "dlxogml11235@naver.com";
     const [file, setFile] = useState(null);
+    const {isLogin, setLogin} = useLogin();
 
     /**아티클 API 테스트 */
     const [articles, setArticles] = useState([]);
@@ -44,6 +46,7 @@ const Test =  () => {
 
     useEffect(() =>{
        getAccessTokenInfo(); 
+       setLogin(true);
     },[]);
 
     const userProfileDemo = () =>{
@@ -68,7 +71,11 @@ const Test =  () => {
 
     const showMainFeedArticles = () =>{
         readMainFeedArticles()
-        .then((data) => console.log(data));
+        .then((data) => {
+            console.log(isLogin);
+            console.log(data)
+        }
+        );
     }
 
     const showAllMyArticles = () =>{
