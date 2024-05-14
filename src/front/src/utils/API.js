@@ -229,28 +229,28 @@ export const deleteArticle = async (articleId) =>{
 /** Comment API START */
 
 export const addComment = async (articleId, addCommentReqParam) =>{
-    const addCommentURL = URL + `${articleId}`;
+    const addCommentURL =   `${URL}/api/comment/${articleId}`;
 
     return OneinkedPost(addCommentURL, addCommentReqParam)
     .then((response) => response.data);
 }
 
 export const readComment = async (articleId) =>{
-    const readCommentURL = URL + `${articleId}`;
+    const readCommentURL =  `${URL}/api/comment/${articleId}`;
 
     return OneinkedGet(readCommentURL)
     .then((response) => response.data);
 }
 
-export const updateComment = async (articleId, updateCommentReqParam) =>{
-    const updateCommentURL = URL + `${articleId}`;
+export const updateComment = async (commentId, updateCommentReqParam) =>{
+    const updateCommentURL = `${URL}/api/comment/${commentId}`;
 
     return OneinkedPatch(updateCommentURL, updateCommentReqParam)
     .then((response) => response.data);
 }
 
 export const deleteComment = async (commentId) =>{
-    const deleteCommentURL = URL + `${commentId}`;
+    const deleteCommentURL = `${URL}/api/comment/${commentId}`;
 
     return OneinkedDelete(deleteCommentURL)
     .then((response) => response.data);
@@ -314,3 +314,4 @@ export const saveResume = async (addResumeRequestDto) => {
     return OneinkedPost(saveResumeURL, addResumeRequestDto)
         .then((response) => response.data)
 }
+/** Resume API END */
