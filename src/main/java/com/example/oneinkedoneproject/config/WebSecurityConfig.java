@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
 //                                "/api/user", "/api/user",
-//                                "/api/passwordquestion",
+                                "/api/passwordquestion",
 //                                "/api/password",
 //                                "/api/withdraw",
 //                                "/api/profile",
