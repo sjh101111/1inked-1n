@@ -13,6 +13,7 @@ import { saveProfileReqParam } from "@/utils/Parameter";
 import {fetchLoginUserProfile, readComment, saveProfile} from "@/utils/API";
 import Article from "@/components/Article.jsx";
 import {readAllMyArticle} from "@/utils/API";
+import { useUserInfo } from "@/utils/store";
 
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
@@ -27,6 +28,8 @@ const MyPage = () => {
     const [username, setUsername] = useState('Username');
     const [file, setFile] = useState(null);
     const [activeTab, setActiveTab] = useState('articles');
+
+    const {userInfo, setUserInfo} = useUserInfo();
 
     useEffect(() =>{
         fetchLoginUserProfile()
