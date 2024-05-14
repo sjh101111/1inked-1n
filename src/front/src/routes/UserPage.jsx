@@ -1,7 +1,7 @@
 import Header from "@/components/Layout/Header.jsx";
 import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar.jsx";
 import {useEffect, useState} from "react";
-import {Link, redirect, useLocation, useParams} from "react-router-dom";
+import {Link, redirect, useLocation, useNavigate } from "react-router-dom";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import ChatDialog from "@/components/ChatDialog";
@@ -25,7 +25,7 @@ const UserPage = () => {
         const accessToken = getAccessTokenInfo();
         //작동하지 않는 모양.
         if(accessToken.sub === queryEmail){
-            navigate("/mypage");
+            useNavigate("/mypage");
         }
 
         fetchAnotherUserProfile(queryEmail)
