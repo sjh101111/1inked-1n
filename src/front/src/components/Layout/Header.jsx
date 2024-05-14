@@ -8,7 +8,7 @@ import { logout } from "@/utils/API";
 
 const Header = (props) =>{
     return (
-        <header className={`flex items-center border-b bg-white dark:border-gray-800 overflow-hidden ${props.className}`}>
+        <header className={`flex items-center border-b bg-white dark:border-gray-800 overflow-hidden z-10 ${props.className}`}>
             <div className="flex items-center px-4 py-2 justify-between overflow-hidden w-full">
                 <div className="flex items-center gap-2 min-w-[500px]">
                     <Link to="/">

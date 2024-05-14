@@ -1,5 +1,6 @@
 import Article from "@/components/Article";
 import { SelectItem } from "@/components/ui/select"
+import { GenerateLiElUUID } from "./common";
 
 /**
  * 
@@ -13,13 +14,13 @@ export const getPasswordQuestionItems = (questions) =>{
 
 /**
  * 
- * @param {{id: String, content: String, createdAt: String,
+ * @param {{id: String, contents: String, createdAt: String,
  *  updatedAt: String, images: {id: String, img: Blob, articleId: String}[], 
  *  user: {realName: String, email: String, identity: String, location: String, description: String, image: Blob}, 
  * }[] articles 
  */
-export const getArticleItems = (articles) =>{
-    const articleItems = articles.map(item => <Article key={item.id} {...item}></Article>);
+export const getArticleItems = (articles, afterDeleteFn) =>{
+    const articleItems = articles.map(item => <Article key={item.id} {...item} afterDeleteFn={afterDeleteFn}></Article>);
 
     return articleItems;
 }
@@ -30,4 +31,19 @@ export const getArticleItems = (articles) =>{
  */
 export const getCommentItems = (comments) =>{
 
+}
+
+/**
+ * 
+ * @param {{id:String, img: Blob, articlId: String}[]} images 
+ */
+export const getArticlePictures = (images) =>{
+    const imageItems =  images.map(image =>{
+        return
+                (<li key={image.id} className="w-[300px] h-[300px]">
+                    <img src={`data:image/png;base64,${image.img}`} className="w-full h-full object-resize"></img>
+                </li>);
+            });
+
+    return imageItems;
 }
