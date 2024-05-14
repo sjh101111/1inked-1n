@@ -32,7 +32,7 @@ const Article = ({id, content, createdAt, updatedAt, images, user}) =>{
             <CardHeader className="flex-row justify-between">
                 <div className="flex items-center gap-4">
                     <Avatar className="w-20 h-20">
-                        <AvatarImage alt="유저 프로필이미지" src={}/>
+                        <AvatarImage alt="유저 프로필이미지" src={""}/>
                         <AvatarFallback></AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col justify-center">

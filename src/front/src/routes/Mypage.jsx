@@ -53,6 +53,8 @@ const MyPage = () => {
             console.log(response);
             toggleEditing();
         });
+        history.push("/mypage");
+        
     }
 
     const handleProfilePicChange = (event) => {

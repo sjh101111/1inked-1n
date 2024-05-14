@@ -1,18 +1,18 @@
 import Header from "@/components/Layout/Header.jsx";
 import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar.jsx";
 import {useEffect, useState} from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, redirect, useLocation, useParams} from "react-router-dom";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import ChatDialog from "@/components/ChatDialog";
 import { Send } from "lucide-react";
 import { anchorScrollCallback } from "@/utils/common";
-import { fetchAnotherUserProfile } from "@/utils/API";
+import { fetchAnotherUserProfile} from "@/utils/API";
+import { getAccessTokenInfo} from "@/utils/Cookie.js"
 
 const UserPage = () => {
     //route 변경시, 값 전달위한 파라미터
     const {state} = useLocation();
-
     const [profilePic, setProfilePic] = useState('');
     const [identity, setIdentity] = useState('Student');
     const [location, setLocation] = useState('Location');
@@ -21,10 +21,15 @@ const UserPage = () => {
     const [isFollow, setFollow] = useState(false);
 
     useEffect(() =>{
-        //user Email 조회
-        const queryEmail = state?.email || "dlxogml11235@naver.com";
+        const queryEmail = state?.email || "seocd@seocd.com";
+        const accessToken = getAccessTokenInfo();
+        //작동하지 않는 모양.
+        if(accessToken.sub === queryEmail){
+            navigate("/mypage");
+        }
 
         fetchAnotherUserProfile(queryEmail)
+
         .then(async (userInfo) =>{
             setUsername(userInfo.realName);
             setIdentity(userInfo.identity);
@@ -34,6 +39,7 @@ const UserPage = () => {
             setProfilePic(`data:image/png;base64,${userInfo.image}`);
         });
     },[]);
+
 
     return (
         <>
