@@ -1,24 +1,31 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "..";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LabelSection from "@/components/Layout/LabelSection";
 import { correctRegxEmail, correctRegxPwd } from "@/utils/common";
 import { loginReqParam } from "@/utils/Parameter";
-import { login } from "@/utils/API";
+import { fetchLoginUserProfile, login } from "@/utils/API";
+import { useLogin, useUserInfo } from "@/utils/store";
 
 const Login = () =>{
     //라우팅 네비게이터
     const nevigate = useNavigate();
 
     //글로벌 컨텍스트
-    const {isLogin, setLogin} = useContext(GlobalContext);
+    const {isLogin, setLogin} = useLogin();
+    const {userInfo, setUserInfo} = useUserInfo();
 
     //state
     const [email, setEmail] = useState("");
     const [pwd, setPwd ] = useState("");
+
+    useEffect(() =>{
+        if(isLogin){
+            nevigate("/");
+        }
+    });
 
     const doLogin = async () =>{
         if(!correctRegxEmail(email)){
@@ -35,8 +42,22 @@ const Login = () =>{
         
         login(reqParam)
         .then(() =>{
-            setLogin(true);
-            nevigate("/");
+            fetchLoginUserProfile()
+            .then((user) =>{
+                console.log(user);
+                const newUserInfo = {
+                    realName: user.realName,
+                    email: user.email,
+                    identity: user.identity,
+                    location: user.location,
+                    description: user.description,
+                    profileSrc: `data:image/png;base64,${user.image}`
+                }
+                setUserInfo(newUserInfo);
+                setLogin(true);
+                nevigate("/");
+            })
+
         })
         .catch((err) =>{
             alert("로그인에 실패하였습니다.");

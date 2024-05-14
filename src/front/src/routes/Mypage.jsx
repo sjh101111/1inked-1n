@@ -17,8 +17,6 @@ const MyPage = () => {
     //문제점
     //1. header에서 동일 page 접근하려했을때, 어떻게 적용되지?
     //동일 url을 클릭했을 때, 화면 전환이 안됨
-    //모든 프로필 컴포넌트에 onClick이벤트를 부착하고, GlobalContext user정보를 바꾸는 방식으로 처리할 수 있으나
-    //불필요 GlobalContext를 추가함으로 개발자간 로직 파악의 난이도가 상승하는 문제 있음.
     const [editing, setEditing] = useState(false);
     const [profilePic, setProfilePic] = useState('');
     const [identity, setIdentity] = useState('Student');
@@ -51,6 +49,8 @@ const MyPage = () => {
         saveProfile(reqParam)
         .then((response) => {
             console.log(response);
+        })
+        .finally(() =>{
             toggleEditing();
         });
     }
@@ -73,10 +73,10 @@ const MyPage = () => {
                         {profilePic ? (
                             <>
                                 <AvatarImage src={profilePic} alt="User profile picture"/>
-                                <AvatarFallback>{username.charAt(0)}</AvatarFallback>
+                                <AvatarFallback></AvatarFallback>
                             </>
                             ) : (
-                            <AvatarFallback>{username.charAt(0)}</AvatarFallback>
+                            <AvatarFallback></AvatarFallback>
                         )}
                     </Avatar>
                     <div className="mt-4 flex justify-between items-center">

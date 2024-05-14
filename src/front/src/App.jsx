@@ -1,4 +1,3 @@
-import { GlobalContext, ContextProvider } from ".";
 import { CookiesProvider } from 'react-cookie';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Main from "./routes/Main";
@@ -14,9 +13,6 @@ import NewsPage from "./routes/NewsPage";
 import Resume from "@/routes/Resume.jsx";
 import Article from "@/components/Article.jsx";
 import {Comment} from "@/components/Comment.jsx";
-
-
-
 
 const router = createBrowserRouter([
       {
@@ -71,10 +67,8 @@ const router = createBrowserRouter([
 
 export default function App(){
     return (
-        <ContextProvider>
-            <CookiesProvider>
-                <RouterProvider router={router} />
-            </CookiesProvider>
-        </ContextProvider>
+      <CookiesProvider>
+          <RouterProvider router={router} />
+      </CookiesProvider>
     );
 }

@@ -1,9 +1,9 @@
-import { useContext, useEffect } from "react";
-import { GlobalContext } from "..";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button"
 import MainFeed from "./MainFeed";
 import { getAccessToken } from "@/utils/Cookie";
+import { useLogin, useUserInfo } from "@/utils/store";
 
 
 const Main = () =>{
@@ -11,16 +11,16 @@ const Main = () =>{
     const nevigate = useNavigate();
 
     //글로벌 컨텍스트
-    const { isLogin, setLogin } = useContext(GlobalContext);
+    const { isLogin, setLogin } = useLogin();
+    const { userInfo, setUserInfo } = useUserInfo();
 
     //초기 설정
     useEffect(() =>{
-        setLogin(getAccessToken() ? true : false);
+        if(!getAccessToken()){
+            setLogin(false);
+            setUserInfo({});
+        }
     },[]);
-
-    useEffect(() =>{
-
-    },[isLogin]);
 
     const doLogin = () =>{
         nevigate("/login");
@@ -47,7 +47,7 @@ const Main = () =>{
                 <div className="w-full text-4xl font-bold text-white">
                     <h2 className="text-center text-black">Get Started</h2>
                     <div className="flex justify-center gap-4 mt-4">
-                        <Button onClick={doLogin }className="bg-[#6866EB] w-48 hover:bg-violet-600">Login</Button>
+                        <Button onClick={doLogin}className="bg-[#6866EB] w-48 hover:bg-violet-600">Login</Button>
                         <Button onClick={goSignup} className="bg-[#6866EB] w-48 hover:bg-violet-600">Signup</Button>
                     </div>
                 </div>
