@@ -46,6 +46,19 @@
 ## 🏙️ 화면 설계서
 [1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
 
+|||
+|--------------------|---------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a9f09f49-c3b4-46ce-9542-a5dcae78f898"> <br/> 메인 페이지|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/3ce230b0-1707-4f48-ad35-5f9e47d781c9"> <br/> 로그인 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/1c88a47b-539a-4242-b08c-86cfc83143b4"> <br/> 회원 가입 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a8868c5b-fa04-4481-a43d-811754426447"> <br/> 비밀번호 찾기 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0b180d0d-e8f1-4915-905d-d841b1cb2fe9"> <br/> 비밀번호 변경 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/ada1d08a-3401-4f99-a3fe-51cfc7514894"> <br/> 회원 탈퇴 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/01bf3798-c195-44f1-b89d-fd3b7d39abe0"> <br/> 게시글 메인 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/e4fbd005-4b37-4428-a3c5-2e34cf2ca0db"> <br/> 게시글 작성 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/88ee9e28-9bc1-4e17-bc56-a93dc4911aa0"> <br/> 게시글 수정 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/1b3b549f-7f1b-45cf-adc5-bf6dd57293a6"> <br/> 쪽지 메인 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/df3dbcc1-f30d-4167-b1cf-bb30c9ba1e4a"> <br/> 쪽지 보내기 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/782ac7c3-cd4b-4c92-a497-6b27064e3f20"> <br/> 이력서 첨삭 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/73ec97ce-4106-4d4c-acc8-fac6f2d7103e"> <br/> 뉴스 정보 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/e7101420-5cff-476f-a13e-03cde129491e"> <br/> 마이 페이지 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ca6ed8d-08c4-4293-8ac1-eb161c1dbaf7"> <br/>마이 페이지 아티클 조회 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/4858e843-ae7a-48ff-9965-0e07a1809956"> <br/> 마이 페이지 댓글 조회 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/adbe6c47-2231-4457-b535-814ace495f2a"> <br/> 마이 페이지 팔로우 조회 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/7717eedb-04fc-4ddf-9345-0057c9150b96"> <br/> 마이 페이지 이력서 조회 화면|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/f45f5916-9d6e-4d32-a806-f8d41891ffac"> <br/> 마이 페이지 이력서 상세 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ece0d58-6af3-4a32-a564-28ff4dc01def"> <br/> 유저 페이지 화면 |
+
 ## 프로젝트 구조
 
 ## 🏭 시스템 구성도

@@ -25,6 +25,8 @@ instance.interceptors.response.use(
     async (err) => {
         const { config, response: {status, data} } = err;
 
+        console.log(err);
+
         if(status === 401 && data.message === "Access token is invalid or expired"){
             try{
                 const newTokenResult = await getNewAccessToken();
@@ -43,6 +45,7 @@ instance.interceptors.response.use(
         }
 
         if(status === 401 && data.message === "Refresh token is invalid or expired"){
+            alert("hi");
             logout();
         }
 
@@ -85,10 +88,10 @@ export const OneinkedPatch = (url, body) =>{
 }
 
 //메모미제이션을 통한 과도한 AccessToken 재발급 문제 처리
-export const getNewAccessToken = mem(async () =>{
+export const getNewAccessToken = async () =>{
     const newAccessTokenURL = URL + "/refresh";
     return OneinkedPost(newAccessTokenURL);
-}, {memAge: 1000});
+};
 
 /** User API START */
 
@@ -146,10 +149,11 @@ export const fetchLoginUserProfile = async () =>{
 }
 
 /**
- * @breif 다른 유저의 profile data load
+ * @breif 이메일이 있으면 다른 유저의 profile data load
+ * @brief 이메일이 없으면 현재 유저의 profile data load
  */
 export const fetchAnotherUserProfile = async (email) =>{
-    const fetchAnotherUserProfileURL = URL + `/api/user?email=${email}`;
+    const fetchAnotherUserProfileURL = `${URL}/api/user/${email}`;
 
     return OneinkedGet(fetchAnotherUserProfileURL)
     .then((response) =>  response.data);
@@ -208,7 +212,10 @@ export const readMainFeedArticles = async () =>{
     const readMainFeedArticlesURL = URL + "/api/mainFeedArticles";
 
     return OneinkedGet(readMainFeedArticlesURL)
-    .then((response) => response.data);
+    .then((response) => {
+        console.log(response);
+        return response.data
+    });
 }
 
 export const updateArticle = async (articleId, updateArticleReqParam) =>{

@@ -4,9 +4,19 @@ import SearchIcon from "../svg/SearchIcon";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import ArticleDialog from "@/components/ArticleDialog";
-import { logout } from "@/utils/API";
+import { fetchLoginUserProfile, logout } from "@/utils/API";
+import { useEffect, useState } from "react";
+import { useUserInfo } from "@/utils/store";
 
 const Header = (props) =>{
+    const {userInfo, setUserInfo} = useUserInfo();
+    const [profilePic, setProfilePic] = useState("");
+
+    useEffect(() =>{
+        console.log(userInfo)
+    },[userInfo]);
+
+    
     return (
         <header className={`flex items-center border-b bg-white dark:border-gray-800 overflow-hidden z-10 ${props.className}`}>
             <div className="flex items-center px-4 py-2 justify-between overflow-hidden w-full">
@@ -26,12 +36,12 @@ const Header = (props) =>{
                     <Link to="/chat">쪽지</Link>
                     <Link to="/mypage" className="flex items-center ml-2 gap-2">
                         <Avatar className="w-10 h-10">
-                            <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
-                            <AvatarFallback>hi</AvatarFallback>
+                            <AvatarImage alt="유저 프로필" src={userInfo?.profileSrc} />
+                            <AvatarFallback></AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col justify-center">
-                            <h2 className="font-medium text-base">username</h2>
-                            <span className="text-sm text-black/50 ">id</span>
+                            <h2 className="font-medium text-base">{userInfo?.realName}</h2>
+                            <span className="text-sm text-black/50 ">{userInfo?.email}</span>
                         </div>
                     </Link>
                 </div>

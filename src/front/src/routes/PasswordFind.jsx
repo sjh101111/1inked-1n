@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "..";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,6 @@ import { changePassword, fetchPasswordQuestions } from "@/utils/API";
 import { getPasswordQuestionItems } from "@/utils/Items";
 import { correctRegxEmail, correctRegxPwd } from "@/utils/common";
 import { changePasswordReqParam } from "@/utils/Parameter";
-import { Label } from "@radix-ui/react-label";
 
 const PasswordFind = () => {
     //라우팅 네비게이터

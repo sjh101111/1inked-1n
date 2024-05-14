@@ -1,16 +1,14 @@
-
-
-import { useState, useContext } from "react"; 
+import { useState} from "react"; 
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "..";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LabelSection from "@/components/Layout/LabelSection";
+import { useLogin} from "@/utils/store";
 
 
 const PasswordChange = () => {
 
-    const { isLogin, setLogin } = useContext(GlobalContext);
+    const { isLogin, setLogin } = useLogin();
     //라우팅 네비게이터
     const navigate = useNavigate();
 
