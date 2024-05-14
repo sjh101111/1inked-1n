@@ -146,10 +146,11 @@ export const fetchLoginUserProfile = async () =>{
 }
 
 /**
- * @breif 다른 유저의 profile data load
+ * @breif 이메일이 있으면 다른 유저의 profile data load
+ * @brief 이메일이 없으면 현재 유저의 profile data load
  */
 export const fetchAnotherUserProfile = async (email) =>{
-    const fetchAnotherUserProfileURL = URL + `/api/user?email=${email}`;
+    const fetchAnotherUserProfileURL = `${URL}/api/user/${email}`;
 
     return OneinkedGet(fetchAnotherUserProfileURL)
     .then((response) =>  response.data);

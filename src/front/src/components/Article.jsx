@@ -64,6 +64,7 @@ const Article = ({id, contents, createdAt, updatedAt, images, user, afterDeleteF
             <CardHeader className="flex-row justify-between">
                 <div className="flex items-center gap-4">
                     <Avatar className="w-20 h-20">
+
                         <AvatarImage alt="유저 프로필이미지" src={profilePic}/>
                         <AvatarFallback></AvatarFallback>
                     </Avatar>
