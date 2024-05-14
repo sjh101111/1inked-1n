@@ -60,22 +60,24 @@
 ### 앨런 AI
 ||
 |--------------------|
-|<img src=""> <br/> resume 첨삭|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/77052db5-5642-410f-9521-138f621e817e"> <br/> resume 첨삭|
 
 ### 외부 API 연동
 ||
 |--------------------|
-|<img src=""> <br/> 시사 경제 정보 제공|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2ccb898c-114b-46c5-9ef6-c772e14b3bb1"> <br/> 시사 경제 정보 제공|
 
 ### REST API
 ||
 |--------------------|
-|<img src=""> <br/> 팔로우 유저 피드 조회|
-|<img src=""> <br/> 유저(내가 아닌 상대방) 페이지|
-|<img src=""> <br/> 게시글 생성|
-|<img src=""> <br/> 게시글 수정|
-|<img src=""> <br/> 쪽지|
-|<img src=""> <br/> 회원가입 성공 시 웰컴 메시|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a53eafe7-532b-41bc-98ff-207c2b133102"> <br/> 팔로우 유저 피드 조회|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/458d31af-fe02-4fea-a5d9-6edb117c735f"> <br/> 유저(내가 아닌 상대방) 페이지|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/63cfb256-6e27-4721-8573-3063c140f2b7"> <br/> 게시글|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/9fa82689-906b-4b5a-a387-21fc10874234"> <br/> 쪽지|
+### 메시지 발송
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/50a0e6e2-74f7-4be2-be7f-48ae19dde83a"> <br/> 회원가입 성공 시 웰컴 메시지|
 
 
 
