@@ -120,9 +120,9 @@ public class ChatControllerUnitTest {
         dto.add(sendchat.toDto());
         Mockito.doReturn(dto).when(chatService).updateIsDeletedOfChat(any(User.class), any(String.class));
 
-        ResultActions resultActions = mockMvc.perform(put("/api/updateIsDeleted"
-                ).contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString("Test")))
+        ResultActions resultActions = mockMvc.perform(put("/api/updateIsDeleted")
+                        .param("partnerEmail", "test@test.com") // 요청 파라미터 추가
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$[0].isDeletedTo").value(true));

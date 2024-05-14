@@ -43,9 +43,19 @@ public class CommentServiceUnitTest {
 
     private String comments;
 
+    private Comment parentComment;
+    private Comment childComment;
+
     @BeforeEach
     void setup() {
+
         comments = "댓글 내용";
+
+        // Setup parent comment
+        parentComment = Comment.builder().id("parent-id").build();
+
+        // Setup child comment
+        childComment = Comment.builder().id("child-id").parent(parentComment).build();
     }
 
     @Test
@@ -179,16 +189,33 @@ public class CommentServiceUnitTest {
     }
 
     @Test
-    @DisplayName("댓글 삭제")
-    void deleteComment() {
+    @DisplayName("댓글 삭제 - 자식 댓글이 없는 경우")
+    void deleteComment_NoChild() {
         // given
-        doNothing().when(commentRepository).deleteById(any(String.class));
-
+        doReturn(Optional.of(parentComment)). when(commentRepository).findById(any(String.class));
         // when
-        commentService.deleteComment("1");
+        commentService.deleteComment("parent-id");
 
         // then
-        verify(commentRepository, only()).deleteById(any(String.class));
+        verify(commentRepository, times(1)).findById("parent-id");
+        verify(commentRepository, times(1)).deleteById("parent-id");
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 - 자식 댓글이 있는 경우")
+    void deleteComment_WithChild() {
+        // given
+        doReturn(Optional.of(parentComment)). when(commentRepository).findById(any(String.class));
+        doReturn(List.of(childComment)).when(commentRepository).findAllByParent(any(Comment.class));
+
+        // when
+        commentService.deleteComment("parent-id");
+
+        // then
+        verify(commentRepository, times(1)).findById("parent-id");
+        verify(commentRepository, times(1)).findAllByParent(parentComment);
+        verify(commentRepository, times(1)).delete(childComment);
+        verify(commentRepository, times(1)).deleteById("parent-id");
     }
 
 

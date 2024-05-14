@@ -112,12 +112,12 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
     );
 };
 
-const Comment = (articleId) => {
+const Comment = ({articleId}) => {
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        if (comments) {
+        if (articleId) {
             readComment(articleId).then(
                 response => {
                     console.log(response)
@@ -129,7 +129,7 @@ const Comment = (articleId) => {
             })
         }
 
-    }, ['1'])
+    }, [articleId])
 
     const addCommentHandler = () => {
         addComment(articleId, addCommentReqParam(content, null))

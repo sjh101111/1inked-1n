@@ -55,12 +55,12 @@ public class CommentService {
     public void deleteComment(String commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("not found: " + commentId));
         if (comment.getParent()!=null && comment.getParent().getId().isEmpty()){
-            List<Comment> comments = commentRepository.findAllByParent(comment.getParent());
+            commentRepository.deleteById(commentId);
+        } else {
+            List<Comment> comments = commentRepository.findAllByParent(comment);
             for(Comment c : comments){
                 commentRepository.delete(c);
             }
-            commentRepository.deleteById(commentId);
-        } else {
             commentRepository.deleteById(commentId);
         }
 

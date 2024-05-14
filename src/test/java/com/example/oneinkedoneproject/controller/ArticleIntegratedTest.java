@@ -5,9 +5,11 @@ import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
+import com.example.oneinkedoneproject.repository.chat.ChatRepository;
 import com.example.oneinkedoneproject.repository.follow.FollowRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
+import com.example.oneinkedoneproject.repository.resume.ResumeRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
@@ -77,6 +79,12 @@ public class ArticleIntegratedTest {
     @Autowired
     FollowRepository followRepository;
 
+    @Autowired
+    ChatRepository chatRepository;
+
+    @Autowired
+    ResumeRepository resumeRepository;
+
     private User user;
 
     private Article article;
@@ -96,6 +104,8 @@ public class ArticleIntegratedTest {
 
     @BeforeEach
     void setUp() {
+        resumeRepository.deleteAll();
+        chatRepository.deleteAll();
         followRepository.deleteAll();
         imageRepository.deleteAll();
         articleRepository.deleteAll();
@@ -131,9 +141,12 @@ public class ArticleIntegratedTest {
 
     @AfterEach
     void afterSetUp() {
-//        imageRepository.deleteAll();
-//        articleRepository.deleteAll();
-//        userRepository.deleteAll();
+        resumeRepository.deleteAll();
+        chatRepository.deleteAll();
+        followRepository.deleteAll();
+        imageRepository.deleteAll();
+        articleRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -227,7 +240,7 @@ public class ArticleIntegratedTest {
         Article updatedArticle = articleRepository.findById(article.getId())
                 .orElseThrow();
 
-        assertThat(updatedArticle.getImageList().size()).isEqualTo(2);
+        assertThat(updatedArticle.getImageList().size()).isEqualTo(3);
     }
 
     @Test

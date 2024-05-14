@@ -10,7 +10,9 @@ import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import { anchorScrollCallback } from "@/utils/common";
 import { saveProfileReqParam } from "@/utils/Parameter";
-import { fetchLoginUserProfile, saveProfile } from "@/utils/API";
+import {fetchLoginUserProfile, readComment, saveProfile} from "@/utils/API";
+import Article from "@/components/Article.jsx";
+import {readAllMyArticle} from "@/utils/API";
 
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
@@ -24,6 +26,7 @@ const MyPage = () => {
     const [description, setDescription] = useState('Description');
     const [username, setUsername] = useState('Username');
     const [file, setFile] = useState(null);
+    const [activeTab, setActiveTab] = useState('articles');
 
     useEffect(() =>{
         fetchLoginUserProfile()
@@ -65,6 +68,7 @@ const MyPage = () => {
         };
         reader.readAsDataURL(file);
     };
+
 
     return (
         <>
@@ -111,28 +115,24 @@ const MyPage = () => {
                             }
                     </div>
                 </div>
-                <Tabs defaultValue="account" className="w-3/5 mt-6">
+                <Tabs defaultValue="articles" className="w-3/5 mt-6" onValueChange={setActiveTab}>
                     <TabsList className="w-full flex">
-                        <TabsTrigger asChild className="flex-grow" value="articles">
-                            <a onClick={anchorScrollCallback} href="#articles">Articles</a>
-                        </TabsTrigger>
-                        <TabsTrigger className="flex-grow" value="comments">
-                            <a onClick={anchorScrollCallback} href="#comments">Comments</a>
-                        </TabsTrigger>
-                        <TabsTrigger className="flex-grow" value="follwAndFollower">
-                            <a onClick={anchorScrollCallback} href="#followAndFollwer">Follow/Follower</a>
-                        </TabsTrigger>
-                        <TabsTrigger className="flex-grow" value="myresume">
-                            <a onClick={anchorScrollCallback} href="#myresume">My Resume</a>
-                        </TabsTrigger>
+                        <TabsTrigger className="flex-grow" value="articles">Articles</TabsTrigger>
+                        <TabsTrigger className="flex-grow" value="comments">Comments</TabsTrigger>
+                        <TabsTrigger className="flex-grow" value="followAndFollower">Follow/Follower</TabsTrigger>
+                        <TabsTrigger className="flex-grow" value="myresume">My Resume</TabsTrigger>
                     </TabsList>
-                    <TabsContent id="articles" className="w-full flex justify-center items-center" value="articles">Make changes to your account here.</TabsContent>
-                    <TabsContent id="comments" className="w-full flex justify-center items-center" value="comments">Change your password here.</TabsContent>
-                    <TabsContent id="followAndFollwer" value="follwAndFollower">
-                            <FollowInfo></FollowInfo>
+                    <TabsContent id="articles" className="w-full" value="articles">
+                        {activeTab === 'articles' && <ArticlesTab />}
                     </TabsContent>
-                    <TabsContent id="myresume" value="myresume">
-                        <MyResumes></MyResumes>
+                    <TabsContent id="comments" className="w-full flex justify-center items-center" value="comments">
+                        Change your password here.
+                    </TabsContent>
+                    <TabsContent id="followAndFollower" className="w-full" value="followAndFollower">
+                        <FollowInfo />
+                    </TabsContent>
+                    <TabsContent id="myresume" className="w-full" value="myresume">
+                        <MyResumes />
                     </TabsContent>
                 </Tabs>
             </main>
@@ -140,5 +140,36 @@ const MyPage = () => {
     );
 };
 
+const ArticlesTab = () => {
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchArticles = async () => {
+            setLoading(true);
+            try {
+                const response = await readAllMyArticle();
+                setArticles(response);
+            } catch (error) {
+                console.error('Error reading articles: ', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchArticles();
+    }, []);
+
+    return (
+        <div className="w-full">
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                articles.map(article => (
+                    <Article key={article.id} {...article} afterDeleteFn={(id) => setArticles(prev => prev.filter(a => a.id !== id))} />
+                ))
+            )}
+        </div>
+    );
+};
 
 export default MyPage;
