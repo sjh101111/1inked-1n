@@ -74,12 +74,12 @@ public class UserApiControllerIntegratedTest {
     private PasswordQuestion mockPwdQuestion;
 
     @BeforeEach
-    void init(){
+    void init() {
         om = new ObjectMapper();
         mockPwdQuestion = passwordRepository.save(PasswordQuestion.builder()
-            .id("1")
-            .question("?")
-            .build());
+                .id("1")
+                .question("?")
+                .build());
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
@@ -90,15 +90,15 @@ public class UserApiControllerIntegratedTest {
         //given
         String email = "test@naver.com";
         User user = User.builder()
-				.id(GenerateIdUtils.generateUserId())
-				.realname("익명")
-				.passwordQuestion(mockPwdQuestion)
-				.passwordAnswer("aw")
-				.email(email)
-				.password("1aw9!wWem23")
-				.withdraw(false)
+                .id(GenerateIdUtils.generateUserId())
+                .realname("익명")
+                .passwordQuestion(mockPwdQuestion)
+                .passwordAnswer("aw")
+                .email(email)
+                .password("1aw9!wWem23")
+                .withdraw(false)
                 .grade(Grade.ROLE_BASIC)
-				.build();
+                .build();
         userRepository.save(user);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -119,7 +119,6 @@ public class UserApiControllerIntegratedTest {
         actions.andExpect(status().isOk())
                 .andExpect(jsonPath("email").value(email));
     }
-
 
 
     @Test
@@ -156,10 +155,10 @@ public class UserApiControllerIntegratedTest {
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
                 .file(file)
                 .header("Authorization", "Bearer " + accessToken)
-                .param("email",email)
-                .param("identity",identity)
-                .param("location",location)
-                .param("description",description));
+                .param("email", email)
+                .param("identity", identity)
+                .param("location", location)
+                .param("description", description));
 
         //then
         actions.andExpect(status().isOk());
@@ -178,14 +177,22 @@ public class UserApiControllerIntegratedTest {
                 .passwordQuestion(mockPwdQuestion)
                 .passwordAnswer(passwordQuestionAnswer)
                 .email(email)
+                .grade(Grade.ROLE_BASIC)
                 .password("1aw9!wWem23")
                 .withdraw(false)
                 .build();
         userRepository.save(user);
         ChangePasswordRequestDto request = new ChangePasswordRequestDto(email, mockPwdQuestion.getId(), passwordQuestionAnswer, newPassword);
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
+        TokenInfo tokenInfo = jwtTokenProvider.createToken(auth);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String accessToken = tokenInfo.getAccessToken();
         //when
         ResultActions actions = mockMvc.perform(post("/api/password")
+                .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(request)));
 
@@ -195,7 +202,7 @@ public class UserApiControllerIntegratedTest {
 
     @Test
     @DisplayName("회원 탈퇴 API 통합 테스트")
-    void withdrawUserTest() throws Exception{
+    void withdrawUserTest() throws Exception {
         //given
         String email = "test@naver.com";
         String password = "1aw9!wWem23";
@@ -223,7 +230,7 @@ public class UserApiControllerIntegratedTest {
 
         //when
         ResultActions actions = mockMvc.perform(post("/api/withdraw")
-                        .header("Authorization", "Bearer " + accessToken)
+                .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(request)));
 
@@ -233,7 +240,7 @@ public class UserApiControllerIntegratedTest {
 
     @Test
     @DisplayName("회원가입 API 통합테스트")
-    void signupUserTest() throws Exception{
+    void signupUserTest() throws Exception {
         //given
         String realName = "이태희";
         String email = "dlxogml11235@naver.com";
@@ -279,7 +286,7 @@ public class UserApiControllerIntegratedTest {
         ResultActions actions = mockMvc.perform(multipart("/api/user/image")
                 .file(file)
                 .header("Authorization", "Bearer " + accessToken)
-                .param("email",email));
+                .param("email", email));
 
         //then
         actions.andExpect(status().isOk());

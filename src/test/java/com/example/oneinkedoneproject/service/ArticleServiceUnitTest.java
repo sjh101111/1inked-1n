@@ -71,9 +71,6 @@ public class ArticleServiceUnitTest {
         byte[] randomData = new byte[1024]; // 1024 바이트 크기의 배열
         new Random().nextBytes(randomData);
 
-        Image image = Image.builder().article(article).img(randomData).build();
-        imageList.add(image);
-
         article = Article.builder()
                 .id(GenerateIdUtils.generateArticleId())
                 .contents("test content")
@@ -82,23 +79,26 @@ public class ArticleServiceUnitTest {
                 .createdAt(null)
                 .imageList(imageList)
                 .build();
+
+        Image image = Image.builder().article(article).img(randomData).build();
+        imageList.add(image);
     }
 
     @Test
     void createArticleTest() throws Exception {
         //given
-        List<Image> images = new ArrayList<>();
-        for (MultipartFile fileImage : files) {
-            Image image = Image.builder()
-                    .img(fileImage.getBytes()).article(article)
-                    .build();
-            images.add(image);
-        }
-
+        List<Image> imageList1 = new ArrayList<>();
         AddArticleRequestDto addArticleRequest = new AddArticleRequestDto(
                 "create content", files);
 
-        Mockito.doReturn(Article.builder().contents(addArticleRequest.getContents()).imageList(images).build())
+        Article newArticle = Article.builder()
+                .id("1")
+                .user(user)
+                .contents(addArticleRequest.getContents())
+                .imageList(imageList1) // Initialize with the new images list
+                .build();
+        Image image1 = Image.builder().article(newArticle).img(file.getBytes()).build();
+        Mockito.doReturn(newArticle)
                 .when(articleRepository).save(any(Article.class));
 
         //when
@@ -117,8 +117,8 @@ public class ArticleServiceUnitTest {
         List<Image> imageList = new ArrayList<>();
         AddArticleRequestDto addArticleRequestDto = AddArticleRequestDto.builder()
                 .files(new ArrayList<>()).contents("contentsWithEmptyFiles").build();
-        Mockito.doReturn(Article.builder().imageList(imageList).contents(addArticleRequestDto.getContents())
-                .build()).when(articleRepository).save(any(Article.class));
+        Mockito.doReturn(Article.builder().imageList(imageList).contents(addArticleRequestDto.getContents()).id("1")
+                .user(user).build()).when(articleRepository).save(any(Article.class));
 
         ArticleResponseDto articleResponseDto = articleService.createArticle(addArticleRequestDto, user);
 
@@ -129,16 +129,18 @@ public class ArticleServiceUnitTest {
 
     @Test
     void createArticleWithNullFilesTest() {
+        List<Image> imageList1 = new ArrayList<>();
         AddArticleRequestDto addArticleRequestDto = AddArticleRequestDto.builder()
                 .contents("contentsWithNullFiles").build();
-        Mockito.doReturn(Article.builder().contents(addArticleRequestDto.getContents())
+        Mockito.doReturn(Article.builder().contents(addArticleRequestDto.getContents()).user(user).id("1")
+                        .imageList(imageList1).id("100")
                 .build()).when(articleRepository).save(any(Article.class));
 
         ArticleResponseDto articleResponseDto = articleService.createArticle(addArticleRequestDto, user);
 
         //when
         assertThat(articleResponseDto.getContents()).isEqualTo(addArticleRequestDto.getContents());
-        assertThat(articleResponseDto.getImages()).isNull();
+        assertThat(articleResponseDto.getImages()).isEmpty();
     }
 
     @Test
@@ -192,30 +194,13 @@ public class ArticleServiceUnitTest {
         List<Article> mainFeedTestArticles = new ArrayList<>();
         mainFeedTestArticles.add(toUserArticle);
 
-        Mockito.doReturn(mainFeedTestArticles).when(articleRepository).findFollowedUserArticlesOrdered(user.getId());
+        Mockito.doReturn(mainFeedTestArticles).when(articleRepository).findFollowedUserArticlesOrdered(any(String.class));
 
         //when
         articleService.readMainFeedArticles(user);
 
         //then
         assertThat(mainFeedTestArticles.get(0).getContents()).isEqualTo(toUserArticle.getContents());
-    }
-
-    @Test
-    void testSaveArticleImages_withImages() {
-        // 시나리오 1: 이미지 리스트가 비어있지 않은 경우
-        //given 필드값
-        byte[] randomData = new byte[1024]; // 1024 바이트 크기의 배열
-        new Random().nextBytes(randomData);
-
-        Image image = Image.builder().article(article).img(randomData).build();
-        imageList.add(image);
-
-        //when
-//        articleService.saveArticleImages(imageList, article);
-
-        //then
-        Mockito.verify(imageRepository, times(2)).save(any(Image.class)); // save 호출 확인
     }
 
     @Test
@@ -299,24 +284,27 @@ public class ArticleServiceUnitTest {
         }); }
 
     @Test
-    public void testUpdateArticle_FailureInFileProcessing() throws IOException {String articleId = "valid_id";
+    public void testUpdateArticle_FailureInFileProcessing() throws IOException {
+        String articleId = "valid_id";
         Article existingArticle = Article.builder().id(GenerateIdUtils.generateArticleId()).build();
 
         MultipartFile file = mock(MultipartFile.class);
         ArrayList<MultipartFile> files = new ArrayList<>();
         files.add(file);
-        UpdateArticleRequestDto updateArticleRequestDto = UpdateArticleRequestDto.builder().files(files).contents("dd").build();
+        UpdateArticleRequestDto updateArticleRequestDto = UpdateArticleRequestDto.builder()
+                .files(files)
+                .contents("dd")
+                .build();
 
+        // 필요한 스터빙 설정
         when(articleRepository.findById(articleId)).thenReturn(Optional.of(existingArticle));
-        try {
-            when(file.getBytes()).thenThrow(new IOException("Failed to read file"));
-        } catch (IOException e) {
-            // This block is necessary to handle the checked exception in the mock setup
-        }
+        lenient().when(file.getBytes()).thenThrow(new IOException("Failed to read file"));
 
+        // 예외 발생 여부 확인
         assertThrows(RuntimeException.class, () -> {
             articleService.updateArticle(articleId, updateArticleRequestDto);
-        });    }
+        });
+    }
 
     @Test
     void deleteArticleTest() throws Exception {

@@ -7,13 +7,19 @@ import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.dto.chat.AddChatRequestDto;
+import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.chat.ChatRepository;
+import com.example.oneinkedoneproject.repository.follow.FollowRepository;
+import com.example.oneinkedoneproject.repository.image.ImageRepository;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
+import com.example.oneinkedoneproject.repository.resume.ResumeRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import com.example.oneinkedoneproject.service.chat.ChatService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +82,24 @@ public class ChatIntegratedTest {
     private PasswordRepository passwordRepository;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private ResumeRepository resumeRepository;
+    @Autowired
+    private FollowRepository followRepository;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @BeforeEach
     void setUp() {
+        resumeRepository.deleteAll();
         chatRepository.deleteAll();
+        followRepository.deleteAll();
+        imageRepository.deleteAll();
+        articleRepository.deleteAll();
         userRepository.deleteAll();
+//        userRepository.deleteAll();
         this.mvc = MockMvcBuilders.webAppContextSetup(context).
                 apply(SecurityMockMvcConfigurers.springSecurity()).build();
 
@@ -128,15 +147,25 @@ public class ChatIntegratedTest {
                 .isDeletedTo(false).isDeletedFrom(false)
                 .sendAt(LocalDateTime.now()).build());
 
-        receivechat = Chat.builder()
-                .id("2").contents("test").sendUser(partner).receiverUser(user)
+        receivechat = chatRepository.save(Chat.builder()
+                .id("2").contents("test2").sendUser(partner).receiverUser(user)
                 .isDeletedFrom(false).isDeletedTo(false)
-                .sendAt(LocalDateTime.now().minusMinutes(5)).build();
+                .sendAt(LocalDateTime.now().minusMinutes(5)).build()) ;
 
         forDeleteChat = chatRepository.save(Chat.builder()
-                .id("3").contents("test").sendUser(partner).receiverUser(user)
+                .id("3").contents("test3").sendUser(partner).receiverUser(user)
                 .isDeletedFrom(true).isDeletedTo(true)
                 .sendAt(LocalDateTime.now().minusMinutes(5)).build());
+    }
+
+    @AfterEach
+    void  afterSetUp() {
+        resumeRepository.deleteAll();
+        chatRepository.deleteAll();
+        followRepository.deleteAll();
+        imageRepository.deleteAll();
+        articleRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -161,7 +190,7 @@ public class ChatIntegratedTest {
         ResultActions resultActions = mvc.perform(put("/api/updateIsDeleted")
                         .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .param("partnerEmail", partner.getEmail()))
                 .andDo(print())
                 .andExpect(jsonPath("$[0].isDeletedFrom").value(true));
     }
