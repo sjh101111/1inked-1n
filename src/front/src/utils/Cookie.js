@@ -65,5 +65,5 @@ export const removeRefreshToken = () =>{
 export const getAccessTokenInfo = () =>{
     const token = getAccessToken().split(" ")[1];
     const payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
-    return base64.decode(payload);
+    return JSON.parse(base64.decode(payload));
 }

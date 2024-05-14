@@ -46,3 +46,23 @@ export function anchorScrollCallback(e){
     // [3] 해당 id를 갖은 요소에 scrollIntoview 메서드를 사용한다.
     IdMatchedPage?.scrollIntoView({ behavior: "smooth" });
 };
+
+/**
+ * 
+ * @param {Date} date 
+ */
+export function FullDateFormatString(date){
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+};

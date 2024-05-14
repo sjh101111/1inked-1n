@@ -71,8 +71,11 @@ const MyPage = () => {
                 <div className="w-3/5 p-5 bg-white shadow-lg rounded mt-6 overflow-hidden">
                     <Avatar className="w-40 h-40">
                         {profilePic ? (
-                            <AvatarImage src={profilePic} alt="User profile picture"/>
-                        ) : (
+                            <>
+                                <AvatarImage src={profilePic} alt="User profile picture"/>
+                                <AvatarFallback>{username.charAt(0)}</AvatarFallback>
+                            </>
+                            ) : (
                             <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                         )}
                     </Avatar>
