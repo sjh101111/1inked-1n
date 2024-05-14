@@ -33,6 +33,11 @@ export function correctRegxPwd(inputString){
     return pwdRegx.test(inputString);
 }
 
+export function removeHtmlLabels(inputString){
+    const reg = /<[^>]*>?/g;
+    return inputString.replace(reg,'');
+}
+
 
 /**
  * anchor 태그 scroll 이벤트 콜백
