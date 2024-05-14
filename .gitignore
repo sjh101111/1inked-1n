@@ -2,6 +2,7 @@ HELP.md
 .gradle
 build/
 src/main/resources/application.properties
+src/main/resources/application-API-KEY.properties
 compose.yaml
 DockerFile.yaml
 !gradle/wrapper/gradle-wrapper.jar

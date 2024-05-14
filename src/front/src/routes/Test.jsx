@@ -21,6 +21,7 @@ import UserPage from "./UserPage";
 import { createArticle, deleteArticle, fetchLoginUserProfile, readAllMyArticle, readMainFeedArticles, saveProfile, updateArticle, withdraw } from "@/utils/API";
 import { createArticleReqParam, saveProfileReqParam, updateArticleReqParam, withdrawReqParam } from "@/utils/Parameter";
 import { getAccessToken, getAccessTokenInfo } from "@/utils/Cookie";
+import { getArticleItems } from "@/utils/Items";
 
 
 const Test =  () => {
@@ -29,6 +30,7 @@ const Test =  () => {
 
     /**아티클 API 테스트 */
     const [articles, setArticles] = useState([]);
+    const [articleItems, setArticleItems] = useState(<></>);
     const [articleFiles, setArticleFiles] = useState([]);
 
     const resource = {
@@ -73,6 +75,7 @@ const Test =  () => {
         readAllMyArticle()
         .then((response) => {
             setArticles([...response]);
+            setArticleItems(getArticleItems([...response]));
             console.log(response);
         }
         );
@@ -132,6 +135,11 @@ const Test =  () => {
                 <Button onClick={deleteWritenArticle}>내가 쓴 아티클 삭제 API(내가 쓴 아티클 조회 API 먼저 누를것)</Button>
 
                 <Input type="file" accept=".png" multiple onChange={ev => {setArticleFiles([...ev.target.files] || []);}}></Input>
+            </div>
+            <div>
+                {
+                    articleItems
+                }
             </div>
         </main>
         

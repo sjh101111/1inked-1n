@@ -10,9 +10,11 @@ import MyPage from "./routes/Mypage";
 import UserPage from "./routes/UserPage";
 import PasswordFind from "./routes/PasswordFind";
 import Resign from "./routes/Resign";
+import NewsPage from "./routes/NewsPage";
 import Resume from "@/routes/Resume.jsx";
 import Article from "@/components/Article.jsx";
 import {Comment} from "@/components/Comment.jsx";
+
 
 
 
@@ -56,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/test",
         element: <Test></Test>
+      },
+      {
+        path: "/newspage",
+        element: <NewsPage></NewsPage>
       },
     {
         path: "/comment",

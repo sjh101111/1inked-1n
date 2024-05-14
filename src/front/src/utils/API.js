@@ -2,7 +2,7 @@ import axios from "axios";
 import mem from "mem";
 import { getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from "./Cookie";
 
-const URL = "http://localhost:8080";
+const URL = "http://localhost:8082";
 
 const instance = axios.create();
 
@@ -257,6 +257,17 @@ export const deleteComment = async (commentId) =>{
 }
 
 /** Comment API END */
+
+/** Naver News API START*/
+export const fetchNewsItems = async(newsParams) =>{
+    const newsRequstUrl = URL+`/naver-news?query=${newsParams.query}`
+    +`&page=${newsParams.page}`+`&sort=${newsParams.sort}`;
+
+    return OneinkedGet(newsRequstUrl)
+    .then((response) => response.data);
+}
+/** Naver News API END */
+
 
 /** Chat API START */
 export const createChat = async (addChatReqParam) =>{
