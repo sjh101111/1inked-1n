@@ -13,6 +13,8 @@ import NewsPage from "./routes/NewsPage";
 import Resume from "@/routes/Resume.jsx";
 import Article from "@/components/Article.jsx";
 import {Comment} from "@/components/Comment.jsx";
+import ProtectedRoute from "@/routes/ProtectedRoute.jsx";
+import Chat from "@/routes/Chat.jsx";
 
 const router = createBrowserRouter([
       {
@@ -33,23 +35,43 @@ const router = createBrowserRouter([
       },
       {
         path: "/chat",
-        element: <ChatBox></ChatBox>
+        element: (
+            <ProtectedRoute>
+                <Chat></Chat>
+            </ProtectedRoute>
+        )
       },
       {
         path: "/resign",
-        element: <Resign></Resign>
+          element: (
+              <ProtectedRoute>
+                  <Resign></Resign>
+              </ProtectedRoute>
+          )
       },
       {
         path: "/mypage",
-        element: <MyPage></MyPage>
+          element: (
+              <ProtectedRoute>
+                  <MyPage></MyPage>
+              </ProtectedRoute>
+          )
       },
       {
         path: "/userPage",
-        element: <UserPage></UserPage>
+          element: (
+              <ProtectedRoute>
+                  <UserPage></UserPage>
+              </ProtectedRoute>
+          )
       },
       {
         path: "/resume",
-        element: <Resume></Resume>
+          element: (
+              <ProtectedRoute>
+                  <Resume></Resume>
+              </ProtectedRoute>
+          )
       },
       {
         path: "/test",
@@ -57,7 +79,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/newsinfo",
-        element: <NewsPage></NewsPage>
+          element: (
+              <ProtectedRoute>
+                  <NewsPage></NewsPage>
+              </ProtectedRoute>
+          )
       },
     {
         path: "/comment",

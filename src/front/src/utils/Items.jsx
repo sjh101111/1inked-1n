@@ -37,13 +37,10 @@ export const getCommentItems = (comments) =>{
  * 
  * @param {{id:String, img: Blob, articlId: String}[]} images 
  */
-export const getArticlePictures = (images) =>{
-    const imageItems =  images.map(image =>{
-        return
-                (<li key={image.id} className="w-[300px] h-[300px]">
-                    <img src={`data:image/png;base64,${image.img}`} className="w-full h-full object-resize"></img>
-                </li>);
-            });
-
-    return imageItems;
-}
+export const getArticlePictures = (images) => {
+    return images.map(image => (
+        <li key={image.id} className="w-[300px] h-[300px]">
+            <img src={`data:image/png;base64,${image.img}`} className="w-full h-full object-cover" alt="Article Image"/>
+        </li>
+    ));
+};

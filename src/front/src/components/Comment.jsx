@@ -10,6 +10,7 @@ import {updateCommentReqParam} from "@/utils/Parameter.js";
 import {deleteComment} from "@/utils/API.js";
 import {key} from "localforage";
 import {data} from "autoprefixer";
+import {getAccessTokenInfo} from "@/utils/Cookie.js";
 
 const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now", updatedAt = "now", comments ="test", setComments, commentsList, parentId }) =>{
     const [isEditing, setIsEditing] = useState(false);
@@ -17,10 +18,17 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
     const [editedComment, setEditedComment] = useState(comments);
     const [replyContent, setReplyContent] = useState('');
     const displayDate = new Date(createdAt) >= new Date(updatedAt) ? createdAt : updatedAt;
-
+    const [commentOwner, setCommentOwner] = useState(false);
     const handleEditClick = () => {
         setIsEditing(true);
     };
+
+    useEffect(() => {
+        const { sub } = getAccessTokenInfo();
+        if (sub === email) {
+            setCommentOwner(true);
+        }
+    }, [email]);
 
     const handleSaveClick = () => {
         updateComment(id, updateCommentReqParam(editedComment)).then(response => {
@@ -74,15 +82,22 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
                     <div className="w-full flex justify-between items-center">
                         <p className="text-sm font-semibold">{realname || "비회원"}</p>
                         <div className="modi-zone flex gap-2 text-sm">
-                            {isEditing ? (
-                                <span onClick={handleSaveClick}>edit save</span>
-                            ) : (
+                            {/* reply 옵션 (parentId가 없을 때만 표시) */}
+                            {!parentId && (
+                                <span onClick={toggleReplying}>reply</span>
+                            )}
+
+                            {/* commentOwner가 true일 때만 edit과 delete 옵션 표시 */}
+                            {commentOwner && (
                                 <>
-                                    <span onClick={handleEditClick}>edit</span>
-                                    {!parentId && <span onClick={toggleReplying}>reply</span>}
+                                    {isEditing ? (
+                                        <span onClick={handleSaveClick}>edit save</span>
+                                    ) : (
+                                        <span onClick={handleEditClick}>edit</span>
+                                    )}
+                                    <span onClick={deleteCommentHandler}>delete</span>
                                 </>
                             )}
-                            <span onClick={deleteCommentHandler}>delete</span>
                         </div>
                     </div>
                     <p className="text-xs text-gray-500">{displayDate}</p>
@@ -97,13 +112,14 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
                     )}
                     {isReplying && (
                         <div>
-                            <textarea
-                                className="mt-1 text-sm w-full"
-                                value={replyContent}
-                                onChange={(e) => setReplyContent(e.target.value)}
-                                placeholder="대댓글을 입력하세요"
-                            ></textarea>
-                            <button onClick={handleReply} className="mt-2 bg-blue-500 text-white px-2 py-1">대댓글 등록</button>
+                        <textarea
+                            className="mt-1 text-sm w-full"
+                            value={replyContent}
+                            onChange={(e) => setReplyContent(e.target.value)}
+                            placeholder="대댓글을 입력하세요"
+                        ></textarea>
+                            <button onClick={handleReply} className="mt-2 bg-blue-500 text-white px-2 py-1">대댓글 등록
+                            </button>
                         </div>
                     )}
                 </div>

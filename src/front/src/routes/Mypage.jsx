@@ -182,8 +182,13 @@ const ResumesTab = () => {
             setLoading(true);
             try {
                 const response = await getResumeByUser();
-                console.log(response)
-                setResumes(Array.isArray(response) ? response : []);
+                if (Array.isArray(response)) {
+                    // 'createdAt'을 기준으로 내림차순 정렬하여 가장 최근의 데이터가 배열의 첫 번째에 오도록 함
+                    const sortedResumes = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    setResumes(sortedResumes);
+                } else {
+                    setResumes([]);
+                }
             } catch (error) {
                 console.error('Error reading resumes:', error);
             } finally {
@@ -199,7 +204,7 @@ const ResumesTab = () => {
                 <p>Loading...</p>
             ) : (
                 resumes.map((resume, index) => (
-                    <MyResumes key={resume.id} resume={resume} order={index + 1} />
+                    <MyResumes key={resume.id} resume={resume} order={resumes.length - index} />
                 ))
             )}
         </div>
