@@ -2,7 +2,7 @@ name: github-action-workflow
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "release" ]
 
 env:
   S3_BUCKET_NAME: thlee-content
@@ -22,35 +22,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Change application.yml to deploy version
-        run: |
-          cd ./src/main/resources
-          mv ./application-deploy.yml ./application.yml
-          cat application.yml
-          
-      - name: Make application-secret.yml
-        env:
-          JWT_TOKEN_SECRET: ${{ secrets.JWT_TOKEN_SECRET }}
-          MYSQL_URL: ${{secrets.MYSQL_URL}}
-          MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
-          MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
-          NAVER_CLIENT: ${{secrets.NAVER_CLIENT}}
-          NAVER_KEY: ${{secrets.NAVER_KEY}}
-        run: |
-          cd ./src/main/resources
-          echo -e \
-          "
-          spring:
-            datasource:
-              url: $MYSQL_URL
-              username: $MYSQL_USERNAME
-              password: $MYSQL_PASSWORD
-          jwt:
-            secret: $JWT_TOKEN_SECRET       
-          naver-client: $NAVER_CLIENT
-          naver-key: $NAVER_KEY
-          " > application-security.yml
 
       - name: Grant excute permission for gradlew
         run: chmod +x gradlew

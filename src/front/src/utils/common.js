@@ -1,7 +1,3 @@
-export function GenerateLiElUUID(){
-    return crypto.randomUUID().replaceAll("-", "");
-}
-
 /**
  * @brief 이메일 정규식 형태가 일치하는지 확인합니다.
  * The email couldn't start or finish with a dot
@@ -33,41 +29,3 @@ export function correctRegxPwd(inputString){
     return pwdRegx.test(inputString);
 }
 
-export function removeHtmlLabels(inputString){
-    const reg = /<[^>]*>?/g;
-    return inputString.replace(reg,'');
-}
-
-
-/**
- * anchor 태그 scroll 이벤트 콜백
- */
-
-export function anchorScrollCallback(e){
-    e.preventDefault(); // [2] a태그의 주소이동 막고
-    let MemuData = (e.target).hash; // #HOME, #ABOUT 등
-    const IdMatchedPage = document.querySelector(MemuData);
-
-    // [3] 해당 id를 갖은 요소에 scrollIntoview 메서드를 사용한다.
-    IdMatchedPage?.scrollIntoView({ behavior: "smooth" });
-};
-
-/**
- * 
- * @param {Date} date 
- */
-export function FullDateFormatString(date){
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-    let second = date.getSeconds();
-
-    month = month >= 10 ? month : '0' + month;
-    day = day >= 10 ? day : '0' + day;
-    hour = hour >= 10 ? hour : '0' + hour;
-    minute = minute >= 10 ? minute : '0' + minute;
-    second = second >= 10 ? second : '0' + second;
-
-    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-};

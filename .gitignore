@@ -2,7 +2,6 @@ HELP.md
 .gradle
 build/
 src/main/resources/application.properties
-src/main/resources/application-API-KEY.properties
 compose.yaml
 DockerFile.yaml
 !gradle/wrapper/gradle-wrapper.jar
@@ -22,8 +21,6 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-application.yml
-
 .idea
 *.iws
 *.iml
@@ -31,7 +28,6 @@ application.yml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-
 
 ### NetBeans ###
 /nbproject/private/
