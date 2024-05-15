@@ -130,6 +130,7 @@ public class User implements UserDetails {
 
     public FindUserResponseDto toUserInfoDto(){
         return FindUserResponseDto.builder()
+            .id(id)
             .realName(realname)
             .email(email)
             .identity(identity)

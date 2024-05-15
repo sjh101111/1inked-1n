@@ -16,4 +16,5 @@ public class FollowResponseDto {
 
     private String email;
 
+    private String userId;
 }

@@ -27,23 +27,15 @@ const MyPage = () => {
     const [identity, setIdentity] = useState('Student');
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
-    const [username, setUsername] = useState('Username');
     const [file, setFile] = useState(null);
     const [activeTab, setActiveTab] = useState('articles');
     const {userInfo, setUserInfo} = useUserInfo();
 
+
     useEffect(() =>{
-        console.log(userInfo);
-        // fetchLoginUserProfile()
-        // .then(async (userInfo) => {
-        //     setUsername(userInfo.realName);
-        //     setIdentity(userInfo.identity);
-        //     setLocation(userInfo.location);
-        //     setDescription(userInfo.description);
-        //
-        //     //user Profile image 설정
-        //     setProfilePic(`data:image/png;base64,${userInfo.image}`);
-        // });
+        setIdentity(userInfo.identity);
+        setLocation(userInfo.location);
+        setDescription(userInfo.description);
     },[]);
 
     const toggleEditing = () => {
@@ -54,14 +46,29 @@ const MyPage = () => {
     const doSaveProfile = () =>{
         const reqParam = saveProfileReqParam(identity, location, description, file);
 
+        if(!reqParam.file){
+            alert('프로필로 사용할 파일을 업로드 해주세요.');
+            return ;
+        }
+
         saveProfile(reqParam)
         .then((response) => {
-            console.log(response);
+            const newUserInfo ={
+                ...userInfo
+            };
+
+            newUserInfo.identity = identity;
+            newUserInfo.location = location;
+            newUserInfo.description = description;
+            newUserInfo.profileSrc = profilePic;
+            setUserInfo(newUserInfo);
+        })
+        .catch(() =>{
+            alert("프로필 저장에 실패하였습니다.");
         })
         .finally(() =>{
             toggleEditing();
         });
-        history.push("/mypage");
         
     }
 
@@ -101,9 +108,9 @@ const MyPage = () => {
                             {
                                 editing ?
                                 (<>
-                                    <Input className="w-full mt-2" maxLength={100} type="text" value={userInfo.identity} onChange={e => setIdentity(e.target.value)}/>
-                                    <Input className="w-full" maxLength={50} type="text" value={userInfo.location} onChange={e => setLocation(e.target.value)}/>
-                                    <Textarea className="w-full resize-none" maxLength={2000} value={userInfo.description} onChange={e => setDescription(e.target.value)}/>
+                                    <Input className="w-full mt-2" maxLength={100} type="text" value={identity} onChange={e => setIdentity(e.target.value)}/>
+                                    <Input className="w-full" maxLength={50} type="text" value={location} onChange={e => setLocation(e.target.value)}/>
+                                    <Textarea className="w-full resize-none" maxLength={2000} value={description} onChange={e => setDescription(e.target.value)}/>
                                     <Input type="file" accept=".png" onChange={(ev) => { handleProfilePicChange(ev); setFile(ev.target.files[0])}}/>
                                     <Button onClick={doSaveProfile} variant="ghost" className="text-black text-opacity-40">
                                         Save Changes
@@ -112,7 +119,7 @@ const MyPage = () => {
                                 (<>
                                     <p className="w-full mt-2">{identity}</p>
                                     <p className="w-full">{location}</p>
-                                    <p className="w-full" style={{whiteSpace: 'pre-wrap'}}>{userInfo.description}</p>
+                                    <p className="w-full" style={{whiteSpace: 'pre-wrap'}}>{description}</p>
                                     <Button onClick={toggleEditing} variant="ghost" className="text-black text-opacity-40">
                                         Edit
                                     </Button>
