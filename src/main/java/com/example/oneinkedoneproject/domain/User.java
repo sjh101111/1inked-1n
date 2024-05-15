@@ -1,28 +1,30 @@
 package com.example.oneinkedoneproject.domain;
 
 
+import com.example.oneinkedoneproject.dto.user.FindUserResponseDto;
+import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
-@Table(name= "user")
+@Table(name= "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Builder
 public class User implements UserDetails {
     @Id
+    @Builder.Default
     @Column(name = "user_id", nullable = false)
-    private String id;
+    private String id = GenerateIdUtils.generateUserId();
 
     @Column(name = "username", nullable = false)
-    private String username;
+    private String realname;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -30,8 +32,9 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "password_question", nullable = false)
-    private String passwordQuestion;
+    @ManyToOne
+    @JoinColumn(name = "password_question", nullable = false)
+    private PasswordQuestion passwordQuestion;
 
     @Column(name = "password_answer", nullable = true)
     private String passwordAnswer;
@@ -49,8 +52,9 @@ public class User implements UserDetails {
     private Boolean withdraw;
 
     // 프로필 사진
+    @Lob
     @Column(name = "image", nullable = true)
-    private Byte image;
+    private byte[] image;
 
     @Enumerated(EnumType.STRING)
     private Grade grade;
@@ -61,10 +65,10 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Article> articleList;
 
+    public User(String id, String username, String email, String password, PasswordQuestion passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, byte[] image, Grade grade) {
 
-    public User(String id, String username, String email, String password, String passwordQuestion, String passwordAnswer, String identity, String location, String description, Boolean withdraw, Byte image, Grade grade) {
         this.id = id;
-        this.username = username;
+        this.realname = username;
         this.email = email;
         this.password = password;
         this.passwordQuestion = passwordQuestion;
@@ -79,28 +83,23 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(this.grade.getRoleName()));
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
     @Override
     public String getPassword() {
         return password;
     }
 
     @Override
-    public String getUsername() {
-        return username;
-    }
+    public boolean isAccountNonExpired(){ return true;}
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
     public boolean isCredentialsNonExpired() {
@@ -112,8 +111,32 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void updateName(String username) {
-        this.username = username;
-    }
+    public void updateName(String realname) {
+        this.realname = realname;
 
+    }
+    public void updateWithdraw(boolean isWithdraw){this.withdraw = isWithdraw;}
+
+    public void updatePassword(String password){this.password = password;}
+
+    public void updateImage(byte[] image){ this.image = image;}
+
+    public void updateIdentity(String identity){ this.identity = identity; }
+
+    public void updateLocation(String location){ this.location = location; }
+
+
+    public void updateDescription(String description){ this.description = description; }
+
+    public FindUserResponseDto toUserInfoDto(){
+        return FindUserResponseDto.builder()
+            .id(id)
+            .realName(realname)
+            .email(email)
+            .identity(identity)
+            .location(location)
+            .description(description)
+            .image(image)
+            .build();
+    }
 }

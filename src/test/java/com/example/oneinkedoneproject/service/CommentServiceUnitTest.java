@@ -1,9 +1,7 @@
 package com.example.oneinkedoneproject.service;
 
-import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
-import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
 import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
@@ -11,8 +9,6 @@ import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.comment.CommentService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
-import org.assertj.core.api.Assertions;
-import org.hibernate.sql.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,15 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.InstanceOfAssertFactories.optional;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -49,9 +43,19 @@ public class CommentServiceUnitTest {
 
     private String comments;
 
+    private Comment parentComment;
+    private Comment childComment;
+
     @BeforeEach
     void setup() {
+
         comments = "댓글 내용";
+
+        // Setup parent comment
+        parentComment = Comment.builder().id("parent-id").build();
+
+        // Setup child comment
+        childComment = Comment.builder().id("child-id").parent(parentComment).build();
     }
 
     @Test
@@ -67,7 +71,7 @@ public class CommentServiceUnitTest {
                 .build())
         ).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         Comment comment = Comment.builder()
                 .id(GenerateIdUtils.generateCommentId())
@@ -93,7 +97,7 @@ public class CommentServiceUnitTest {
         // given
         doReturn(Optional.empty()).when(articleRepository).findById(any(String.class));
 
-        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments);
+        AddCommentRequestDto addCommentRequestDto = new AddCommentRequestDto(comments, null);
 
         // when
         assertThatThrownBy(() -> commentService.save(null, "123", addCommentRequestDto)).isInstanceOf(IllegalArgumentException.class);
@@ -146,9 +150,9 @@ public class CommentServiceUnitTest {
 
 
         // when
-        List<Comment> rootCommentList = commentService.getRootComments(articleId);
+        List<Comment> rootCommentList = commentService.getComments(articleId);
         // then
-        assertThat(rootCommentList.size()).isEqualTo(1);
+        assertThat(rootCommentList.size()).isEqualTo(4);
         assertThat(rootCommentList.get(0).getComments()).isEqualTo(comments);
     }
 
@@ -185,16 +189,33 @@ public class CommentServiceUnitTest {
     }
 
     @Test
-    @DisplayName("댓글 삭제")
-    void deleteComment() {
+    @DisplayName("댓글 삭제 - 자식 댓글이 없는 경우")
+    void deleteComment_NoChild() {
         // given
-        doNothing().when(commentRepository).deleteById(any(String.class));
-
+        doReturn(Optional.of(parentComment)). when(commentRepository).findById(any(String.class));
         // when
-        commentService.deleteComment("1");
+        commentService.deleteComment("parent-id");
 
         // then
-        verify(commentRepository, only()).deleteById(any(String.class));
+        verify(commentRepository, times(1)).findById("parent-id");
+        verify(commentRepository, times(1)).deleteById("parent-id");
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 - 자식 댓글이 있는 경우")
+    void deleteComment_WithChild() {
+        // given
+        doReturn(Optional.of(parentComment)). when(commentRepository).findById(any(String.class));
+        doReturn(List.of(childComment)).when(commentRepository).findAllByParent(any(Comment.class));
+
+        // when
+        commentService.deleteComment("parent-id");
+
+        // then
+        verify(commentRepository, times(1)).findById("parent-id");
+        verify(commentRepository, times(1)).findAllByParent(parentComment);
+        verify(commentRepository, times(1)).delete(childComment);
+        verify(commentRepository, times(1)).deleteById("parent-id");
     }
 
 
