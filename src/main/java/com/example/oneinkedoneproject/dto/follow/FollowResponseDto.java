@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class FollowResponseDto {
+    private String id;
 
     private String realname;
 
@@ -13,6 +14,6 @@ public class FollowResponseDto {
 
     private byte[] image;
 
-
+    private String email;
 
 }
