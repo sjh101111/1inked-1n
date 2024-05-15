@@ -34,7 +34,7 @@ const UserPage = () => {
         const accessToken = getAccessTokenInfo();
         //작동하지 않는 모양.
         if (accessToken.sub === queryEmail) {
-            useNavigate("/mypage");
+            navigate("/mypage");
         }
 
         fetchAnotherUserProfile(queryEmail)

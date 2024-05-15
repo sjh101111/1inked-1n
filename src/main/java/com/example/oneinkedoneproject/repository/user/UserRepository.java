@@ -15,5 +15,5 @@ UserRepository extends JpaRepository<User,String> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<List<User>> findAllByIdentityAndDescription(String keyword1, String keyword2);
+    Optional<List<User>> findAllByIdentityOrDescription(String keyword1, String keyword2);
 }
