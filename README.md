@@ -1,10 +1,21 @@
 #  1inked-1n
 
 ## 목차
+<div>
+  
+- [0.프로젝트 소개](#0-프로젝트-소개)
+- [1.개발 환경 및 개발 일정](#1-개발-환경-및-개발-일정)
+- [2.기능 명세서](#2-기능-명세서)
+- [3.화면 설계서(Wireframe)](#3-화면-설계서wireframe)
+- [4.구조도 - 프로젝트, 시스템](#4-구조도---프로젝트-시스템)
+- [5.데이터베이스(ERD)](#5-데이터베이스erd)
+- [6.API 명세서](#6-api-명세서)
+
+</div>
 -------------------------  
 
 
-## 🗒️ 0. 🙌프로젝트 소개
+## 0. 프로젝트 소개
 - 당신의 글로벌 커리어를 도와줄 SNS 서비스
 - 글로벌 커리어를 꿈꾸는 사람들과 교류하고 정보를 받아보세요!
 
@@ -13,7 +24,7 @@
 저희가 도와드리겠습니다!
 ****
 
-## 1. 💻 개발 환경 및 개발 일정
+## 1. 개발 환경 및 개발 일정
 ### 개발 환경경
 #### [프론트엔드] 
 <div>
@@ -198,7 +209,7 @@
 |               | | 쪽지 전송 버튼 | | | 서버에 쪽지 생성 요청 |
 
 
-## 3.🏙️ 화면 설계서(Wireframe)
+## 3. 화면 설계서(Wireframe)
 [1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
 
 |||
@@ -215,7 +226,8 @@
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/f45f5916-9d6e-4d32-a806-f8d41891ffac"> <br/> 마이 페이지 이력서 상세 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ece0d58-6af3-4a32-a564-28ff4dc01def"> <br/> 유저 페이지 화면 |
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/35700ad4-4c2b-4a24-9e14-b8cff4ff238a"> <br/> 공통 헤더 ||
 
-## 프로젝트 구조
+## 4. 구조도 - 프로젝트, 시스템
+### 프로젝트 구조도
 
 <pre>
 <code>
@@ -317,19 +329,19 @@
 </pre>
 
 
-## 🏭 시스템 구성도
+###  시스템 구성도
 
 <p align="center">
   <img src="https://github.com/Garodden/1inked-1n/assets/143177939/2d6b46ae-f2df-4dea-8f8a-cd44a11cbb2f">
 </p>
 
-## 🍻 ERD 구성도
+## 5. 데이터베이스(ERD)
 
 <p align="center">
   <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8ae0142c-98c3-451e-b438-9ae721266310">
 </p>
 
-## API 명세서
+## 6. API 명세서
 
 ### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/515fb7bc-1f75-4ad1-8a8a-460edbcf87ef">
@@ -353,7 +365,7 @@
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/c60d9eac-5ce5-4da1-8bd4-f8c4968d23e8">
 
 
-## 📐 코딩 컨벤션
+## 기타 -📐 코딩 컨벤션
 
 ### 프론트엔드
 [프론트 코딩컨벤션](https://github.com/Garodden/1inked-1n/wiki/Front-%EC%BD%94%EB%94%A9-%EC%BB%A8%EB%B2%A4%EC%85%98)
