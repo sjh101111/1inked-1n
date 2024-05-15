@@ -10,10 +10,12 @@ import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import { anchorScrollCallback } from "@/utils/common";
 import { saveProfileReqParam } from "@/utils/Parameter";
-import {fetchLoginUserProfile, readComment, saveProfile} from "@/utils/API";
+import {fetchLoginUserProfile, getResumeByUser, readComment, saveProfile} from "@/utils/API";
 import Article from "@/components/Article.jsx";
 import {readAllMyArticle} from "@/utils/API";
-import { useUserInfo } from "@/utils/store";
+import {useUserInfo} from "@/utils/store.js";
+import {getFollows, getFollowers} from "@/utils/API";
+
 
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
@@ -28,20 +30,20 @@ const MyPage = () => {
     const [username, setUsername] = useState('Username');
     const [file, setFile] = useState(null);
     const [activeTab, setActiveTab] = useState('articles');
-
     const {userInfo, setUserInfo} = useUserInfo();
 
     useEffect(() =>{
-        fetchLoginUserProfile()
-        .then(async (userInfo) => {
-            setUsername(userInfo.realName);
-            setIdentity(userInfo.identity);
-            setLocation(userInfo.location);
-            setDescription(userInfo.description);
-
-            //user Profile image 설정
-            setProfilePic(`data:image/png;base64,${userInfo.image}`);
-        });
+        console.log(userInfo);
+        // fetchLoginUserProfile()
+        // .then(async (userInfo) => {
+        //     setUsername(userInfo.realName);
+        //     setIdentity(userInfo.identity);
+        //     setLocation(userInfo.location);
+        //     setDescription(userInfo.description);
+        //
+        //     //user Profile image 설정
+        //     setProfilePic(`data:image/png;base64,${userInfo.image}`);
+        // });
     },[]);
 
     const toggleEditing = () => {
@@ -79,9 +81,9 @@ const MyPage = () => {
             <main className="flex flex-col items-center bg-gray-100 min-h-screen">
                 <div className="w-3/5 p-5 bg-white shadow-lg rounded mt-6 overflow-hidden">
                     <Avatar className="w-40 h-40">
-                        {profilePic ? (
+                        {userInfo.profileSrc ? (
                             <>
-                                <AvatarImage src={profilePic} alt="User profile picture"/>
+                                <AvatarImage src={userInfo.profileSrc} alt="User profile picture"/>
                                 <AvatarFallback></AvatarFallback>
                             </>
                             ) : (
@@ -89,7 +91,7 @@ const MyPage = () => {
                         )}
                     </Avatar>
                     <div className="mt-4 flex justify-between items-center">
-                        <strong>{username}</strong>
+                        <strong>{userInfo.realName}</strong>
                         <div className="flex gap-2 text-black/65">
                             <Link to="/findPassword">비밀번호 변경</Link>
                             <Link to="/resign">회원 탈퇴</Link>
@@ -99,9 +101,9 @@ const MyPage = () => {
                             {
                                 editing ?
                                 (<>
-                                    <Input className="w-full mt-2" maxLength={100} type="text" value={identity} onChange={e => setIdentity(e.target.value)}/>
-                                    <Input className="w-full" maxLength={50} type="text" value={location} onChange={e => setLocation(e.target.value)}/>
-                                    <Textarea className="w-full resize-none" maxLength={2000} value={description} onChange={e => setDescription(e.target.value)}/>
+                                    <Input className="w-full mt-2" maxLength={100} type="text" value={userInfo.identity} onChange={e => setIdentity(e.target.value)}/>
+                                    <Input className="w-full" maxLength={50} type="text" value={userInfo.location} onChange={e => setLocation(e.target.value)}/>
+                                    <Textarea className="w-full resize-none" maxLength={2000} value={userInfo.description} onChange={e => setDescription(e.target.value)}/>
                                     <Input type="file" accept=".png" onChange={(ev) => { handleProfilePicChange(ev); setFile(ev.target.files[0])}}/>
                                     <Button onClick={doSaveProfile} variant="ghost" className="text-black text-opacity-40">
                                         Save Changes
@@ -110,7 +112,7 @@ const MyPage = () => {
                                 (<>
                                     <p className="w-full mt-2">{identity}</p>
                                     <p className="w-full">{location}</p>
-                                    <p className="w-full" style={{whiteSpace: 'pre-wrap'}}>{description}</p>
+                                    <p className="w-full" style={{whiteSpace: 'pre-wrap'}}>{userInfo.description}</p>
                                     <Button onClick={toggleEditing} variant="ghost" className="text-black text-opacity-40">
                                         Edit
                                     </Button>
@@ -121,21 +123,17 @@ const MyPage = () => {
                 <Tabs defaultValue="articles" className="w-3/5 mt-6" onValueChange={setActiveTab}>
                     <TabsList className="w-full flex">
                         <TabsTrigger className="flex-grow" value="articles">Articles</TabsTrigger>
-                        <TabsTrigger className="flex-grow" value="comments">Comments</TabsTrigger>
                         <TabsTrigger className="flex-grow" value="followAndFollower">Follow/Follower</TabsTrigger>
-                        <TabsTrigger className="flex-grow" value="myresume">My Resume</TabsTrigger>
+                        <TabsTrigger className="flex-grow" value="myresumes">My Resume</TabsTrigger>
                     </TabsList>
                     <TabsContent id="articles" className="w-full" value="articles">
                         {activeTab === 'articles' && <ArticlesTab />}
                     </TabsContent>
-                    <TabsContent id="comments" className="w-full flex justify-center items-center" value="comments">
-                        Change your password here.
-                    </TabsContent>
                     <TabsContent id="followAndFollower" className="w-full" value="followAndFollower">
-                        <FollowInfo />
+                        {activeTab === 'followAndFollower' && <FollowAndFollowerTab />}
                     </TabsContent>
-                    <TabsContent id="myresume" className="w-full" value="myresume">
-                        <MyResumes />
+                    <TabsContent id="myresumes" className="w-full" value="myresumes">
+                        {activeTab === 'myresumes' && <ResumesTab />}
                     </TabsContent>
                 </Tabs>
             </main>
@@ -174,5 +172,75 @@ const ArticlesTab = () => {
         </div>
     );
 };
+
+const ResumesTab = () => {
+    const [resumes, setResumes] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchResumes = async () => {
+            setLoading(true);
+            try {
+                const response = await getResumeByUser();
+                console.log(response)
+                setResumes(Array.isArray(response) ? response : []);
+            } catch (error) {
+                console.error('Error reading resumes:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchResumes();
+    }, []);
+
+    return (
+        <div className="w-full">
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                resumes.map((resume, index) => (
+                    <MyResumes key={resume.id} resume={resume} order={index + 1} />
+                ))
+            )}
+        </div>
+    );
+};
+
+const FollowAndFollowerTab = () => {
+    const [follows, setFollows] = useState([]);
+    const [followers, setFollowers] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchFollowAndFollower = async () => {
+            setLoading(true);
+            try {
+                const followsData = await getFollows(); // Fetch follows data
+                const followersData = await getFollowers(); // Fetch followers data
+                setFollows(followsData); // Set follows state
+                setFollowers(followersData); // Set followers state
+            } catch (error) {
+                console.error('Error fetching follow and follower data:', error);
+                setFollows([]); // Set follows state to empty array on error
+                setFollowers([]); // Set followers state to empty array on error
+            } finally {
+                setLoading(false); // Ensure loading is set to false after operation completes
+            }
+        };
+
+        fetchFollowAndFollower(); // Initiate the fetch operation
+    }, []);
+
+    return (
+        <div className="w-full">
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <FollowInfo follows={follows} followers={followers} />
+            )}
+        </div>
+    );
+};
+
 
 export default MyPage;

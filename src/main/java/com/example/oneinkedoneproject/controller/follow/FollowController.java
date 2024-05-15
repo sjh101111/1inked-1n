@@ -17,12 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FollowController {
 
-
     private final FollowService followService;
 
     @PostMapping("/api/follow")
     public ResponseEntity<Follow> followUser(@RequestBody AddFollowRequestDto request, @AuthenticationPrincipal User fromUser) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(followService.follow(fromUser,request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(followService.follow(fromUser, request));
     }
 
     // follow 생성 api

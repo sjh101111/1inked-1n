@@ -37,7 +37,7 @@ public class FollowService {
         String curUserEmail = toUser.getEmail();
         List<Follow> follows = followRepository.findAllByFromUser_Email(curUserEmail);
         return follows.stream()
-                .map(follow -> new FollowResponseDto(follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail()))
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class FollowService {
         String curUserEmail = fromUser.getUsername();
         List<Follow> follows = followRepository.findAllByToUser_Email(curUserEmail); // To
         return follows.stream()
-                .map(follow -> new FollowResponseDto(follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage()))
+                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail()))
                 .collect(Collectors.toList());
     }
 

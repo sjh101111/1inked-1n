@@ -332,4 +332,27 @@ export const saveResume = async (addResumeRequestDto) => {
     return OneinkedPost(saveResumeURL, addResumeRequestDto)
         .then((response) => response.data)
 }
+
+export const getResumeByUser = async () => {
+    const getResumeByUserURL = URL + "/api/resume/user"
+
+    return OneinkedGet(getResumeByUserURL)
+        .then((response) => response.data)
+};
 /** Resume API END */
+
+/** Follow API START */
+export const getFollows = async () => {
+    const getFollowsURL = URL + "/api/follows"
+
+    return OneinkedGet(getFollowsURL)
+        .then((response) => response.data)
+}
+
+export const getFollowers = async () => {
+    const getFollowersURL = URL + "/api/followers"
+
+    return OneinkedGet(getFollowersURL)
+        .then((response) => response.data)
+}
+/** Follow API END */

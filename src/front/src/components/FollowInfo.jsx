@@ -1,26 +1,26 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Link } from "react-router-dom";
 
-const FollowUser = ({username="temp", id="temp", img = null}) =>{
+const FollowUser = ({realname, identity, img = null, email}) =>{
     return (
-        <Link to="" className="flex items-center gap-4">
+        <Link to={`/user/${email}`} className="flex items-center gap-4">
             <Avatar className="w-10 h-10">
-                <AvatarImage alt="@shadcn" src="/placeholder-avatar.jpg" />
-                <AvatarFallback>hi</AvatarFallback>
+                {img ? (
+                    <AvatarImage alt={realname} src={img} />
+                ) : (
+                    <AvatarFallback>{realname.charAt(0)}</AvatarFallback>
+                )}
             </Avatar>
             <div className="flex flex-col justify-center">
-                <h2 className="font-bold text-lg">username</h2>
-                <span className="text-black/50 ">id</span>
+                <h2 className="font-bold text-lg">{realname}</h2>
+                <span className="text-black/50 ">{identity}</span>
             </div>
         </Link>
     );
 };
 
-const FollowInfo = () =>{
-    const dummyFollowes = Array(4).fill(<FollowUser></FollowUser>);
-    const dummyFollowers = Array(4).fill(<FollowUser></FollowUser>);
+const FollowInfo = ({ follows, followers }) =>{
 
-    // 팔로위, 팔로워 클릭시 해당 유저의 page로 이동
     return (
         <section className="w-full p-4 bg-white">
             {/* 헤더 */}
@@ -31,21 +31,27 @@ const FollowInfo = () =>{
 
             {/* content */}
             <div className="flex border-t">
-                {/* follow */}
+                {/* Follow */}
                 <section className="w-1/2 p-2 grid gap-4 mt-4">
-                    {
-                        dummyFollowes.map(item => item)
-                    }
+                    {Array.isArray(follows) && follows.length > 0 ? (
+                        follows.map(follow => (
+                            <FollowUser key={follow.id} realname={follow.realname} identity={follow.identity} img={follow.img} email={follow.email} />
+                        ))
+                    ) : (
+                        <p>No follows found</p>
+                    )}
                 </section>
-                {/* follower */}
+                {/* Follower */}
                 <section className="w-1/2 p-2 grid gap-4 mt-4">
-                    {
-                        dummyFollowers.map(item => item)
-                    }
+                    {Array.isArray(followers) && followers.length > 0 ? (
+                        followers.map(follower => (
+                            <FollowUser key={follower.id} realname={follower.realname} identity={follower.identity} img={follower.img} email={follower.email} />
+                        ))
+                    ) : (
+                        <p>No followers found</p>
+                    )}
                 </section>
             </div>
-
-
         </section>
     )
 };

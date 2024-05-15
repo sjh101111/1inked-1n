@@ -3,12 +3,13 @@ import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { GenerateLiElUUID } from "@/utils/common";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
-const MyResumes = () =>{
+const MyResumes = ({ resume, order }) =>{
+    const { id, contents, createdAt, updatedAt } = resume;
     const getTableItem = (ResumeInfo, order = 0, key) =>{
         return (
             <TableRow key={key}>
                 <TableCell className="font-medium text-center">{order}</TableCell>
-                <TableCell>{ResumeInfo.name}</TableCell>
+                <TableCell>{ResumeInfo.contents}</TableCell>
                 <TableCell className="text-right">
                     <Dialog>
                         <DialogTrigger asChild>
@@ -18,26 +19,19 @@ const MyResumes = () =>{
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <h2 className="text-lg font-bold">{ResumeInfo.name}</h2>
+                                <h2 className="text-lg font-bold">{ResumeInfo.contents}</h2>
                             </DialogHeader>
                             <div className="p-2">
-                                <span>
-                                    {ResumeInfo.content}
-                                </span>
+                                <span>{ResumeInfo.contents}</span>
                             </div>
                         </DialogContent>
                     </Dialog>
-                    
                 </TableCell>
             </TableRow>
         );
     };
 
-    let dummyTableItems = Array(10).fill();
-    dummyTableItems = dummyTableItems.map(i => getTableItem({name: "temp", content: "hihi"},0,GenerateLiElUUID()))
-
     return (
-        //스크롤 이벤트 처리 위한 mt-20
         <section className="container mx-auto mt-20">
             <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -51,20 +45,19 @@ const MyResumes = () =>{
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="w-[100px]">Order</TableHead>
-                                <TableHead>Name</TableHead>
+                                <TableHead>Contents</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {
-                                dummyTableItems.map(item => item)
-                            }
+                            {getTableItem({ id, contents, createdAt, updatedAt }, order, GenerateLiElUUID())}
                         </TableBody>
                     </Table>
                 </div>
             </div>
-            </section>
+        </section>
     );
 };
+
 
 export default MyResumes;
