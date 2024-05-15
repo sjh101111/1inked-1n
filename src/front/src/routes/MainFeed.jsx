@@ -13,8 +13,6 @@ const MainFeed = () =>{
         if(isLogin){
             readMainFeedArticles()
             .then((articles) =>{
-                console.log("hi");
-                console.log(articles);
                 setArticles(articles);
             });
         }

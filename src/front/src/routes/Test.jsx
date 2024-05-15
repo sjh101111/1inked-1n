@@ -50,7 +50,6 @@ const Test =  () => {
     
 
     useEffect(() =>{
-        console.log(state,"state");
        getAccessTokenInfo(); 
        setLogin(true);
     },[]);
@@ -78,10 +77,8 @@ const Test =  () => {
     const showMainFeedArticles = () =>{
         readMainFeedArticles()
         .then((data) => {
-            console.log(isLogin);
-            console.log(data)
-        }
-        );
+            console.log(data);
+        });
     }
 
     const showAllMyArticles = () =>{
