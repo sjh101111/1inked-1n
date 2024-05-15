@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${{AWS_RDS_URL}}
-    username: ${{AWS_RDS_USERNAME}}
-    password: ${{AWS_RDS_PASSWORD}}
+    url: ${{secrets.AWS_RDS_URL}}
+    username: ${{secrets.AWS_RDS_USERNAME}}
+    password: ${{secrets.AWS_RDS_PASSWORD}}
   jpa:
     properties:
       hibernate:
@@ -21,7 +21,7 @@ spring:
   profiles:
     include: API-KEY
 jwt:
-  secret: ${{JWT_TOKEN_SECRET}}
+  secret: ${{secrets.JWT_TOKEN_SECRET}}
 
 server:
   port: 8080
