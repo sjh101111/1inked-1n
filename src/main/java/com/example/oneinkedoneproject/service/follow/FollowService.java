@@ -47,7 +47,7 @@ public class FollowService {
     @Transactional
     public List<FollowResponseDto> getFollowsOfUser(String email) {
         return followRepository.findAllByFromUser_Email(email).stream()
-                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail(), follow.getToUser().getId()))
         .toList();
     }
 
@@ -64,7 +64,7 @@ public class FollowService {
     @Transactional
     public List<FollowResponseDto> getFollowersOfUser(String email) {
         return followRepository.findAllByToUser_Email(email).stream()
-                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail()))
+                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
                 .toList();
     }
 
