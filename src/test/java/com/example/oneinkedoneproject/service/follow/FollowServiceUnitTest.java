@@ -237,19 +237,26 @@ public class FollowServiceUnitTest {
     @Test
     @DisplayName("팔로우 삭제")
     void unfollow(){
-
         // given
-        doNothing().when(followRepository).deleteById(any(String.class));
+        List<Follow> list = new ArrayList<>();
+        doReturn(Optional.of(Follow.builder()
+            .id(GenerateIdUtils.generateFollowId())
+            .fromUser(null)
+            .toUser(null)
+            .build())
+        )
+        .when(followRepository)
+        .findByToUserId(any(String.class), any(String.class));
+        doNothing().when(followRepository).delete(any(Follow.class));
 
+        doReturn(list)
+            .when(followRepository)
+                .findAll();
         // when
-        followService.unfollow("1");
+        followService.unfollow("1", User.builder().build());
+
 
         // then
-        verify(followRepository, only()).deleteById(any(String.class));
-
-
+        assertThat(followRepository.findAll().size()).isEqualTo(0);
     }
-
-
-
 }

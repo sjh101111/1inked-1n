@@ -1,15 +1,15 @@
 package com.example.oneinkedoneproject.dto.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@ToString
 public class SaveProfileRequestDto {
     //100자 제한
     private String identity;

@@ -16,6 +16,7 @@ export const useLogin = create(persist((set) => ({
 //유저정보 상태관리
 export const useUserInfo = create(persist((set, get) => ({
         userInfo: {
+            id: '',
             realName: '',
             email:'',
             identity: '',

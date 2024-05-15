@@ -50,9 +50,9 @@ public class FollowController {
         return ResponseEntity.ok(followService.getFollowersOfUser(decodedEmail));
     }
 
-    @DeleteMapping("/api/follow/{followId}")
-    public ResponseEntity<Void> unfollow(@PathVariable String followId) {
-        followService.unfollow(followId);
+    @DeleteMapping("/api/follow/{userId}")
+    public ResponseEntity<Void> unfollow(@PathVariable String userId, @AuthenticationPrincipal User fromUser) {
+        followService.unfollow(userId, fromUser);
         return ResponseEntity.ok().body(null);
     }
 

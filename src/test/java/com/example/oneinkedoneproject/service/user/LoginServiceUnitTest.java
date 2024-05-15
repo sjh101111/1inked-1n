@@ -22,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import jakarta.transaction.Transactional;
+
 @SpringBootTest
+@Transactional
 public class LoginServiceUnitTest {
 
     private PasswordQuestion pwdQuestion;
@@ -63,7 +66,6 @@ public class LoginServiceUnitTest {
                 .withdraw(false)
                 .grade(Grade.ROLE_GOLD)
                 .build();
-        userRepository.deleteAll();
         userRepository.save(user);
 
         //Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("test123@naver.com", "1aw9!wWem23"));

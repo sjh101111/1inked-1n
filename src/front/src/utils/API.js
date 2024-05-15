@@ -1,82 +1,73 @@
 import axios from "axios";
 import mem from "mem";
-import {
-    getAccessToken,
-    getRefreshToken,
-    removeAccessToken,
-    removeRefreshToken,
-    setAccessToken,
-    setRefreshToken
-} from "./Cookie";
+import { getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from "./Cookie";
 
 const URL = "http://localhost:8080";
 
 const instance = axios.create();
 
-instance.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) =>{
     const accessToken = getAccessToken();
     const refreshToken = getRefreshToken();
 
-    if (accessToken) {
+    if(accessToken){
         config.headers['Authorization'] = accessToken;
     }
-    if (refreshToken) {
+    if(refreshToken){
         config.headers['Refresh-Token'] = refreshToken;
     }
 
     return config;
-}, (err) => {
-    return Promise.reject(err);
-});
+}, (err) =>{ return Promise.reject(err);});
 
 instance.interceptors.response.use(
     (res) => res,
     async (err) => {
-        const {config, response: {status, data}} = err;
+        const { config, response: {status, data} } = err;
 
         console.log(err);
 
-        if (status === 401 && data.message === "Access token is invalid or expired") {
-            try {
+        if(status === 401 && data.message === "Access token is invalid or expired"){
+            try{
                 const newTokenResult = await getNewAccessToken();
-                if (newTokenResult.status === 200) {
-                    const {accessToken, refreshToken} = newTokenResult.data;
+                if(newTokenResult.status === 200){
+                    const { accessToken, refreshToken} = newTokenResult.data;
                     setAccessToken(accessToken);
                     setRefreshToken(refreshToken);
 
                     return instance(config);
-                } else {
+                }else{
                     logout();
                 }
-            } catch (e) {
+            } catch (e){
                 logout();
             }
         }
 
-        if (status === 401 && data.message === "Refresh token is invalid or expired") {
+        if(status === 401 && data.message === "Refresh token is invalid or expired"){
             alert("hi");
             logout();
         }
 
-        return Promise.reject(err);
+        return Promise.reject(err);       
     }
 )
 
 /**
- *
- * @param {*} url
- * @param { FormData } formData
+ * 
+ * @param {*} url 
+ * @param { FormData } formData 
  * @brief 이미지 파일과 reqParam을 같이 보내야할 때 사용
  */
-export const OneinkedMultipart = (url, formData, method = false) => {
+export const OneinkedMultipart = (url, formData, method = false) =>{
     const requestor = method ? instance.put : instance.post;
     return requestor(url, formData, {
-        headers: {"Content-Type": "multipart/form-data"}
+        headers: { "Content-Type" : "multipart/form-data"}
     });
 }
 
 
-export const OneinkedPost = (url, body) => {
+export const OneinkedPost = (url, body) =>{
     return instance.post(url, body);
 }
 
@@ -84,20 +75,20 @@ export const OneinkedGet = (url, params = {}) => {
     return instance.get(url, params);
 }
 
-export const OneinkedDelete = (url, params = {}) => {
+export const OneinkedDelete = (url, params = {}) =>{
     return instance.delete(url, params);
 }
 
-export const OneinkedPut = (url, body, params = {}) => {
+export const OneinkedPut = (url, body, params = {}) =>{
     return instance.put(url, body, params);
 }
 
-export const OneinkedPatch = (url, body) => {
+export const OneinkedPatch = (url, body) =>{
     return instance.patch(url, body);
 }
 
 //메모미제이션을 통한 과도한 AccessToken 재발급 문제 처리
-export const getNewAccessToken = async () => {
+export const getNewAccessToken = async () =>{
     const newAccessTokenURL = URL + "/refresh";
     return OneinkedPost(newAccessTokenURL);
 };
@@ -105,23 +96,23 @@ export const getNewAccessToken = async () => {
 /** User API START */
 
 //회원가입
-export const signup = async (signupReqParam) => {
+export const signup = async (signupReqParam) =>{
     const signupURL = URL + "/api/user";
     return OneinkedPut(signupURL, signupReqParam)
-        .then((response) => response.data);
+    .then((response) => response.data);
 }
 
 //로그인
-export const login = async (loginReqParam) => {
+export const login = async (loginReqParam) =>{
     const loginURL = URL + "/login";
     return OneinkedPost(loginURL, loginReqParam)
-        .then((response) => {
-            console.log("Authorization:", response.headers['authorization']);
-            console.log("Refresh-Token:", response.headers['refresh-token']);
-            setAccessToken(response.headers['authorization']);
-            setRefreshToken(response.headers['refresh-token']);
-            return response.data;
-        });
+    .then((response) => {
+        console.log("Authorization:", response.headers['authorization']);
+        console.log("Refresh-Token:", response.headers['refresh-token']);
+        setAccessToken(response.headers['authorization']);
+        setRefreshToken(response.headers['refresh-token']);
+        return response.data;
+    });
 }
 
 //비밀번호 찾기 질문 리스트 조회
@@ -384,6 +375,20 @@ export const getFollowers = async () => {
 
     return OneinkedGet(getFollowersURL)
         .then((response) => response.data)
+}
+
+export const followUser = async (followUserReqParam) =>{
+    const followUserURL =  `${URL}/api/follow`;
+
+    return OneinkedPost(followUserURL, followUserReqParam)
+    .then((response) => response.data);
+}
+
+export const unFollowUser = async(userId) => {
+    const unFollowerUserURL = `${URL}/api/follow/${userId}`;
+
+    return OneinkedDelete(unFollowerUserURL)
+    .then((response) => response.data);
 }
 
 export const getFollowersOfUser = async (email) => {

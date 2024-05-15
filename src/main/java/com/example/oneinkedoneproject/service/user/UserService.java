@@ -51,6 +51,8 @@ public class UserService {
 	public User saveProfile(SaveProfileRequestDto requestDto, User authUser){
 		User user = null;
 
+		log.info("requestDto: {}", requestDto.toString());
+
 		//1. 이메일로 user를 찾았을 때 실제 존재하는 유저인지 확인
 		user = userRepository.findByEmail(authUser.getEmail()).orElseThrow(() ->new IllegalArgumentException("not found email matched user"));
 
@@ -72,11 +74,13 @@ public class UserService {
 		user.updateIdentity(requestDto.getIdentity());
 		user.updateLocation(requestDto.getLocation());
 		user.updateDescription(requestDto.getDescription());
-		try{
-			user.updateImage(requestDto.getFile().getBytes());
-		}catch (IOException e){
-			//nginx같은 웹서버에서 커버..?
-			throw new IllegalArgumentException("file doesn't validate");
+		if(requestDto.getFile() != null){
+			try{
+				user.updateImage(requestDto.getFile().getBytes());
+			}catch (IOException e){
+				//nginx같은 웹서버에서 커버..?
+				throw new IllegalArgumentException("file doesn't validate");
+			}
 		}
 
 		return user;
