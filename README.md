@@ -5,16 +5,17 @@
 
 
 ## 🗒️ 0. 🙌프로젝트 소개
-- 당신의 해외 취업을 도와줄 사이트
-- 각 분야 전문가와 매칭 될 수 있는 사이트
+- 당신의 글로벌 커리어를 도와줄 SNS 서비스
+- 글로벌 커리어를 꿈꾸는 사람들과 교류하고 정보를 받아보세요!
 
-바야흐로 글로벌시대! 하지만 막상 해외 취업을 알아보자니.. Resume는 어떻게 작성해야할지, 면접 질문은 어떻게 답해야할지.. 막막하셨나요?
+바야흐로 글로벌시대! 어학 연수, 유학, MBA, 해외 취업은 어떻게 준비하지? Resume는 어떻게 작성해야할지, 면접 질문은 어떻게 답해야할지.. 막막하셨나요?
 
 저희가 도와드리겠습니다!
 ****
 
-### 1. 💻 개발 환경
-### [프론트엔드] 
+## 1. 💻 개발 환경 및 개발 일정
+### 개발 환경경
+#### [프론트엔드] 
 <div>
   <img alt="react" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/> 
   <img alt="HTML" src ="https://img.shields.io/badge/html5-E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white"/> 
@@ -25,7 +26,7 @@
   <img alt="Vite" src ="https://img.shields.io/badge/Vite-646CFF.svg?&style=for-the-badge&logo=Vite&logoColor=white"/>      
 </div>
 
-### [백엔드] 
+#### [백엔드] 
 <div>
   <img alt="SpringBoot" src ="https://img.shields.io/badge/Spring Boot-6DB33F.svg?&style=for-the-badge&logo=Spring Boot&logoColor=white"/> 
   <img alt="SpringSecurity" src ="https://img.shields.io/badge/Spring Security-6DB33F.svg?&style=for-the-badge&logo=springsecurity&logoColor=white"/> 
@@ -34,70 +35,26 @@
   <img alt ="JAVA" src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">   
 </div>
 
-### [DB] 
+#### [DB] 
 <img alt="MYSQL" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/>
 
-### [배포 및 클라우드]
+#### [배포 및 클라우드]
 <div>
   <img alt="AmazonEC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/> 
   <img alt="AmazonS3" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=Amazon S3&logoColor=white"/>  <img alt="AmazonRDS" src ="https://img.shields.io/badge/Amazon RDS-527FFF.svg?&style=for-the-badge&logo=Amazon RDS&logoColor=white"/>        
 </div>
 
-### [CI/CD] 
+#### [CI/CD] 
 <img alt="githubactions" src ="https://img.shields.io/badge/github actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/> <img alt="Amazon CodeDeploy" src ="https://img.shields.io/badge/Amazon CodeDeploy-6DB33F.svg?&style=for-the-badge&logo=Amazon CodeDeploy&logoColor=white"/>
 
-### [협업 도구]
+#### [협업 도구]
 <div>
     <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
     <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
 </div>
+<br>
 
-### 2. 기능 정의서
-[1inked 1n 기능 정의서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
-
-### 공통
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/55221a4e-a076-493b-88ac-a33248e30a7f"> <br/> 헤더|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a1c337e9-9354-49eb-82a0-49d60cb8bdf6"> <br/> 메인 페이지|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/4682b179-0d1b-4c9a-acee-477c9af4b51f"> <br/> 댓글|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/34c6c77b-e20c-4eb7-a824-8f8049b121cd"> <br/> 대댓글|
-
-### 회원 관리
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/10408e12-2ab0-4da6-b418-057fb9bfbae2"> <br/> 로그인|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a94867f8-71e1-4cf5-9d33-ab102a33a646"> <br/> <img src="https://github.com/Garodden/1inked-1n/assets/143177939/9a4e4005-9314-44b2-abd7-17a90f180eef"> <br/> 마이 페이지|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a7798fc4-b126-4fb9-ac0a-422fec246284"> <br/> 비밀번호 찾기|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/96b93889-8f23-4d16-916b-a032c998c0c2"> <br/> 비밀번호 변경|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/3010d55c-49a5-42e1-8a28-fc6cb8046ef0"> <br/> 회원 탈퇴|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/65a4bfe7-9712-4b08-b66e-316ddd107e1c"> <br/> 회원 가입|
-
-### 앨런 AI
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/77052db5-5642-410f-9521-138f621e817e"> <br/> resume 첨삭|
-
-### 외부 API 연동
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2ccb898c-114b-46c5-9ef6-c772e14b3bb1"> <br/> 시사 경제 정보 제공|
-
-### REST API
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a53eafe7-532b-41bc-98ff-207c2b133102"> <br/> 팔로우 유저 피드 조회|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/458d31af-fe02-4fea-a5d9-6edb117c735f"> <br/> 유저(내가 아닌 상대방) 페이지|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/63cfb256-6e27-4721-8573-3063c140f2b7"> <br/> 게시글|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/9fa82689-906b-4b5a-a387-21fc10874234"> <br/> 쪽지|
-### 메시지 발송
-||
-|--------------------|
-|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/50a0e6e2-74f7-4be2-be7f-48ae19dde83a"> <br/> 회원가입 성공 시 웰컴 메시지|
-
-
-
-### 3. 개발 일정
+### 개발일정
 - 팀 빌딩 / 도메인 설정 : 4/24
 - CI/CD 환경 구축 : 4/24 ~ 4/25
 - 요구사항 분석 : 4/24 ~ 4/25
@@ -109,7 +66,139 @@
 - 테스트 : 4/29 ~ 5/12
 - 발표 준비 : 5/12 ~ 5/15
 
-## 🏙️ 화면 설계서
+## 2. 기능 명세서
+[1inked 1n 기능 정의서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
+
+### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
+| 요구사항 | 페이지     | 구성요소                  | 입력                      | 출력                                | 설명                                                                              |
+|:-----|:--------|:----------------------|:------------------------|:----------------------------------|:--------------------------------------------------------------------------------|
+| 공통   | 헤더      | 로고                    |                         |                                   | 메인 homeFeedPage로 이동                                                             |
+|      |         | 검색 입력                 | 키워드                     |                                   |                                                                                 |
+|      |         | 검색 버튼(아이콘)            |                         |                                   | 검색 결과 서버에 요청                                                                    |
+|      |         | 검색 결과                 |                         | 키워드에 해당하는 유저                      | *유저가 검색 기능(검색 입력, 버튼) 사용시 동적으로 랜더링<br/>*리스트형식                                   |
+|      |         | Resume                |                         |                                   | Ai 자소서 첨삭 페이지로 이동                                                               |
+|      |         | 시사 경제 정보 제공           |                         |                                   | 시사경제 정보 페이지로 이동                                                                 |
+|      |         | 쪽지                    |                         |                                   | 채팅 페이지로 이동                                                                      |
+|      |         | Create 버튼             |                         |                                   | 게시글 입력 활성화                                                                      |
+|      |         | 게시글 내용 입력             | 게시글 내용 입력<br/>게시글 사진 첨부 |                                   | Create 버튼으로 활성화    <br/>게시글 저장 버튼으로 활성화                                         |
+|      |         | 게시글 생성 버튼             |                         |                                   | Create 버튼으로 활성화  <br/>게시글 생성 요청                                                 |
+|      |         | 유저 정보                 |                         | Username<br/>redirection: /mypage | 마이페이지로 이동<br/>로그인한 유저에게 활성화                                                     |
+|      |         | Logout 버튼             |                         |                                   | 로그아웃 기능                                                                         |
+|      | 메인 페이지  | 설명글(About us)         |                         | 서비스 설명 글                          | 타겟 고객 / 고객 니즈, 서비스 Value 등                                                      |
+|      |         | Loing 버튼              |                         |                                   | 로그인 페이지로 이동                                                                     |
+|      |         | Signup 버튼             |                         |                                   | 회원가입 페이지로 이동                                                                    |
+|      |         | UserProfile           |                         |                                   | 사용자 사진<br/>*클릭 시 해당 유저의 userpage로 이동                                            |
+|      |         | Username              |                         |                                   | 사용자 이름                                                                          |
+|      |         | Identity              |                         |                                   | 회원가입 페이지로 이동                                                                    |
+|      |         | 댓글                    |                         |                                   | 특정 게시물에 달린 모든 댓글 조회                                                             |
+|      |         | 댓글 내용 입력              | 댓글 내용                   |                                   |                                                                                 |
+|      |         | 댓글 수정 내용 입력           | 수정 댓글 내용                |                                   | 수정하는 댓글의 수정 버튼으로 활성화<br/>*기존 댓글이 입력창으로 변경/기존 댓글 내용 보전                           |                    
+|      |         | 댓글 삭제 버튼              |                         | 해당 댓글 삭제                          | 댓글 삭제 요청<br/>댓글 소유자에게만 활성화                                                      |
+|      |         | 댓글 수정 버튼              |                         |                                   | 댓글 수정 요청<br/>댓글 소유자에게만 활성화                                                      |
+|      |         | 댓글 생성 버튼              |                         |                                   | '댓글 내용'에서 입력한 내용으로 댓글 생성 요청                                                     |
+|      |         | 대댓글 버튼                |                         |                                   | 대댓글 내용 입력 활성화                                                                   |
+|      |         | UserProfile           |                         | UserProfile                       | 사용자 사진<br/>*클릭 시 해당 유저의 userpage로 이동                                            |
+|      |         | UserName              |                         | UserName                          | 사용자 이름                                                                          |
+|      |         | Identity              |                         | Idnetity                          | 신분: 학교, 직장 등                                                                    |
+|      |         | 대댓글                   |                         | 특정 게시글에 달린 모든 대댓글                 | 특정 댓글에 달린 모든 대댓글 조회                                                             |
+|      |         | 대댓글 내용 입력             | 대댓글 내용                  |                                   | *댓글의 대댓글 버튼으로 활성화                                                               |
+|      |         | 대댓글 수정 내용 입력          | 수정 대댓글 내용               |                                   | 수정하는 대댓글의 수정 버튼으로 활성화<br/>*기존 대댓글이 입력창으로 변경/기존 대댓글 내용 보전                        |
+|      |         | 대댓글 삭제 버튼             |                         | 대댓글 삭제                            | 대댓글 삭제 서버에 요청<br/>*대댓글 소유자에게만 활성화                                               |
+|      |         | 대댓글 수정 버튼             |                         |                                   | 대댓글 수정 서버에 요청<br/>*대댓글 소유자 에게만 활성화                                              |
+|      |         | 대댓글 셍성 버튼             |                         |                                   | 대댓글 생성 서버에 요청<br/>*댓글의 대댓글 버튼으로 활성화                                             |
+<br>
+
+### 회원 관리 - 로그인, 회원가입, 비밀번호 찾기, 비밀번호 변경하기, 회원 탈퇴, 마이페이지
+| 요구사항      | 페이지         | 구성요소       | 입력 | 출력                  | 설명                |
+|:----------|:------------|:-----------|:---|:--------------------|:------------------|
+| 회원관리 | 로그인     | Email 입력              | Email                   |                                   |                                                                                 |
+|      |         | Password 입력           | Password                |                                   |                                                                                 |
+|      |         | Login 버튼              |                         |                                   | 서버에 로그인 요청<br/> Email, Password값 DB와 불일치<br/>-> alert: '이메일 또는 비밀번호가 올바르지 않습니다' |
+|      |         | Signup 버튼             |                         |                                   | 회원가입 페이지로 이동                                                                    |
+|      |         | 비밀번호 찾기               |                         |                                   | 비밀번호 찾기 페이지로 이동                                                                 |
+|      | 마이페이지   | UserProfile           |                         | UserProfile                       | 로그인한 사용자 사진                                                                     |
+|      |         | UserProfile 수정 내용 입력  | UserProfile 수정 내용       |                                   | edit버튼으로 활성화<br/>*png파일                                                         |
+|      |         | UserName              |                         | UserName                          | 사용자 이름                                                                          |
+|      |         | Identity              |                         | Identity                          | 사용자 신분<br/>*학교, 직장 등                                                            |
+|      |         | Identity 수정 내용 입력     | Identity 수정 내용          |                                   | edit버튼으로 활성화<br/>Identity -> Identity 수정 내용 입력으로 활성화<br/>기존 내용 보전               |
+|      |         | Location              |                         | Location                          | 활동 지역                                                                           |
+|      |         | Description           |                         | Description                       | 사용자 소개                                                                          |
+|      |         | Description 수정 내용 입력  |                         |                                   | edit 버튼으로 활성화<br/>Description -> Description 수정 내용으로 활성화<br/>기존 내용 보전           |
+|      |         | edit 버튼               |                         |                                   | save버튼 활성화                                                                      |
+|      |         | save 버튼               |                         |                                   | edit버튼으로 활성화<br/>유저정보 수정 요청<br/>수정 완료 후 기존 내용 -> 수정 내용으로 변경 및 save버튼 다시 활성화     |
+|      |         | 회원탈퇴버튼                |                         |                                   | 회원 탈퇴 페이지로 이동                                                                   |
+|      |         | 비밀번호 변경하기             |                         |                                   | 비밀번호 변경하기 페이지로 이동                                                               |
+|      |         | 게시글 조회 버튼             |                         |                                   | 내가 작성한 게시글과 해당하는 댓글 조회 요청                                                       |
+|      |         | 게시글                   |                         | 내가 작성한 게시글                        |                                                                                 |
+|      |         | Follow/Followee 조회 버튼 |                         |                                   | 나의 팔로우/팔로워 조회 요청                                                                |
+|      |         | Follow/Followee       |                         | 팔로우/팔로워                           | 해당 유저의 userpage로 이동                                                             |
+|      |         | My Resume 조회 버튼       |                         |                                   | 내가 저장한 resume 조회 요청                                                             |
+|      |         | My Resume             |                         | 내가 저장한 Resume                     |                                                                                 |
+|      | 비밀번호 찾기 | Email 입력              | Email                   |                                   | db와 일치하지 않으면<br/>: alert'입력 값이 잘못되었습니다'                                         |
+|      |         | 비밀번호 찾기 질문(리스트)       | 비밀번호 찾기 질문              |                                   | db와 일치하지 않으면<br/>: alert'입력 값이 잘못되었습니다'                                         |
+|      |         | 비밀번호 찾기 질문 답변         | 비밀 번호 찾기 질문 답변          |                                   |                                                                                 |
+|      |         | NewPassword           | 새로운 비밀번호                |                                   |                                                                                 |
+|      |         | 비밀번호 찾기 버튼            |                         |                                   | Email, 비밀번호 찾기 키워드가 db와 일치하지 않을 시<br/> db와 일치하지 않으면<br/>: alert'입력 값이 잘못되었습니다'  |
+|      | 비밀번호 변경 | NewPassword           | 새로운 비밀번호                |                                   |                                                                                 |
+|      |         | VerifyPassword        | 새로운 비밀반호                |                                   |                                                                                 |
+|      |         | 변경 버튼                 |                         |                                   | 비밀번호 입력, 확인 값 불일치<br/>-> alert:'입력 값이 올바르지 않습니다.'                               |
+|      | 회원 탈퇴   | password입력            | 기존 비밀번호                 |                                   |                                                                                 |
+|      |         | 탈퇴 버튼                 |                         |                                   | 서버에 회원 탈퇴 요청                                                                    |
+|      |         | 돌아가기 버튼               |                         |                                   | mypage로 이동                                                                      |
+|      | 회원가입    | Username 입력           | Username                |                                   | Unique value<br/>중복 검사                                                          |
+|      |         | Email 입력              | Email                   |                                   | Unique value<br/>중복 검사                                                          |
+|      |         | password 입력           | Password                |                                   |                                                                                 |
+|      |         | 비밀번호 찾기 질문(리스트)       | 비밀번호 찾기 질문              |                                   |                                                                                 |
+|      |         | 비밀번호 찾기 질문 답변         | 비밀번호 찾기 질문 답변           |                                   |                                                                                 |
+|      |         | 회원가입 버튼               |                         |                                   | 입력값 중복 시 <br/>-> alert:'입력값이 중복되었습니다'<br/>                                      |
+|      |         | 이미 계정이 있으신가요?(버튼)     |                         |                                   | 로그인 페이지로 이동                                                                     |
+<br>
+
+### 외부 API 연동 - 네이버 뉴스 API 연동으로 인한 정보 제공 페이지
+| 요구사항      | 페이지         | 구성요소       | 입력 | 출력                  | 설명                |
+|:----------|:------------|:-----------|:---|:--------------------|:------------------|   
+| 외부 API 연동 | 시사 경제 정보 제공 | 뉴스 콘텐츠     |    | Naver News Api Data | Naver News Api 연동 |
+|           |             | 날짜순 정렬 버튼  |    | 날짜순으로 정렬된 뉴스 데이터    | 날짜순으로 정렬          |
+|           |             | 키워드순 정렬 버튼 |    | 키워드별로 정렬된 뉴스 데이터    | 키워드별로 정렬          |
+<br>
+
+### 앨런 AI 연동 - AI가 유저의 Resume를 분석해주는 페이지
+| 요구사항     | 페이지         | 구성요소       | 입력 | 출력                  | 설명                |
+|:---------|:------------|:-----------|:---|:--------------------|:------------------|
+| 앨런 AI 연동 | Resume Review | Resume 내용 입력 | Resume 내용 | | |
+|          | | 첨삭 요청 버튼 | | | 서버에 resume 분석 요청 |
+|          | | 앨런 AI 응답 | | Resume 내용에 대한 AI 분석값 | |
+|          | | 저장 버튼 | | | 서버에 AI가 분석해준 Resume 저장 요청 |
+<br>
+
+### RestAPI(CRUD) - 내가 팔로우한 사람들의 게시글을 볼 수 있는 팔로우 피드 페이지, 쪽지를 주고받는 쪽지 페이지
+| 요구사항          | 페이지         | 구성요소       | 입력 | 출력                  | 설명                |
+|:--------------|:------------|:-----------|:---|:--------------------|:------------------|
+| RestAPI(CRUD) | 팔로우 피드 | 게시글 | | 팔로우한 사람들의 게시글 | 유저정보, 댓글, 작성 날짜, 수정날짜 포함 |
+|               | 유저페이지 | UserProfile | | UserProfile(사진)                   | 사용자 사진 |
+|               | | UserName | | UserName | 사용자 이름 |
+|               | | Identity | | Identity | 사용자 신분 |   
+|               | | Description | | Description | 사용자 소개 |   
+|               | | Location | | Location | |   
+|               | | Follow 버튼 | | | 서버에 팔로우 요청 |   
+|               | | 쪽지 보내기 버튼 | | | 쪽지 내용 입력 활성화 |   
+|               | | 쪽지 내용 입력 | 쪽지 내용 | | 쪽지 보내기 버튼으로 활성화 |   
+|               | | 전송 버튼 | | | 서버에 쪽지 생성 요청  <br/>상대방 쪽지함으로 쪽지 전송 |   
+|               | | 게시글 조회 버튼 | | | 해당 유저가 작성한 모든 게시글 조회 요청 |   
+|               | | 게시글 | | 해당 유저가 작성한 모든 게시글 | |   
+|               | | Follow/Followee 조회 버튼 | | | 해당 유저의 Follow/Followee 조회 요청 |   
+|               | | Follow/Followee | | 해당 유저의 Follow/Followee | 해당 유저가 저장한 Resume 조회 요청 |   
+|               | | Resume 조회 버튼 | | | 해당 유저가 저장한 Resume 조회 요청 |   
+|               | | Resume | | 해당 유저가 저장한 Resume | |   
+|               | 쪽지 | 쪽지함 | | 상대 유저와의 쪽지 목록 조회 | |   
+|               | | 쪽지 상세페이지 | | 상대유저와 주고받은 모든 쪽지 내용 | 쪽지함에서 클릭시 활성화 |   
+|               | | 쪽지 보내기 버튼 | | | 쪽지 상세페이지에서만 활성화 |   
+|               | | 삭제 버튼 | | | 상대방과의 쪽지 삭제 요청 |   
+|               | | 쪽지 내용 입력 | 쪽지 내용 | | 쪽지 보내 버튼에 의해 활성화 |   
+|               | | 쪽지 전송 버튼 | | | 서버에 쪽지 생성 요청 |
+
+
+## 3.🏙️ 화면 설계서(Wireframe)
 [1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
 
 |||
