@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -209,5 +210,12 @@ public class UserService {
 	//8. userEmail duplication check
 	public boolean emailDupCheck(String email){
 		return userRepository.existsByEmail(email);
+	}
+
+	//9. searchUser
+	public List<FindUserResponseDto> searchUsers(String keyword1, String keyword2) {
+		return userRepository.findAllByIdentityAndDescription(keyword1, keyword2).orElseThrow(
+				() -> new IllegalArgumentException("해당하는 유저가 없습니다"+keyword1+keyword2)).stream()
+				.map(x-> new FindUserResponseDto(x)).toList();
 	}
 }
