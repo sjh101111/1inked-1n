@@ -1,25 +1,20 @@
 package com.example.oneinkedoneproject.domain;
 
-import com.example.oneinkedoneproject.dto.chat.ChatResponseDto;
-import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor
 public class Chat {
     @Id
-    @Builder.Default
     @Column(name = "chat_id" , nullable = false)
-    private String id = GenerateIdUtils.generateChatId();
+    private String id;
 
     @Column(name = "contents", nullable = false)
     private String contents;
@@ -28,12 +23,12 @@ public class Chat {
     @CreatedDate
     private LocalDateTime sendAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "sender_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
     private User sendUser;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "receiver_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
     private User receiverUser;
 
     @Column(name = "is_deleted_to")
@@ -54,21 +49,6 @@ public class Chat {
 
     public void updateContents(String contents){
         this.contents = contents;
-    }
-
-    public void isDeletedToUpdate(boolean isDeletedTo) {
-        this.isDeletedTo = isDeletedTo;
-    }
-
-    public void isDeletedFromUpdate(boolean isDeletedFrom) {
-        this.isDeletedFrom = isDeletedFrom;
-    }
-
-    public ChatResponseDto toDto() {
-        return ChatResponseDto.builder().id(id).contents(contents).isDeletedFrom(isDeletedFrom)
-                .isDeletedTo(isDeletedTo).sendAt(sendAt)
-                .sendUser(sendUser).receiveUser(receiverUser).
-                build();
     }
 
 }

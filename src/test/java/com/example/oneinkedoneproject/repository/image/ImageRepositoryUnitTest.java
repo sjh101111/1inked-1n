@@ -3,11 +3,8 @@ package com.example.oneinkedoneproject.repository.image;
 import com.example.oneinkedoneproject.OneinkedOneProjectApplication;
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Image;
-import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
-import com.example.oneinkedoneproject.repository.password.PasswordRepository;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,33 +24,19 @@ public class ImageRepositoryUnitTest {
     ImageRepository imageRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private ArticleRepository articleRepository;
-
-    @Autowired
-    private PasswordRepository passwordRepository;
 
     public static User user;
     public static Image image;
     public static Article article;
 
-    private PasswordQuestion passwordQuestion;
-
     @BeforeEach
     void setUp() {
-        passwordQuestion = PasswordQuestion
-                .builder()
-                .id("1")
-                .question("질문")
-                .build();
 
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
-                .realname("test")
+                .username("test")
                 .email("test@test.com")
-                .passwordQuestion(passwordQuestion)
                 .password("test")
                 .withdraw(false)
                 .build();
@@ -73,9 +56,6 @@ public class ImageRepositoryUnitTest {
                 .article(article)
                 .img(bytes)
                 .build();
-
-        passwordRepository.save(passwordQuestion);
-        userRepository.save(user);
     }
 
     @Test
