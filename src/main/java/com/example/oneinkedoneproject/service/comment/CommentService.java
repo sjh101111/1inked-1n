@@ -7,7 +7,6 @@ import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
 import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
