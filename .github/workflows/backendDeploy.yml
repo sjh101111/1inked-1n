@@ -2,7 +2,7 @@ name: github-action-workflow
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "develop" ]
 
 env:
   S3_BUCKET_NAME: thlee-content
