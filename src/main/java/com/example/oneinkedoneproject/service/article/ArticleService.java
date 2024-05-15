@@ -9,6 +9,7 @@ import com.example.oneinkedoneproject.dto.article.UpdateArticleRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
+import com.example.oneinkedoneproject.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ArticleService {
     private final ImageRepository imageRepository;
 
     private final CommentRepository commentRepository;
+
+    private final UserRepository userRepository;
 
     @Transactional
     public ArticleResponseDto createArticle(AddArticleRequestDto addArticleRequestDto, User user) {
@@ -86,6 +89,15 @@ public class ArticleService {
         return articleRepository.findAllByUser_Id(userId).stream()
                 .map(article -> article.toDto())
                 .toList();
+    }
+
+    @Transactional
+    public List<ArticleResponseDto> readUserAllArticles(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("유저를 찾지 못했습니다." + email)
+        );
+        return articleRepository.findAllByUser_Id(user.getId()).stream()
+                .map(x-> x.toDto()).toList();
     }
 
     @Transactional

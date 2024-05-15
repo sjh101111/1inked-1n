@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const FollowUser = ({realname, identity, img = null, email}) =>{
     return (
-        <Link to={`/user/${email}`} className="flex items-center gap-4">
+        <Link to="/userPage" state={{ email: email }} className="flex items-center gap-4">
             <Avatar className="w-10 h-10">
                 {img ? (
                     <AvatarImage alt={realname} src={img} />

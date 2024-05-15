@@ -28,10 +28,7 @@ public class ChatController {
     @GetMapping("/api/chatWithPartner")
     public ResponseEntity<List<ChatResponseDto>> readChatWithPartner(@AuthenticationPrincipal User user,
                                                                      @RequestParam String partnerEmail) throws Exception{
-        System.out.println("Encoded email: " + partnerEmail);
         String decodedEmail = URLDecoder.decode(partnerEmail, StandardCharsets.UTF_8.toString());
-        System.out.println("Decoded email: " + decodedEmail);
-        System.out.println("인증객체" + user.getEmail());
         return ResponseEntity.ok(chatService.readChatWithPartner(user, decodedEmail));
     }
 

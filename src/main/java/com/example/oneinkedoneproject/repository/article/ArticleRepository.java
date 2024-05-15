@@ -16,4 +16,5 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
     List<Article> findFollowedUserArticlesOrdered(@Param("userId") String userId);
 
     Article findByUserId(String userId);
+
 }

@@ -28,7 +28,7 @@ const MyPage = () => {
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
     const [file, setFile] = useState(null);
-    const [activeTab, setActiveTab] = useState('articles');
+    const [activeTab, setActiveTab] = useState('');
     const {userInfo, setUserInfo} = useUserInfo();
 
 
@@ -127,7 +127,7 @@ const MyPage = () => {
                             }
                     </div>
                 </div>
-                <Tabs defaultValue="articles" className="w-3/5 mt-6" onValueChange={setActiveTab}>
+                <Tabs defaultValue="" className="w-3/5 mt-6" onValueChange={setActiveTab}>
                     <TabsList className="w-full flex">
                         <TabsTrigger className="flex-grow" value="articles">Articles</TabsTrigger>
                         <TabsTrigger className="flex-grow" value="followAndFollower">Follow/Follower</TabsTrigger>
@@ -157,7 +157,12 @@ const ArticlesTab = () => {
             setLoading(true);
             try {
                 const response = await readAllMyArticle();
-                setArticles(response);
+                if (response && Array.isArray(response) && response.length > 0) {
+                    setArticles(response);
+                } else {
+                    // 데이터가 없거나 응답 형식이 예상과 다른 경우 빈 배열을 설정
+                    setArticles([]);
+                }
             } catch (error) {
                 console.error('Error reading articles: ', error);
             } finally {

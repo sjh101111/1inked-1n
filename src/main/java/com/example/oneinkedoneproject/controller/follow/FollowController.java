@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -29,9 +31,23 @@ public class FollowController {
         return ResponseEntity.ok(followService.getFollows(toUser));
     }
 
+    @GetMapping("/api/followsOfUser/{email}")
+    public ResponseEntity<List<FollowResponseDto>> getFollowsOfUser(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(followService.getFollowsOfUser(decodedEmail));
+    }
+
+    // follows
     @GetMapping("/api/followers")
     public ResponseEntity<List<FollowResponseDto>> getFollowers(@AuthenticationPrincipal User fromUser) {
         return ResponseEntity.ok(followService.getFollowers(fromUser));
+    }
+
+
+    @GetMapping("/api/followersOfUser/{email}")
+    public ResponseEntity<List<FollowResponseDto>> getFollowersOfUser(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(followService.getFollowersOfUser(decodedEmail));
     }
 
     @DeleteMapping("/api/follow/{userId}")
@@ -39,4 +55,5 @@ public class FollowController {
         followService.unfollow(userId, fromUser);
         return ResponseEntity.ok().body(null);
     }
+
 }

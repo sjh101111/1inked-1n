@@ -21,7 +21,6 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-
     @Transactional
     public Follow follow(User fromUser, AddFollowRequestDto request){
         User followUser = userRepository.findById(request.getFollowUserId())
@@ -36,7 +35,6 @@ public class FollowService {
     }
 
     // 팔로우 생성 기능
-
     @Transactional(readOnly = true)
     public List<FollowResponseDto> getFollows(User toUser){
         String curUserEmail = toUser.getEmail();
@@ -46,8 +44,14 @@ public class FollowService {
                 .collect(Collectors.toList());
     }
 
-    // 팔로우 목록 조회 기능
+    @Transactional
+    public List<FollowResponseDto> getFollowsOfUser(String email) {
+        return followRepository.findAllByFromUser_Email(email).stream()
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail()))
+        .toList();
+    }
 
+    // 팔로우 목록 조회 기능
     @Transactional(readOnly = true)
     public List<FollowResponseDto> getFollowers(User fromUser){
         String curUserEmail = fromUser.getUsername();
@@ -57,7 +61,12 @@ public class FollowService {
                 .collect(Collectors.toList());
     }
 
-    // 팔로워 목록 조회 기능
+    @Transactional
+    public List<FollowResponseDto> getFollowersOfUser(String email) {
+        return followRepository.findAllByToUser_Email(email).stream()
+                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail()))
+                .toList();
+    }
 
     @Transactional
     public void unfollow(String userId, User fromUser) {
@@ -65,8 +74,4 @@ public class FollowService {
 
         followRepository.delete(follow);
     }
-
-    // 팔로우 취소 기능
-
-
 }
