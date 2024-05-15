@@ -84,11 +84,7 @@ const router = createBrowserRouter([
                   <NewsPage></NewsPage>
               </ProtectedRoute>
           )
-      },
-    {
-        path: "/comment",
-        element: <Comment></Comment>
-    }
+      }
 ]);
 
 export default function App(){

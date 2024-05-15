@@ -187,6 +187,13 @@ export const logout = () => {
     removeRefreshToken();
     location.href = location.origin;
 }
+
+export const searchUsers = async (keyword) => {
+    const searchUsersURL = URL + "/api/user/search"
+
+    return OneinkedGet(searchUsersURL,{params: {keyword}})
+        .then((response) => response.data);
+}
 /** User API END */
 
 /** Article API START */
