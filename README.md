@@ -331,6 +331,28 @@
 
 ## API 명세서
 
+### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/515fb7bc-1f75-4ad1-8a8a-460edbcf87ef">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/17c41459-f8ad-4a4f-9975-d2991beb1279">
+
+### 회원 관리 - 로그인, 회원가입, 비밀번호 찾기, 비밀번호 변경하기, 회원 탈퇴, 마이페이지
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/c133f163-7d27-4f5e-8322-062f9131770e">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/6d46ac86-627c-4abf-813a-703b5907b894">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/41935ce9-a42c-41e2-bc01-a898a04ec210">
+
+### 외부 API 연동 - 네이버 뉴스 API 연동으로 인한 정보 제공 페이지
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/087ccbe4-8dbc-4a4f-97b8-18eff3d74e97">
+
+### 앨런 AI 연동 - AI가 유저의 Resume를 분석해주는 페이지
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/616d1a17-e2f2-45b6-85e3-30228fb82adb">
+
+### RestAPI(CRUD) - 내가 팔로우한 사람들의 게시글을 볼 수 있는 팔로우 피드 페이지, 쪽지를 주고받는 쪽지 페이지
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a591d279-7a18-41fb-82b8-932efd259a34">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/905d8ddf-74d3-4e9c-9f92-7d421deac2f3">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2f62c928-bb45-49ce-bee7-40c4f93e44ef">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/c60d9eac-5ce5-4da1-8bd4-f8c4968d23e8">
+
+
 ## 📐 코딩 컨벤션
 
 ### 프론트엔드
