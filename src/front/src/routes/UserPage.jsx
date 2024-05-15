@@ -5,8 +5,14 @@ import {Link, redirect, useLocation, useNavigate} from "react-router-dom";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import {Button} from "@/components/ui/button";
 import ChatDialog from "@/components/ChatDialog";
+import { useFollowee, useFollower } from "@/utils/store";
 import {Send} from "lucide-react";
+import { followUserReqParam } from "@/utils/Parameter";
 import {
+    followUser,
+    unFollowUser,
+    getFollowers,
+    getFollows,
     fetchAnotherUserProfile,
     getFollowersOfUser,
     getFollowsOfUser, getResumeByEmail,
@@ -18,6 +24,12 @@ import MyResumes from "@/components/MyResumes.jsx";
 import FollowInfo from "@/components/FollowInfo.jsx";
 
 const UserPage = () => {
+    const nevigate = useNavigate();
+
+    //글로벌 컨텍스트
+    const {followeeInfo, setFolloweeInfo} = useFollowee();
+    const {followerInfo, setFollowerInfo} = useFollower();
+
     //route 변경시, 값 전달위한 파라미터
     const {state} = useLocation();
     const navigate = useNavigate();
@@ -26,39 +38,56 @@ const UserPage = () => {
     const [location, setLocation] = useState('Location');
     const [description, setDescription] = useState('Description');
     const [username, setUsername] = useState('Username');
+    const [userId, setUserId] = useState('');
     const [isFollow, setFollow] = useState(false);
     const [activeTab, setActiveTab] = useState('');
 
-    useEffect(() => {
-        const queryEmail = state?.email || "seocd@seocd.com";
+    useEffect(() =>{
+        const queryEmail = state?.email || "test@test.com";
         const accessToken = getAccessTokenInfo();
-        //작동하지 않는 모양.
+
         if (accessToken.sub === queryEmail) {
             navigate("/mypage");
         }
 
         fetchAnotherUserProfile(queryEmail)
+        .then((userInfo) =>{
+            setUserId(userInfo.id);
+            setUsername(userInfo.realName);
+            setIdentity(userInfo.identity);
+            setLocation(userInfo.location);
+            setDescription(userInfo.description);
 
-            .then(async (userInfo) => {
-                setUsername(userInfo.realName);
-                setIdentity(userInfo.identity);
-                setLocation(userInfo.location);
-                setDescription(userInfo.description);
+            setProfilePic(`data:image/png;base64,${userInfo.image}`);
 
-                setProfilePic(`data:image/png;base64,${userInfo.image}`);
+            getFollowers()
+            .then((follwers) =>{
+                setFollowerInfo(follwers);
+
+                getFollows()
+                .then((followee) =>{
+                    setFolloweeInfo(followee);
+                    setFollow(followee.filter(user =>{ return queryEmail === user.email}).length != 0);
+                });
             });
-    }, [navigate, state?.email]);
+        });
+    },[state?.email, nevigate]);
 
-    const handleMessageSent = async () => {
-        // 새로운 메시지를 받아옵니다.
-        try {
-            const data = await readChatWithPartner(state?.email);
-            console.log("Received New Message:", data);
-            setDetailMessages(data.reverse());
-        } catch (error) {
-            console.error("Error fetching new message:", error);
-        }
-    };
+    const handleFollow = () =>{
+        const reqParam = followUserReqParam(userId);
+
+        followUser(reqParam)
+        .then((data) =>{
+            setFollow(true);
+        })
+    }
+
+    const handleUnFollow = () =>{
+        unFollowUser(userId)
+        .then((data) =>{
+            setFollow(false);
+        })
+    }
 
     return (
         <>
@@ -80,12 +109,10 @@ const UserPage = () => {
                         <div className="flex gap-2">
                             {
                                 !isFollow ?
-                                    <Button className="text-sm text-black/65 bg-[#6866EB] hover:bg-violet-600"
-                                            variant="ghost">FOLLOW</Button> :
-                                    <Button className="text-sm text-black/65 bg-slate-400 hover:bg-slate-300"
-                                            variant="ghost">UNFOLLOW</Button>
+                                <Button className="text-sm text-black/65 bg-[#6866EB] hover:bg-violet-600" onClick={handleFollow} variant="ghost">FOLLOW</Button> :
+                                <Button className="text-sm text-black/65 bg-slate-400 hover:bg-slate-300" onClick={handleUnFollow} variant="ghost">UNFOLLOW</Button>
                             }
-                            <ChatDialog partneremail={state?.email} onMessageSent={handleMessageSent}>
+                            <ChatDialog partneremail={state?.email}>
                                 <Button variant="ghost">
                                     <Send className="mr-2 w-4 h-4"/> 쪽지 보내기
                                 </Button>

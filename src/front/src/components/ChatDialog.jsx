@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {createChat} from "@/utils/API.js";
@@ -23,8 +23,6 @@ const ChatDialog = (props) =>{
 
                 if (response) { // Check for data in the successful response
                     alert("쪽지를 전송했습니다!");
-                    props.onMessageSent();
-
                 } else {
                     console.warn("Unexpected empty response from createChat"); // Log a warning for unexpected behavior
                     alert("메시지 전송에 문제가 발생했습니다. 다시 시도하십시오."); // Generic error message
@@ -46,7 +44,9 @@ const ChatDialog = (props) =>{
                 </DialogHeader>
                 <Textarea id="chatContent" className="mt-4 h-48 resize-none" placeholder="input your content"></Textarea>
                 <DialogFooter>
-                    <Button className="bg-[#6866EB]" onClick={resource.clickCallback} type="submit">{resource.btnText}</Button>
+                    <DialogClose asChild>
+                        <Button className="bg-[#6866EB]" onClick={resource.clickCallback} type="submit">{resource.btnText}</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
