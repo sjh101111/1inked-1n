@@ -3,7 +3,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GenerateLiElUUID } from "@/utils/common";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArticleDialog from "@/components/ArticleDialog";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,14 +18,16 @@ import ChatBox from "@/components/ChatBox";
 import FollowInfo from "@/components/FollowInfo";
 import MyResumes from "@/components/MyResumes";
 import UserPage from "./UserPage";
-import { createArticle, deleteArticle, fetchLoginUserProfile, readAllMyArticle, readMainFeedArticles, saveProfile, updateArticle, withdraw } from "@/utils/API";
-import { createArticleReqParam, saveProfileReqParam, updateArticleReqParam, withdrawReqParam } from "@/utils/Parameter";
+import { getFollowers, getFollows, createArticle, deleteArticle, fetchLoginUserProfile, readAllMyArticle, readMainFeedArticles, saveProfile, updateArticle, withdraw, followUser, unFollowUser } from "@/utils/API";
+import { createArticleReqParam, followUserReqParam, saveProfileReqParam, updateArticleReqParam, withdrawReqParam } from "@/utils/Parameter";
 import { getAccessToken, getAccessTokenInfo } from "@/utils/Cookie";
 import { getArticleItems } from "@/utils/Items";
 import { useLogin } from "@/utils/store";
 
 
 const Test =  () => {
+    const nevigate = useNavigate();
+    const {state} = useLocation();
     const email = "dlxogml11235@naver.com";
     const [file, setFile] = useState(null);
     const {isLogin, setLogin} = useLogin();
@@ -35,6 +37,8 @@ const Test =  () => {
     const [articleItems, setArticleItems] = useState(<></>);
     const [articleFiles, setArticleFiles] = useState([]);
 
+    /** Follow API 테스트 */
+
     const resource = {
         btnText: "생성",
         clickCallback: () =>{
@@ -43,8 +47,10 @@ const Test =  () => {
         },
         initFn: () => {}
     }
+    
 
     useEffect(() =>{
+        console.log(state,"state");
        getAccessTokenInfo(); 
        setLogin(true);
     },[]);
@@ -122,6 +128,35 @@ const Test =  () => {
         .then(data => console.log(data));
     }
 
+    const showMyFollows = () =>{
+        getFollows()
+        .then((data) => console.log(data));
+    }
+
+    const showMyFollowers = () => {
+        getFollowers()
+        .then((data) => console.log(data));
+    }
+
+    const addFollower = () =>{
+        const reqParam = followUserReqParam("user_0254478418623611")
+
+        followUser(reqParam)
+        .then((data) => console.log(data));
+    }
+
+    const removeFollower = () =>{
+        const unfollowUserId = "user_0254478418623611";
+
+        unFollowUser(unfollowUserId)
+        .then((response) => {
+            alert("성공");
+        })
+        .catch(err =>{
+            console.log(err)
+        });
+    }
+
     return (
         <main className="">
             <div>
@@ -147,6 +182,13 @@ const Test =  () => {
                 {
                     articleItems
                 }
+            </div>
+            <div>
+                <h2>Follow Test </h2>
+                <Button onClick={showMyFollows}>Follows 조회 API</Button>
+                <Button onClick={showMyFollowers}>Followers 조회 API</Button>
+                <Button onClick={addFollower}>Follower 추가 API</Button>
+                <Button onClick={removeFollower}>Follower 삭제 API</Button>
             </div>
         </main>
         

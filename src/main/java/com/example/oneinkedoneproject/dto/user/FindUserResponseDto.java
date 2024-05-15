@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FindUserResponseDto {
+    private String id;
     private String realName;
     private String email;
     private String identity;
@@ -16,6 +17,7 @@ public class FindUserResponseDto {
     private String description;
     private byte[] image;
     public FindUserResponseDto(User user){
+        this.id = user.getId();
         this.realName = user.getRealname();
         this.email = user.getEmail();
         this.identity = user.getIdentity();

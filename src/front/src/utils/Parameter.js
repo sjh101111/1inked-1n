@@ -157,3 +157,12 @@ export const addResumeReqParam = (contents) => {
 }
 /** Resume ReqParam END*/
 
+/** Follow ReqParam START */
+export const followUserReqParam = (followUserId) =>{
+    const reqParam = {};
+
+    reqParam.followUserId = followUserId;
+
+    return reqParam;
+}
+/** Follow ReqParam END */

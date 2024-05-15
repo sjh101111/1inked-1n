@@ -24,30 +24,19 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.CREATED).body(followService.follow(fromUser, request));
     }
 
-    // follow 생성 api
-
-
     @GetMapping("/api/follows")
     public ResponseEntity<List<FollowResponseDto>> getFollows(@AuthenticationPrincipal User toUser) {
-//        String curUserEmail = toUser.getEmail();
         return ResponseEntity.ok(followService.getFollows(toUser));
     }
 
-    // follows
     @GetMapping("/api/followers")
     public ResponseEntity<List<FollowResponseDto>> getFollowers(@AuthenticationPrincipal User fromUser) {
-//        String curUserEmail = fromUser.getUsername();
         return ResponseEntity.ok(followService.getFollowers(fromUser));
     }
 
-    // followers 조회 api
-
-    @DeleteMapping("/api/follow/{followId}")
-    public ResponseEntity<Void> unfollow(@PathVariable String followId) {
-        followService.unfollow(followId);
+    @DeleteMapping("/api/follow/{userId}")
+    public ResponseEntity<Void> unfollow(@PathVariable String userId, @AuthenticationPrincipal User fromUser) {
+        followService.unfollow(userId, fromUser);
         return ResponseEntity.ok().body(null);
     }
-
-    // follow 삭제 api
-
 }

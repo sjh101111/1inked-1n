@@ -44,8 +44,8 @@ const Login = () =>{
         .then(() =>{
             fetchLoginUserProfile()
             .then((user) =>{
-                console.log(user);
                 const newUserInfo = {
+                    id: user.id,
                     realName: user.realName,
                     email: user.email,
                     identity: user.identity,

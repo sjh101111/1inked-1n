@@ -29,7 +29,6 @@ const UserPage = () => {
         }
 
         fetchAnotherUserProfile(queryEmail)
-
         .then(async (userInfo) =>{
             setUsername(userInfo.realName);
             setIdentity(userInfo.identity);
@@ -38,6 +37,8 @@ const UserPage = () => {
 
             setProfilePic(`data:image/png;base64,${userInfo.image}`);
         });
+
+        
     },[]);
 
 

@@ -25,8 +25,6 @@ instance.interceptors.response.use(
     async (err) => {
         const { config, response: {status, data} } = err;
 
-        console.log(err);
-
         if(status === 401 && data.message === "Access token is invalid or expired"){
             try{
                 const newTokenResult = await getNewAccessToken();
@@ -354,5 +352,19 @@ export const getFollowers = async () => {
 
     return OneinkedGet(getFollowersURL)
         .then((response) => response.data)
+}
+
+export const followUser = async (followUserReqParam) =>{
+    const followUserURL =  `${URL}/api/follow`;
+
+    return OneinkedPost(followUserURL, followUserReqParam)
+    .then((response) => response.data);
+}
+
+export const unFollowUser = async(userId) => {
+    const unFollowerUserURL = `${URL}/api/follow/${userId}`;
+
+    return OneinkedDelete(unFollowerUserURL)
+    .then((response) => response.data);
 }
 /** Follow API END */

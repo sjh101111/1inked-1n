@@ -27,6 +27,11 @@ public class FollowService {
         User followUser = userRepository.findById(request.getFollowUserId())
                 .orElseThrow(IllegalArgumentException::new);
 
+        //이미 팔로워 존재하는지 확인
+        if(followRepository.findByToUserId(followUser.getId(), fromUser.getId()).isPresent()){
+            throw new IllegalArgumentException("이미 팔로우 중입니다.");
+        }
+
         return followRepository.save(new Follow(GenerateIdUtils.generateFollowId(), followUser, fromUser));
     }
 
@@ -37,7 +42,7 @@ public class FollowService {
         String curUserEmail = toUser.getEmail();
         List<Follow> follows = followRepository.findAllByFromUser_Email(curUserEmail);
         return follows.stream()
-                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail(), follow.getToUser().getId()))
                 .collect(Collectors.toList());
     }
 
@@ -48,15 +53,17 @@ public class FollowService {
         String curUserEmail = fromUser.getUsername();
         List<Follow> follows = followRepository.findAllByToUser_Email(curUserEmail); // To
         return follows.stream()
-                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail()))
+                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
                 .collect(Collectors.toList());
     }
 
     // 팔로워 목록 조회 기능
 
     @Transactional
-    public void unfollow(String followId) {
-        followRepository.deleteById(followId);
+    public void unfollow(String userId, User fromUser) {
+        Follow follow = followRepository.findByToUserId(userId, fromUser.getId()).orElseThrow(() -> new IllegalArgumentException("not found to user"));
+
+        followRepository.delete(follow);
     }
 
     // 팔로우 취소 기능

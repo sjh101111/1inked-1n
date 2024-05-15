@@ -146,7 +146,7 @@ public class FollowControllerUnitTest {
         followList.add(testFollow);
 
         List<FollowResponseDto> follows = followList.stream()
-                .map(follow -> new FollowResponseDto(follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage()))
+                .map(follow -> new FollowResponseDto(testFollow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail(), follow.getToUser().getId()))
                 .collect(Collectors.toList());
 
         doReturn(follows).when(followService).getFollows(any(User.class));
@@ -168,7 +168,7 @@ public class FollowControllerUnitTest {
         followList.add(testFollow);
 
         List<FollowResponseDto> follows = followList.stream()
-                .map(follow -> new FollowResponseDto(follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
                 .collect(Collectors.toList());
 
         doReturn(follows).when(followService).getFollowers(any(User.class));
@@ -190,13 +190,11 @@ public class FollowControllerUnitTest {
         Follow follow = buildFollow(followUser, followedUser);
 
         //when
-        ResultActions resultActions = mockMvc.perform(delete(deleteUrl, follow.getId()))
+        ResultActions resultActions = mockMvc.perform(delete(deleteUrl, followUser.getId()))
                 .andExpect(status().isOk());
 
         // then
-        verify(followService, only()).unfollow(any(String.class));
-
-
+        verify(followService, only()).unfollow(any(String.class), any(User.class));
     }
 
 
