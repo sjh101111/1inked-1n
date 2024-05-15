@@ -37,7 +37,7 @@ const Article = ({id, contents, createdAt, updatedAt, images, user, afterDeleteF
         }
 
         isWirter();
-    },[]);
+    },[user?.image, images]);
 
     const toggleCommentVisibility = () =>{
         setCommentVisibility(!commentVisibility);

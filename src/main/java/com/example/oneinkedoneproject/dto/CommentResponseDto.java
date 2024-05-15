@@ -20,6 +20,7 @@ public class CommentResponseDto {
     private String parentId;
 	private byte[] userProfileImage;
 	private String realname;
+	private String email;
     
     public CommentResponseDto(Comment comment){
     	id = comment.getId();
@@ -28,6 +29,7 @@ public class CommentResponseDto {
     	updatedAt = comment.getUpdatedAt();
 		userProfileImage = comment.getUser().getImage();
 		realname = comment.getUser().getRealname();
+		email = comment.getUser().getEmail();
     	if (comment.getParent() != null)
     		parentId = comment.getParent().getId();
     	else

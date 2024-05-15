@@ -32,7 +32,7 @@ const Header = (props) =>{
 
                 <div className="flex items-center gap-4 min-w-[350px]">
                     <Link to="/newsinfo">뉴스</Link>
-                    <Link to="/resumeAi">Resume</Link>
+                    <Link to="/resume">Resume</Link>
                     <Link to="/chat">쪽지</Link>
                     <Link to="/mypage" className="flex items-center ml-2 gap-2">
                         <Avatar className="w-10 h-10">
