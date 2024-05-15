@@ -3,7 +3,7 @@ name: Front Auto Deploy after push
 on:
   push:
     branches:
-      - develop
+      - release
 env:
   S3_BUCKET_NAME: thlee-content
   AWS_REGION: ap-northeast-2
