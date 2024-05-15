@@ -19,6 +19,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,6 @@ import java.util.List;
 @RequestMapping("/api/resume")
 public class ResumeApiController {
     private final ResumeService resumeService;
-    private ResumeService ResumeService;
 
     @PostMapping("")
     @Operation(summary = "이력서 생성", description = "이력서를 생성하는 API")
@@ -61,6 +62,12 @@ public class ResumeApiController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(new ResumeResponseDto(byId));
+    }
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<ResumeResponseDto>> getResumeOfUserPage(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(resumeService.findByEmail(decodedEmail));
     }
 
     @GetMapping("/user")

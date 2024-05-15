@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -35,6 +37,12 @@ public class ArticleController {
     @GetMapping("/api/mainFeedArticles")
     public ResponseEntity<List<ArticleResponseDto>> readMainFeedArticles(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(articleService.readMainFeedArticles(user));
+    }
+
+    @GetMapping("/api/userAllArticles/{email}")
+    public ResponseEntity<List<ArticleResponseDto>> readUserAllArticles(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(articleService.readUserAllArticles(decodedEmail));
     }
 
     @PutMapping("/api/article/{articleId}")

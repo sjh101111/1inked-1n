@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -24,30 +26,34 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.CREATED).body(followService.follow(fromUser, request));
     }
 
-    // follow 생성 api
-
-
     @GetMapping("/api/follows")
     public ResponseEntity<List<FollowResponseDto>> getFollows(@AuthenticationPrincipal User toUser) {
-//        String curUserEmail = toUser.getEmail();
         return ResponseEntity.ok(followService.getFollows(toUser));
+    }
+
+    @GetMapping("/api/followsOfUser/{email}")
+    public ResponseEntity<List<FollowResponseDto>> getFollowsOfUser(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(followService.getFollowsOfUser(decodedEmail));
     }
 
     // follows
     @GetMapping("/api/followers")
     public ResponseEntity<List<FollowResponseDto>> getFollowers(@AuthenticationPrincipal User fromUser) {
-//        String curUserEmail = fromUser.getUsername();
         return ResponseEntity.ok(followService.getFollowers(fromUser));
     }
 
-    // followers 조회 api
+
+    @GetMapping("/api/followersOfUser/{email}")
+    public ResponseEntity<List<FollowResponseDto>> getFollowersOfUser(@PathVariable String email) throws Exception {
+        String decodedEmail = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+        return ResponseEntity.ok(followService.getFollowersOfUser(decodedEmail));
+    }
 
     @DeleteMapping("/api/follow/{followId}")
     public ResponseEntity<Void> unfollow(@PathVariable String followId) {
         followService.unfollow(followId);
         return ResponseEntity.ok().body(null);
     }
-
-    // follow 삭제 api
 
 }
