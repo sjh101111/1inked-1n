@@ -16,6 +16,7 @@ import {readAllMyArticle} from "@/utils/API";
 import {useUserInfo} from "@/utils/store.js";
 import {getFollows, getFollowers} from "@/utils/API";
 
+
 const MyPage = () => {
     //Mypage, UserPage는 유저 정보를 통해 pageOwner인지 판단한 후 구별이 가능
     //문제점
@@ -61,7 +62,7 @@ const MyPage = () => {
             toggleEditing();
         });
         history.push("/mypage");
-
+        
     }
 
     const handleProfilePicChange = (event) => {
@@ -72,6 +73,7 @@ const MyPage = () => {
         };
         reader.readAsDataURL(file);
     };
+
 
     return (
         <>

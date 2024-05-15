@@ -39,9 +39,59 @@
 
 ### 2. 기능 정의서
 [1inked 1n 기능 정의서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
+### 공통
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/55221a4e-a076-493b-88ac-a33248e30a7f"> <br/> 헤더|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a1c337e9-9354-49eb-82a0-49d60cb8bdf6"> <br/> 메인 페이지|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/4682b179-0d1b-4c9a-acee-477c9af4b51f"> <br/> 댓글|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/34c6c77b-e20c-4eb7-a824-8f8049b121cd"> <br/> 대댓글|
+
+### 회원 관리
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/10408e12-2ab0-4da6-b418-057fb9bfbae2"> <br/> 로그인|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a94867f8-71e1-4cf5-9d33-ab102a33a646"> <br/> <img src="https://github.com/Garodden/1inked-1n/assets/143177939/9a4e4005-9314-44b2-abd7-17a90f180eef"> <br/> 마이 페이지|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a7798fc4-b126-4fb9-ac0a-422fec246284"> <br/> 비밀번호 찾기|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/96b93889-8f23-4d16-916b-a032c998c0c2"> <br/> 비밀번호 변경|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/3010d55c-49a5-42e1-8a28-fc6cb8046ef0"> <br/> 회원 탈퇴|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/65a4bfe7-9712-4b08-b66e-316ddd107e1c"> <br/> 회원 가입|
+
+### 앨런 AI
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/77052db5-5642-410f-9521-138f621e817e"> <br/> resume 첨삭|
+
+### 외부 API 연동
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2ccb898c-114b-46c5-9ef6-c772e14b3bb1"> <br/> 시사 경제 정보 제공|
+
+### REST API
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a53eafe7-532b-41bc-98ff-207c2b133102"> <br/> 팔로우 유저 피드 조회|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/458d31af-fe02-4fea-a5d9-6edb117c735f"> <br/> 유저(내가 아닌 상대방) 페이지|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/63cfb256-6e27-4721-8573-3063c140f2b7"> <br/> 게시글|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/9fa82689-906b-4b5a-a387-21fc10874234"> <br/> 쪽지|
+### 메시지 발송
+||
+|--------------------|
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/50a0e6e2-74f7-4be2-be7f-48ae19dde83a"> <br/> 회원가입 성공 시 웰컴 메시지|
+
+
 
 ### 3. 개발 일정
-[1inked 1n 개발 일정](https://www.notion.so/oreumi/1-1inked-1n-d09992fed57c4e0e980acc4107a55e2d)
+- 팀 빌딩 / 도메인 설정 : 4/24
+- CI/CD 환경 구축 : 4/24 ~ 4/25
+- 요구사항 분석 : 4/24 ~ 4/25
+- 기능 명세서 작성 : 4/25 ~ 5/1
+- DB 모델링 및 엔티티 설계 : 4/28 ~ 5/1
+- UI/UX 설계 : 4/26 ~ 5/1
+- 프론트 레이아웃 설계 : 4/26 ~ 5/1
+- 구현 : 4/29 ~ 5/12
+- 테스트 : 4/29 ~ 5/12
+- 발표 준비 : 5/12 ~ 5/15
 
 ## 🏙️ 화면 설계서
 [1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
@@ -58,8 +108,10 @@
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ca6ed8d-08c4-4293-8ac1-eb161c1dbaf7"> <br/>마이 페이지 아티클 조회 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/4858e843-ae7a-48ff-9965-0e07a1809956"> <br/> 마이 페이지 댓글 조회 화면|
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/adbe6c47-2231-4457-b535-814ace495f2a"> <br/> 마이 페이지 팔로우 조회 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/7717eedb-04fc-4ddf-9345-0057c9150b96"> <br/> 마이 페이지 이력서 조회 화면|
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/f45f5916-9d6e-4d32-a806-f8d41891ffac"> <br/> 마이 페이지 이력서 상세 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ece0d58-6af3-4a32-a564-28ff4dc01def"> <br/> 유저 페이지 화면 |
+|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/35700ad4-4c2b-4a24-9e14-b8cff4ff238a"> <br/> 공통 헤더 ||
 
 ## 프로젝트 구조
+
 
 ## 🏭 시스템 구성도
 
