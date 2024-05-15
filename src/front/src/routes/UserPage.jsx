@@ -156,7 +156,6 @@ const ArticlesTab = ({email}) => {
             setLoading(true);
             try {
                 const response = await readUserAllArticles(email);
-                console.log('article', response)
                 if (response && Array.isArray(response) && response.length > 0) {
                     setArticles(response);
                 } else {

@@ -25,8 +25,6 @@ instance.interceptors.response.use(
     async (err) => {
         const { config, response: {status, data} } = err;
 
-        console.log(err);
-
         if(status === 401 && data.message === "Access token is invalid or expired"){
             try{
                 const newTokenResult = await getNewAccessToken();
@@ -219,7 +217,6 @@ export const readMainFeedArticles = async () => {
 
     return OneinkedGet(readMainFeedArticlesURL)
         .then((response) => {
-            console.log(response);
             return response.data
         });
 }
