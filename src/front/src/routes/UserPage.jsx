@@ -46,9 +46,8 @@ const UserPage = () => {
         const queryEmail = state?.email || "test@test.com";
         const accessToken = getAccessTokenInfo();
 
-        //작동하지 않는 모양.
-        if(accessToken.sub === queryEmail){
-            nevigate("/mypage");
+        if (accessToken.sub === queryEmail) {
+            navigate("/mypage");
         }
 
         fetchAnotherUserProfile(queryEmail)

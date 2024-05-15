@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class UserController {
 
     //1. 유저 프로필 조회
     @GetMapping("/api/user")
-    public ResponseEntity<FindUserResponseDto> findUser(@AuthenticationPrincipal User user){
+    public ResponseEntity<FindUserResponseDto> findUser(@AuthenticationPrincipal User user) {
         //혹여 모를 정보이 stale 경계위한 find
         User returnUser = userService.findUser(new FindUserRequestDto(user.getEmail()));
 
@@ -30,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{email}")
-    public ResponseEntity<FindUserResponseDto> findAnotherUser(@PathVariable("email") String email){
+    public ResponseEntity<FindUserResponseDto> findAnotherUser(@PathVariable("email") String email) {
         User user = userService.findUser(new FindUserRequestDto(email));
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -40,10 +42,10 @@ public class UserController {
 
     //2. 유저 프로필 저장
     @PostMapping("/api/profile")
-    public ResponseEntity<String> saveProfile(@ModelAttribute SaveProfileRequestDto request, @AuthenticationPrincipal User user){
+    public ResponseEntity<String> saveProfile(@ModelAttribute SaveProfileRequestDto request, @AuthenticationPrincipal User user) {
         User returnUser = userService.saveProfile(request, user);
 
-        if(returnUser == null){
+        if (returnUser == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("저장에 실패했습니다.");
         }
@@ -54,10 +56,10 @@ public class UserController {
 
     //3. 유저 비밀번호 변경
     @PostMapping("/api/password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequestDto request){
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequestDto request) {
         User user = userService.changePassword(request);
 
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("변경에 실패하였습니다.");
         }
@@ -68,10 +70,10 @@ public class UserController {
 
     //4. 회원 탈퇴
     @PostMapping("/api/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody WithdrawUserRequestDto request, @AuthenticationPrincipal User authUser){
+    public ResponseEntity<String> withdraw(@RequestBody WithdrawUserRequestDto request, @AuthenticationPrincipal User authUser) {
         User user = userService.withDraw(request, authUser);
 
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("변경에 실패하였습니다.");
         }
@@ -82,10 +84,10 @@ public class UserController {
 
     //5. 회원 가입
     @PutMapping("/api/user")
-    public ResponseEntity<String> signup(@RequestBody SignupUserRequestDto request){
+    public ResponseEntity<String> signup(@RequestBody SignupUserRequestDto request) {
         User user = userService.signUp(request);
 
-       if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("회원가입에 실패하였습니다.");
         }
@@ -95,13 +97,12 @@ public class UserController {
     }
 
 
-
     //6. 유저 사진 업로드
     @PostMapping("/api/user/image")
-    public ResponseEntity<String> uploadImage(@ModelAttribute UploadUserImageRequestDto request, @AuthenticationPrincipal User authUser){
+    public ResponseEntity<String> uploadImage(@ModelAttribute UploadUserImageRequestDto request, @AuthenticationPrincipal User authUser) {
         User user = userService.uploadImage(request, authUser);
 
-       if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("유저 사진 업로드에 실패하였습니다.");
         }
@@ -110,4 +111,9 @@ public class UserController {
                 .body("유저 사진 업로드에 성공했습니다.");
     }
 
+    //7. 유저가 기입한 keyword와 identity, description에 일치하는 유저 반환
+    @GetMapping("/api/user/search")
+    public ResponseEntity<List<FindUserResponseDto>> searchUsers(@RequestParam String keyword) {
+        return ResponseEntity.ok(userService.searchUsers(keyword, keyword));
+    }
 }
