@@ -46,4 +46,5 @@ jobs:
           SOURCE_DIR: "./src/front/dist"
           
       - name: Invalidate CloudFront distribution
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_ID }}
+        run: aws cloudfront create-invalidation \
+          --distribution-id ${{secrets.AWS_CLOUDFRONT_ID}} --paths "/*"
