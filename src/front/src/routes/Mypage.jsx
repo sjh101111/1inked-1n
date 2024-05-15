@@ -46,7 +46,7 @@ const MyPage = () => {
     const doSaveProfile = () =>{
         const reqParam = saveProfileReqParam(identity, location, description, file);
 
-        if(!reqParam.file){
+        if(!file){
             alert('프로필로 사용할 파일을 업로드 해주세요.');
             return ;
         }

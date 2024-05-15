@@ -8,11 +8,11 @@ import {readComment} from "@/utils/API.js";
 import {updateComment} from "@/utils/API.js";
 import {updateCommentReqParam} from "@/utils/Parameter.js";
 import {deleteComment} from "@/utils/API.js";
-import {key} from "localforage";
-import {data} from "autoprefixer";
+import { Link } from "react-router-dom";
 import {getAccessTokenInfo} from "@/utils/Cookie.js";
+import { FullDateFormatString } from "@/utils/common";
 
-const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now", updatedAt = "now", comments ="test", setComments, commentsList, parentId }) =>{
+const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now", updatedAt = "now", comments ="test", setComments, commentsList, parentId, userProfileImage }) =>{
     const [isEditing, setIsEditing] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
     const [editedComment, setEditedComment] = useState(comments);
@@ -75,9 +75,12 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
     return (
         <li className="space-y-4">
             <div className="w-full flex items-start space-x-3">
-                <Avatar>
-                    <AvatarFallback className="font-bold">hi</AvatarFallback>
-                </Avatar>
+                <Link to="/userPage" state={{ email: email }} className="flex items-center gap-4">
+                    <Avatar>
+                        <AvatarImage src={`data:image/png;base64,${userProfileImage}`}></AvatarImage>
+                        <AvatarFallback className="font-bold"></AvatarFallback>
+                    </Avatar>
+                </Link>
                 <div className="w-full">
                     <div className="w-full flex justify-between items-center">
                         <p className="text-sm font-semibold">{realname || "비회원"}</p>
@@ -100,7 +103,7 @@ const CommentItem = ({id, articleId, realname, email= "temp", createdAt = "now",
                             )}
                         </div>
                     </div>
-                    <p className="text-xs text-gray-500">{displayDate}</p>
+                    <p className="text-xs text-gray-500">{FullDateFormatString(new Date(displayDate))}</p>
                     {isEditing ? (
                         <textarea
                             className="mt-1 text-sm w-full"

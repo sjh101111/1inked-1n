@@ -45,7 +45,6 @@ instance.interceptors.response.use(
         }
 
         if(status === 401 && data.message === "Refresh token is invalid or expired"){
-            alert("hi");
             logout();
         }
 

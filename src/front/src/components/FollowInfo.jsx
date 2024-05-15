@@ -1,12 +1,12 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Link } from "react-router-dom";
 
-const FollowUser = ({realname, identity, img = null, email}) =>{
+const FollowUser = ({realname, identity, image=null, email}) =>{
     return (
         <Link to="/userPage" state={{ email: email }} className="flex items-center gap-4">
             <Avatar className="w-10 h-10">
-                {img ? (
-                    <AvatarImage alt={realname} src={img} />
+                {image ? (
+                    <AvatarImage alt={realname} src={`data:image/png;base64,${image}`} />
                 ) : (
                     <AvatarFallback>{realname.charAt(0)}</AvatarFallback>
                 )}
@@ -20,6 +20,7 @@ const FollowUser = ({realname, identity, img = null, email}) =>{
 };
 
 const FollowInfo = ({ follows, followers }) =>{
+    console.log(followers, follows)
 
     return (
         <section className="w-full p-4 bg-white">
@@ -35,7 +36,7 @@ const FollowInfo = ({ follows, followers }) =>{
                 <section className="w-1/2 p-2 grid gap-4 mt-4">
                     {Array.isArray(follows) && follows.length > 0 ? (
                         follows.map(follow => (
-                            <FollowUser key={follow.id} realname={follow.realname} identity={follow.identity} img={follow.img} email={follow.email} />
+                            <FollowUser key={follow.id} realname={follow.realname} identity={follow.identity} image={follow.image} email={follow.email} />
                         ))
                     ) : (
                         <p>No follows found</p>
@@ -45,7 +46,7 @@ const FollowInfo = ({ follows, followers }) =>{
                 <section className="w-1/2 p-2 grid gap-4 mt-4">
                     {Array.isArray(followers) && followers.length > 0 ? (
                         followers.map(follower => (
-                            <FollowUser key={follower.id} realname={follower.realname} identity={follower.identity} img={follower.img} email={follower.email} />
+                            <FollowUser key={follower.id} realname={follower.realname} identity={follower.identity} image={follower.image} email={follower.email} />
                         ))
                     ) : (
                         <p>No followers found</p>
