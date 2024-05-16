@@ -1,4 +1,4 @@
-#  1inked-1n
+#  1inked-1n(글로벌 커리어 SNS 서비스)
 
 ## 목차
 <div>
