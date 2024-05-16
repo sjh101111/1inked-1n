@@ -32,9 +32,9 @@ jobs:
       - name: Make application-secret.yml
         env:
           JWT_TOKEN_SECRET: ${{ secrets.JWT_TOKEN_SECRET }}
-          MYSQL_URL: ${{secrets.MYSQL_URL}}
-          MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
-          MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+          MYSQL_URL: ${{secrets.AWS_RDS_URL}}
+          MYSQL_USERNAME: ${{secrets.AWS_RDS_USERNAME}}
+          MYSQL_PASSWORD: ${{secrets.AWS_RDS_PASSWORD}}
           NAVER_CLIENT: ${{secrets.NAVER_CLIENT}}
           NAVER_KEY: ${{secrets.NAVER_KEY}}
           P12_KEY_PASSWORD: ${{secrets.P12_KEY_PASSWORD}}
