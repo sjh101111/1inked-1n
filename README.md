@@ -7,9 +7,10 @@
 - [1.개발 환경 및 개발 일정](#1-개발-환경-및-개발-일정)
 - [2.기능 명세서](#2-기능-명세서)
 - [3.화면 설계서(Wireframe)](#3-화면-설계서wireframe)
-- [4.구조도 - 프로젝트, 시스템](#4-구조도---프로젝트-시스템)
-- [5.데이터베이스(ERD)](#5-데이터베이스erd)
-- [6.API 명세서](#6-api-명세서)
+- [4.시연 영상 - 주요 기능 위주](#4-시연-영상---주요-기능-위주)
+- [5.구조도 - 프로젝트, 시스템](#5-구조도---프로젝트-시스템)
+- [6.데이터베이스(ERD)](#6-데이터베이스erd)
+- [7.API 명세서](#7-api-명세서)
 
 </div>
 -------------------------  
@@ -226,7 +227,43 @@
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/f45f5916-9d6e-4d32-a806-f8d41891ffac"> <br/> 마이 페이지 이력서 상세 화면 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0ece0d58-6af3-4a32-a564-28ff4dc01def"> <br/> 유저 페이지 화면 |
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/35700ad4-4c2b-4a24-9e14-b8cff4ff238a"> <br/> 공통 헤더 ||
 
-## 4. 구조도 - 프로젝트, 시스템
+## 4. 시연 영상 - 주요 기능 위주
+### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
+
+#### 랜딩페이지 및 로그인
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/89d33aa8-1542-4401-a9f1-87fb3bcbd43b"/>
+
+#### 댓글
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/2f519028-ae1e-4f91-b705-2efcef19c6f9"/>
+
+#### 대댓글
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/7f2485e7-bc23-4b2a-a54a-1f805d9bdf38"/>
+
+#### 헤더(페이지 이동)
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/5791a33b-f7a5-451c-a74b-46aa0c9ffc0b"/>
+<br>
+
+### 마이 페이지(회원 관리) - 내가 작성한 게시글, 팔로우/팔로워, 저장한 resume 조회 기능
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/0f333d8c-c692-4f86-aed3-b6c95072f67f"/>
+<br>
+
+### 시사 경제 정보 제공(외부 API 연동 - Naver News API)
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/dba87626-bd77-4a51-9287-f5445f7d7f1a"/>
+
+<br>
+
+### Resume Review 페이지(Allen Ai 연동)
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/adcece90-7446-44c3-b89e-49229c1e3711"/>
+
+<br>
+
+### 쪽지 기능(RestAPI(CRUD))
+<img width="100%" src="https://github.com/Garodden/1inked-1n/assets/154873151/e08762f8-4099-4862-ba8c-f7c969cf70f7"/>
+
+<br>
+
+
+## 5. 구조도 - 프로젝트, 시스템
 ### 프로젝트 구조도
 
 <pre>
@@ -335,13 +372,13 @@
   <img src="https://github.com/Garodden/1inked-1n/assets/143177939/2d6b46ae-f2df-4dea-8f8a-cd44a11cbb2f">
 </p>
 
-## 5. 데이터베이스(ERD)
+## 6. 데이터베이스(ERD)
 
 <p align="center">
   <img src="https://github.com/Garodden/1inked-1n/assets/143177939/48625d37-1e4c-4766-9f25-19086b675456">
 </p>
 
-## 6. API 명세서
+## 7. API 명세서
 
 ### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/42e1f742-810c-4394-8764-e10666180c6c">
