@@ -95,7 +95,7 @@ jobs:
         run: |
           cd ./src/main/resources
           mv ./application-temp.properties ./application-API-KEY.properties
-          cat application-temp.properties
+          cat application-API-KEY.properties
 
       - name: Change application-security.yml to deploy version
         run: |
