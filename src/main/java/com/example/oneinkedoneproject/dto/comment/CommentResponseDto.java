@@ -1,8 +1,7 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.comment;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.example.oneinkedoneproject.domain.Comment;
 
