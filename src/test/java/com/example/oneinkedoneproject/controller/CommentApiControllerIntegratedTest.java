@@ -4,9 +4,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -29,8 +26,8 @@ import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
-import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.AddCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
@@ -38,8 +35,6 @@ import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.comment.CommentService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.google.gson.Gson;
-
-import jakarta.transaction.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc

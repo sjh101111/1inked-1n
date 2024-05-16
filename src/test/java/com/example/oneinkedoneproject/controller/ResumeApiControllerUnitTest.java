@@ -2,7 +2,6 @@ package com.example.oneinkedoneproject.controller;
 
 import com.example.oneinkedoneproject.controller.resume.ResumeApiController;
 import com.example.oneinkedoneproject.domain.*;
-import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
 import com.example.oneinkedoneproject.dto.resume.AddResumeRequestDto;
 import com.example.oneinkedoneproject.dto.resume.UpdateResumeRequestDto;
 import com.example.oneinkedoneproject.service.resume.ResumeService;
@@ -14,13 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 

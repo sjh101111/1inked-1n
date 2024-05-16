@@ -2,9 +2,9 @@ package com.example.oneinkedoneproject.controller.comment;
 
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
-import com.example.oneinkedoneproject.dto.CommentResponseDto;
-import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.AddCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.CommentResponseDto;
+import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.service.comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

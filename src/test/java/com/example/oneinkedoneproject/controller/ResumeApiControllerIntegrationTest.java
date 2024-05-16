@@ -1,8 +1,7 @@
 package com.example.oneinkedoneproject.controller;
 
 import com.example.oneinkedoneproject.domain.*;
-import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
-import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.dto.resume.AddResumeRequestDto;
 import com.example.oneinkedoneproject.dto.resume.UpdateResumeRequestDto;
@@ -25,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;

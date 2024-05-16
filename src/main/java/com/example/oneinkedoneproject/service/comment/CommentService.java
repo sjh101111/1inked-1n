@@ -3,8 +3,8 @@ package com.example.oneinkedoneproject.service.comment;
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.AddCommentRequestDto;
-import com.example.oneinkedoneproject.dto.UpdateCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.AddCommentRequestDto;
+import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import jakarta.transaction.Transactional;
@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
