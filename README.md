@@ -345,23 +345,23 @@
 
 ### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/42e1f742-810c-4394-8764-e10666180c6c">
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/915e6046-2410-471c-aac1-02fd75344741">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/7e267afe-4fd5-48e5-9c49-bf0be0acc3cb">
 
 ### 회원 관리 - 로그인, 회원가입, 비밀번호 찾기, 비밀번호 변경하기, 회원 탈퇴, 마이페이지
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/cf1a6522-8fbe-40c7-a604-678d542e2fa8">
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/f2deb606-3745-44f4-9bed-2543ec68e4b7">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/5b2c2e8b-9c4e-43b0-a23d-c4a9f4054932">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/faa46fc4-94a5-47ec-ade0-830b2ae60670">
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/1d5f82b7-9a26-470d-be05-8788573a1c5d">
 
 ### 외부 API 연동 - 네이버 뉴스 API 연동으로 인한 정보 제공 페이지
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/07640e3d-588b-4d4c-86d6-890b2b640407">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/6365f1a9-6030-4b95-bfb6-38de688ec89c">
 
 ### 앨런 AI 연동 - AI가 유저의 Resume를 분석해주는 페이지
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/7656f927-a397-4349-b3ec-218ecb76c34e">
 
 ### RestAPI(CRUD) - 내가 팔로우한 사람들의 게시글을 볼 수 있는 팔로우 피드 페이지, 쪽지를 주고받는 쪽지 페이지
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/dbfdfc7c-92fe-45f3-946b-5691b5a38371">
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2053ef38-761f-496f-aa38-240ed8362278">
-<img src="https://github.com/Garodden/1inked-1n/assets/143177939/946ff9af-a3b5-43e0-83eb-7923ef38bb5f">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/2b7fc274-0696-4cbd-b326-2bc7048d2a7d">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/19a96e23-23e3-4915-82fa-911cf76010d9">
+<img src="https://github.com/Garodden/1inked-1n/assets/143177939/4fabdff1-8a31-4da1-b0fb-0deb2db60612">
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8efb2c85-2aea-404e-b7ee-aad05f295686">
 
 
