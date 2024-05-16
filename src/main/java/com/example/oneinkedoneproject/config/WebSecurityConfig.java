@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -32,7 +33,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final JwtRefreshTokenFilter jwtRefreshTokenFilter;
-    private final AuthenticationProvider authenticationProvider;
+    private final DaoAuthenticationProvider authenticationProvider;
 
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
@@ -44,7 +45,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-//                                "/api/user", "/api/user",
+                                "/api/user",
                                 "/api/passwordquestion",
 //                                "/api/password",
 //                                "/api/withdraw",
