@@ -29,10 +29,12 @@ const MyPage = () => {
     const [description, setDescription] = useState('Description');
     const [file, setFile] = useState(null);
     const [activeTab, setActiveTab] = useState('');
+
     const {userInfo, setUserInfo} = useUserInfo();
 
 
     useEffect(() =>{
+        console.log(userInfo)
         setIdentity(userInfo.identity);
         setLocation(userInfo.location);
         setDescription(userInfo.description);
@@ -88,13 +90,16 @@ const MyPage = () => {
             <main className="flex flex-col items-center bg-gray-100 min-h-screen">
                 <div className="w-3/5 p-5 bg-white shadow-lg rounded mt-6 overflow-hidden">
                     <Avatar className="w-40 h-40">
-                        {userInfo.profileSrc ? (
+                        {userInfo.profileSrc && !profilePic ? (
                             <>
                                 <AvatarImage src={userInfo.profileSrc} alt="User profile picture"/>
                                 <AvatarFallback></AvatarFallback>
                             </>
                             ) : (
-                            <AvatarFallback></AvatarFallback>
+                            <>
+                                <AvatarImage src={profilePic}></AvatarImage>
+                                <AvatarFallback></AvatarFallback>
+                            </>
                         )}
                     </Avatar>
                     <div className="mt-4 flex justify-between items-center">
@@ -108,9 +113,9 @@ const MyPage = () => {
                             {
                                 editing ?
                                 (<>
-                                    <Input className="w-full mt-2" maxLength={100} type="text" value={identity} onChange={e => setIdentity(e.target.value)}/>
-                                    <Input className="w-full" maxLength={50} type="text" value={location} onChange={e => setLocation(e.target.value)}/>
-                                    <Textarea className="w-full resize-none" maxLength={2000} value={description} onChange={e => setDescription(e.target.value)}/>
+                                    <Input className="w-full mt-2" maxLength={100} type="text" value={identity} placeholder="identity" onChange={e => setIdentity(e.target.value)}/>
+                                    <Input className="w-full" maxLength={50} type="text" value={location} placeholder="location" onChange={e => setLocation(e.target.value)}/>
+                                    <Textarea className="w-full resize-none" maxLength={2000} value={description} placeholder="description" onChange={e => setDescription(e.target.value)}/>
                                     <Input type="file" accept=".png" onChange={(ev) => { handleProfilePicChange(ev); setFile(ev.target.files[0])}}/>
                                     <Button onClick={doSaveProfile} variant="ghost" className="text-black text-opacity-40">
                                         Save Changes
