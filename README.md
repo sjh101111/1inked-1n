@@ -338,7 +338,7 @@
 ## 5. 데이터베이스(ERD)
 
 <p align="center">
-  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8ae0142c-98c3-451e-b438-9ae721266310">
+  <img src="https://github.com/Garodden/1inked-1n/assets/143177939/48625d37-1e4c-4766-9f25-19086b675456">
 </p>
 
 ## 6. API 명세서
