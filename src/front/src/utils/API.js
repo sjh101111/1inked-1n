@@ -1,8 +1,7 @@
 import axios from "axios";
-import mem from "mem";
 import { getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from "./Cookie";
 
-const URL = "http://localhost:8080";
+const URL = "https://1inked-1n.store";
 
 const instance = axios.create();
 

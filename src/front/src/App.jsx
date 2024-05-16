@@ -73,10 +73,10 @@ const router = createBrowserRouter([
               </ProtectedRoute>
           )
       },
-      {
-        path: "/test",
-        element: <Test></Test>
-      },
+      // {
+      //   path: "/test",
+      //   element: <Test></Test>
+      // },
       {
         path: "/newsinfo",
           element: (
