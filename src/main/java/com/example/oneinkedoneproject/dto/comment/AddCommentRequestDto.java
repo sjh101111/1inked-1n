@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.dto;
+package com.example.oneinkedoneproject.dto.comment;
 
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
