@@ -77,6 +77,26 @@ jobs:
               key-store-password: $P12_KEY_PASSWORD
           " > application-security.yml
 
+
+
+      - name: Make application-temp.yml
+        env:
+          NAVER_CLIENT: ${{secrets.NAVER_CLIENT}}
+          NAVER_KEY: ${{secrets.NAVER_KEY}}
+        run: |
+          cd ./src/main/resources
+          echo -e \
+          "
+          naver-client=$NAVER_CLIENT
+          naver-key=$NAVER_KEY
+          " > application-temp.yml
+
+      - name: Change application-temp.yml to deploy version
+        run: |
+          cd ./src/main/resources
+          mv ./application-temp.yml ./application-API-KEY.properties
+          cat application-temp.yml
+
       - name: Change application-security.yml to deploy version
         run: |
           cd ./src/main/resources
