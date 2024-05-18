@@ -53,17 +53,25 @@
 #### [배포 및 클라우드]
 <div>
   <img alt="AmazonEC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/> 
-  <img alt="AmazonS3" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=Amazon S3&logoColor=white"/>  <img alt="AmazonRDS" src ="https://img.shields.io/badge/Amazon RDS-527FFF.svg?&style=for-the-badge&logo=Amazon RDS&logoColor=white"/>        
+  <img alt="AmazonS3" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=Amazon S3&logoColor=white"/>  
+  <img alt="AmazonRDS" src ="https://img.shields.io/badge/Amazon RDS-527FFF.svg?&style=for-the-badge&logo=Amazon RDS&logoColor=white"/>        
 </div>
 
 #### [CI/CD] 
-<img alt="githubactions" src ="https://img.shields.io/badge/github actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/> <img alt="Amazon CodeDeploy" src ="https://img.shields.io/badge/Amazon CodeDeploy-6DB33F.svg?&style=for-the-badge&logo=Amazon CodeDeploy&logoColor=white"/>
+<div>
+  <img alt="githubactions" src ="https://img.shields.io/badge/github actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/> 
+  <img alt="Amazon CodeDeploy" src ="https://img.shields.io/badge/Amazon CodeDeploy-6DB33F.svg?&style=for-the-badge&logo=Amazon CodeDeploy&logoColor=white"/>
+</div>
 
 #### [협업 도구]
 <div>
     <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
     <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
 </div>
+
+#### [디자인]
+ <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">
+
 <br>
 
 ### 개발일정
