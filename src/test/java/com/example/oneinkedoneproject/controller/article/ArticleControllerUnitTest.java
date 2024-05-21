@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.article;
 
 import com.example.oneinkedoneproject.controller.Article.ArticleController;
 import com.example.oneinkedoneproject.domain.*;
@@ -27,6 +27,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,7 +89,7 @@ public class ArticleControllerUnitTest {
     public void createArticleTest() throws Exception {
         ArticleResponseDto responseDto = ArticleResponseDto.builder()
                 .contents("contents")
-                .images(images.stream().map(x->x.toDto()).toList())
+                .images(images.stream().map(x -> x.toDto()).toList())
                 .build();
         Mockito.doReturn(responseDto)
                 .when(articleService).createArticle(any(AddArticleRequestDto.class), any(User.class));
@@ -123,7 +124,7 @@ public class ArticleControllerUnitTest {
 
     @Test
     void readMainFeedArticlesTest() throws Exception {
-        User followUser =  User.builder()
+        User followUser = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("follow test")
                 .email("follow test@test.com")
@@ -156,6 +157,39 @@ public class ArticleControllerUnitTest {
     }
 
     @Test
+    void readUserAllArticlesTest() throws Exception {
+        User testUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("test")
+                .email("test@test.com")
+                .password("test")
+                .withdraw(false)
+                .passwordQuestion(PasswordQuestion.builder().question("a").build())
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        ArticleResponseDto testArticle = Article.builder()
+                .id(GenerateIdUtils.generateArticleId())
+                .contents("test content")
+                .user(testUser)
+                .updatedAt(null)
+                .createdAt(null)
+                .imageList(images)
+                .build().toDto();
+
+        List<ArticleResponseDto> list = new ArrayList<>();
+        list.add(testArticle);
+
+        Mockito.doReturn(list).when(articleService).readUserAllArticles(any(String.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/userAllArticles/{email}", testUser.getEmail()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].contents").value(testArticle.getContents()))
+                .andExpect(jsonPath("$[0].user.realName").value(testUser.getRealname()));
+    }
+
+    @Test
     void updateArticleTest() throws Exception {
         //given
         MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some content".getBytes());
@@ -177,7 +211,7 @@ public class ArticleControllerUnitTest {
 
         ArticleResponseDto articleResponseDto = ArticleResponseDto.builder().id(article.getId()).contents(updateArticleRequestDto.getContents())
                 .createdAt(article.getCreatedAt()).updatedAt(article.getUpdatedAt())
-                .images(updatedimages.stream().map(x->x.toDto()).toList()).user(article.getUser().toUserInfoDto()).build();
+                .images(updatedimages.stream().map(x -> x.toDto()).toList()).user(article.getUser().toUserInfoDto()).build();
 
         Mockito.doReturn(articleResponseDto).when(articleService).updateArticle(any(String.class), any(UpdateArticleRequestDto.class));
 

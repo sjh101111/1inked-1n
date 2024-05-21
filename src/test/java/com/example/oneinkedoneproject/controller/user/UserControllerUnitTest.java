@@ -1,7 +1,6 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.user;
 
 
-import com.example.oneinkedoneproject.controller.user.UserController;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.user.*;
@@ -22,10 +21,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,9 +46,9 @@ public class UserControllerUnitTest {
     private PasswordQuestion pwdQuestion;
 
     @BeforeEach
-    void init(){
+    void init() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        pwdQuestion = new PasswordQuestion("123","123");
+        pwdQuestion = new PasswordQuestion("123", "123");
         om = new ObjectMapper();
     }
 
@@ -68,8 +70,8 @@ public class UserControllerUnitTest {
                 .build();
         //when
         doReturn(user)
-            .when(userService)
-            .findUser(any(FindUserRequestDto.class));
+                .when(userService)
+                .findUser(any(FindUserRequestDto.class));
 
 
         ResultActions actions = mockMvc.perform(get("/api/user")
@@ -82,8 +84,8 @@ public class UserControllerUnitTest {
 
     @Test
     @DisplayName("다른 유저 프로필 조회 API 호출")
-    void findAnotherUserProfileTest() throws Exception {
-       String email = "test@naver.com";
+    void findAnotherUserTest() throws Exception {
+        String email = "test@naver.com";
         String realName = "익명";
         FindUserRequestDto request = new FindUserRequestDto(email);
         User user = User.builder()
@@ -101,8 +103,9 @@ public class UserControllerUnitTest {
                 .findUser(any(FindUserRequestDto.class));
 
 
-        ResultActions actions = mockMvc.perform(get("/api/user?email=" + email)
-                .contentType(MediaType.APPLICATION_JSON));
+        ResultActions actions = mockMvc.perform(get("/api/user/" + email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print());
 
         //then
         actions.andExpect(status().isOk())
@@ -134,8 +137,8 @@ public class UserControllerUnitTest {
 
         //when
         doReturn(user)
-            .when(userService)
-            .saveProfile(any(SaveProfileRequestDto.class), any(User.class));
+                .when(userService)
+                .saveProfile(any(SaveProfileRequestDto.class), any(User.class));
 
 
         ResultActions actions = mockMvc.perform(multipart("/api/profile")
@@ -195,8 +198,8 @@ public class UserControllerUnitTest {
         String requestString = om.writeValueAsString(request);
         //when
         doReturn(user)
-            .when(userService)
-            .changePassword(any(ChangePasswordRequestDto.class));
+                .when(userService)
+                .changePassword(any(ChangePasswordRequestDto.class));
         ResultActions actions = mockMvc.perform(post("/api/password")
                 .content(requestString)
                 .contentType(MediaType.APPLICATION_JSON));
@@ -234,7 +237,7 @@ public class UserControllerUnitTest {
     @DisplayName("회원탈퇴 API 성공 테스트")
     void withdrawSuccessTest() throws Exception {
         //given
-        WithdrawUserRequestDto request = new WithdrawUserRequestDto("",true);
+        WithdrawUserRequestDto request = new WithdrawUserRequestDto("", true);
         User user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("익명")
@@ -262,7 +265,7 @@ public class UserControllerUnitTest {
     @DisplayName("회원탈퇴 API 실패 테스트")
     void withdrawUserFailTest() throws Exception {
         //given
-        WithdrawUserRequestDto request = new WithdrawUserRequestDto("",true);
+        WithdrawUserRequestDto request = new WithdrawUserRequestDto("", true);
         String requestString = om.writeValueAsString(request);
 
         //when
@@ -281,7 +284,7 @@ public class UserControllerUnitTest {
     @DisplayName("회원가입 API 성공 테스트")
     void signupUserTest() throws Exception {
         //given
-        SignupUserRequestDto request = new SignupUserRequestDto("","","","","");
+        SignupUserRequestDto request = new SignupUserRequestDto("", "", "", "", "");
         User user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("익명")
@@ -295,8 +298,8 @@ public class UserControllerUnitTest {
 
         //when
         doReturn(user)
-            .when(userService)
-            .signUp(any(SignupUserRequestDto.class));
+                .when(userService)
+                .signUp(any(SignupUserRequestDto.class));
 
         ResultActions actions = mockMvc.perform(put("/api/user")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -305,11 +308,12 @@ public class UserControllerUnitTest {
         //then
         actions.andExpect(status().isCreated());
     }
+
     @Test
     @DisplayName("회원가입 API 실패 테스트")
     void signupUserFailTest() throws Exception {
         //given
-        SignupUserRequestDto request = new SignupUserRequestDto("","","","","");
+        SignupUserRequestDto request = new SignupUserRequestDto("", "", "", "", "");
 
         String requestString = om.writeValueAsString(request);
 
@@ -344,12 +348,12 @@ public class UserControllerUnitTest {
 
         //when
         doReturn(user)
-            .when(userService)
-            .uploadImage(any(UploadUserImageRequestDto.class), any(User.class));
+                .when(userService)
+                .uploadImage(any(UploadUserImageRequestDto.class), any(User.class));
 
-       ResultActions actions = mockMvc.perform(multipart("/api/user/image")
-                    .file(file)
-                    .param("email",email));
+        ResultActions actions = mockMvc.perform(multipart("/api/user/image")
+                .file(file)
+                .param("email", email));
         //then
         actions.andExpect(status().isOk());
     }
@@ -363,14 +367,40 @@ public class UserControllerUnitTest {
 
         //when
         doReturn(null)
-            .when(userService)
-            .uploadImage(any(UploadUserImageRequestDto.class), any(User.class));
+                .when(userService)
+                .uploadImage(any(UploadUserImageRequestDto.class), any(User.class));
 
-       ResultActions actions = mockMvc.perform(multipart("/api/user/image")
-                    .file(file)
-                    .param("email", email));
+        ResultActions actions = mockMvc.perform(multipart("/api/user/image")
+                .file(file)
+                .param("email", email));
         //then
         actions.andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("키워드로 유저 정보 조회")
+    void searchUsers() throws Exception {
+        String email = "test@naver.com";
+        String realName = "익명";
+        User user = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname(realName)
+                .passwordQuestion(pwdQuestion)
+                .passwordAnswer("aw")
+                .email(email)
+                .password("temp")
+                .withdraw(false)
+                .build();
+
+        List<FindUserResponseDto> list = new ArrayList<>();
+        list.add(new FindUserResponseDto(user));
+
+        doReturn(list).when(userService).searchUsers(any(String.class),any(String.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/user/search")
+                        .param("keyword", "testKeyWord"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].realName").value(realName));
+    }
 }

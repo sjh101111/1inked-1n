@@ -214,8 +214,7 @@ public class UserService {
 
 	//9. searchUser
 	public List<FindUserResponseDto> searchUsers(String keyword1, String keyword2) {
-		return userRepository.findAllByIdentityOrDescription(keyword1, keyword2).orElseThrow(
-				() -> new IllegalArgumentException("해당하는 유저가 없습니다"+keyword1+keyword2)).stream()
+		return userRepository.findAllByIdentityOrDescription(keyword1, keyword2).stream()
 				.map(x-> new FindUserResponseDto(x)).toList();
 	}
 }

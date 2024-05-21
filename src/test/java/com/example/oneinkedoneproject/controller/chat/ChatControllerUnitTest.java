@@ -1,24 +1,20 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.chat;
 
-import com.example.oneinkedoneproject.controller.chat.ChatController;
 import com.example.oneinkedoneproject.domain.Chat;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.chat.AddChatRequestDto;
 import com.example.oneinkedoneproject.dto.chat.ChatResponseDto;
-import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.chat.ChatService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +24,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

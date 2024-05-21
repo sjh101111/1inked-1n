@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.allenAi;
 
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;

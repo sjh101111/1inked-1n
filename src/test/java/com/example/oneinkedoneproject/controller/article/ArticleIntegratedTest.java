@@ -1,7 +1,6 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.article;
 
 import com.example.oneinkedoneproject.domain.*;
-import com.example.oneinkedoneproject.dto.article.AddArticleRequestDto;
 import com.example.oneinkedoneproject.dto.article.ArticleResponseDto;
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
@@ -15,7 +14,6 @@ import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import com.example.oneinkedoneproject.service.image.ImageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +31,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;

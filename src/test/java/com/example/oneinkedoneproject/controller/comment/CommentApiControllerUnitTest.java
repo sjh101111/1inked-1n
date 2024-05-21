@@ -1,6 +1,5 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.comment;
 
-import com.example.oneinkedoneproject.controller.comment.CommentApiController;
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
 import com.example.oneinkedoneproject.domain.Grade;

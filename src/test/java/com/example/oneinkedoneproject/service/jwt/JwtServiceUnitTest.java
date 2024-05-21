@@ -1,8 +1,9 @@
-package com.example.oneinkedoneproject.service.auth;
+package com.example.oneinkedoneproject.service.jwt;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.oneinkedoneproject.dto.auth.TokenInfo;
+import com.example.oneinkedoneproject.service.auth.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

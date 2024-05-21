@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.user;
 
 
 import com.example.oneinkedoneproject.domain.Grade;
@@ -8,8 +8,6 @@ import com.example.oneinkedoneproject.dto.auth.TokenInfo;
 import com.example.oneinkedoneproject.dto.user.ChangePasswordRequestDto;
 import com.example.oneinkedoneproject.dto.user.SignupUserRequestDto;
 import com.example.oneinkedoneproject.dto.user.WithdrawUserRequestDto;
-import com.example.oneinkedoneproject.filter.JwtAuthenticationFilter;
-import com.example.oneinkedoneproject.filter.JwtRefreshTokenFilter;
 import com.example.oneinkedoneproject.repository.password.PasswordRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
@@ -21,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;

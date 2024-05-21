@@ -47,7 +47,6 @@ public class NaverNewsApiService {
         headers.set("X-Naver-Client-Secret", naverSecret);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-
         ResponseEntity<NaverNewsApiResponse> response = restTemplate.exchange(
                 apiUrl,
                 HttpMethod.GET,

@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.resume;
 
 import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;

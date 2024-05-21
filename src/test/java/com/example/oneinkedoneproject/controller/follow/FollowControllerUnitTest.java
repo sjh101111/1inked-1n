@@ -29,6 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,68 +51,67 @@ public class FollowControllerUnitTest {
     private final String getUrl2 = "/api/followers";
     private final String deleteUrl = "/api/follow/{followId}";
 
-
-
     @BeforeEach
-    public void init(){
+    public void init() {
 
         mockMvc = MockMvcBuilders.standaloneSetup(followController).build();
         gson = new Gson();
 
         followUser =
                 User.builder()
-                .id(GenerateIdUtils.generateUserId())
-                .realname("kim")
-                .email("test")
-                .password("1234")
-                .passwordQuestion(null)
-                .passwordAnswer("답변")
-                .identity("학생")
-                .location("서울")
-                .description("hi")
-                .withdraw(false)
-                .grade(Grade.ROLE_BASIC)
-                .build();
+                        .id(GenerateIdUtils.generateUserId())
+                        .realname("kim")
+                        .email("test")
+                        .password("1234")
+                        .passwordQuestion(null)
+                        .passwordAnswer("답변")
+                        .identity("학생")
+                        .location("서울")
+                        .description("hi")
+                        .withdraw(false)
+                        .grade(Grade.ROLE_BASIC)
+                        .build();
 
 
         followedUser =
                 User.builder()
-                .id(GenerateIdUtils.generateUserId())
-                .realname("lee")
-                .email("test2")
-                .password("12345")
-                .passwordQuestion(null)
-                .passwordAnswer("답변2")
-                .identity("직장인")
-                .location("부산")
-                .description("hi2")
-                .withdraw(false)
-                .grade(Grade.ROLE_BASIC)
-                .build();
+                        .id(GenerateIdUtils.generateUserId())
+                        .realname("lee")
+                        .email("test2")
+                        .password("12345")
+                        .passwordQuestion(null)
+                        .passwordAnswer("답변2")
+                        .identity("직장인")
+                        .location("부산")
+                        .description("hi2")
+                        .withdraw(false)
+                        .grade(Grade.ROLE_BASIC)
+                        .build();
 
 
         curUser =
                 User.builder()
-                .id(GenerateIdUtils.generateUserId())
-                .realname("park")
-                .email("test")
-                .password("1234")
-                .passwordQuestion(null)
-                .passwordAnswer("답변")
-                .identity("학생")
-                .location("인천")
-                .description("hi")
-                .withdraw(false)
-                .grade(Grade.ROLE_BASIC)
-                .build();
+                        .id(GenerateIdUtils.generateUserId())
+                        .realname("park")
+                        .email("test")
+                        .password("1234")
+                        .passwordQuestion(null)
+                        .passwordAnswer("답변")
+                        .identity("학생")
+                        .location("인천")
+                        .description("hi")
+                        .withdraw(false)
+                        .grade(Grade.ROLE_BASIC)
+                        .build();
 
     }
-        private Follow buildFollow(User followUser,User followedUser){
-            return Follow.builder()
-                    .id(GenerateIdUtils.generateFollowId())
-                    .toUser(followUser)
-                    .fromUser(followedUser)
-                    .build();
+
+    private Follow buildFollow(User followUser, User followedUser) {
+        return Follow.builder()
+                .id(GenerateIdUtils.generateFollowId())
+                .toUser(followUser)
+                .fromUser(followedUser)
+                .build();
 
     }
 
@@ -122,7 +122,7 @@ public class FollowControllerUnitTest {
         // given
         AddFollowRequestDto request = new AddFollowRequestDto("testUser");
         Follow follow = buildFollow(followUser, followedUser);
-        doReturn(follow).when(followService).follow(any(User.class) , any(AddFollowRequestDto.class));
+        doReturn(follow).when(followService).follow(any(User.class), any(AddFollowRequestDto.class));
 
         // when
         ResultActions resultActions = mockMvc.perform(
@@ -160,6 +160,25 @@ public class FollowControllerUnitTest {
     }
 
     @Test
+    @DisplayName("특정 유저의 follows 조회")
+    void getFollowsOfUser() throws Exception {
+        List<Follow> followList = new ArrayList<>();
+        Follow testFollow = buildFollow(followUser, curUser);
+        followList.add(testFollow);
+
+        List<FollowResponseDto> follows = followList.stream()
+                .map(follow -> new FollowResponseDto(testFollow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail(), follow.getToUser().getId()))
+                .collect(Collectors.toList());
+
+        doReturn(follows).when(followService).getFollowsOfUser(any(String.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/followsOfUser/{email}", curUser.getEmail()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].realname").value(followUser.getRealname()));
+    }
+
+    @Test
     @DisplayName("followers 조회")
     void getFollowers() throws Exception {
 
@@ -183,8 +202,27 @@ public class FollowControllerUnitTest {
     }
 
     @Test
+    @DisplayName("특정 유저의 Followers 조회")
+    void getFollowersOfUser() throws Exception {
+        List<Follow> followList = new ArrayList<>();
+        Follow testFollow = buildFollow(curUser, followedUser);
+        followList.add(testFollow);
+
+        List<FollowResponseDto> follows = followList.stream()
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
+                .collect(Collectors.toList());
+
+        doReturn(follows).when(followService).getFollowersOfUser(any(String.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/followersOfUser/{email}", curUser.getEmail()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].realname").value(followedUser.getRealname()));
+    }
+
+    @Test
     @DisplayName("follow 삭제")
-    void deleteFollow() throws Exception{
+    void deleteFollow() throws Exception {
 
         //given
         Follow follow = buildFollow(followUser, followedUser);
@@ -196,13 +234,6 @@ public class FollowControllerUnitTest {
         // then
         verify(followService, only()).unfollow(any(String.class), any(User.class));
     }
-
-
-
-
-
-
-
 
 
 }

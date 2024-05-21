@@ -204,7 +204,7 @@ public class FollowIntegratedTest {
         Follow follow = followService.follow(curUser, request);
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/follow/" + follow.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/follow/" + request.getFollowUserId())
                         .header("Authorization", "Bearer " + accessToken)
                 )
                 //then

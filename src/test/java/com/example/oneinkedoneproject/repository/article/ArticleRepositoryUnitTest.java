@@ -9,6 +9,7 @@ import com.example.oneinkedoneproject.repository.user.UserRepository;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ArticleRepositoryUnitTest {
     @Autowired
     ArticleRepository articleRepository;
@@ -36,6 +38,7 @@ public class ArticleRepositoryUnitTest {
     @BeforeEach
     void setUp() {
 		passwordQuestion = new PasswordQuestion("1", "질문");
+        passwordRepository.save(passwordQuestion);
         user = User.builder()
                 .id(GenerateIdUtils.generateUserId())
                 .realname("test")
@@ -52,7 +55,6 @@ public class ArticleRepositoryUnitTest {
                 .updatedAt(null)
                 .createdAt(null)
                 .build();
-        passwordRepository.save(passwordQuestion);
         userRepository.save(user);
     }
 

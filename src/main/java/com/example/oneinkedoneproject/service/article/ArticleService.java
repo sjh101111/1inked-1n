@@ -69,21 +69,6 @@ public class ArticleService {
     }
 
     @Transactional
-    public void saveArticleImages(List<Image> images, Article article) {
-        if (images != null && !images.isEmpty()) {
-            for (Image image : images) {
-                image = Image.builder().article(article).img(image.getImg()).build();
-                imageRepository.save(image);
-            }
-        }
-
-        if (images == null) {
-            throw new IllegalArgumentException("Images list cannot be null.");
-        }
-//        imageRepository.save(Image.builder().img(image.getImg()).article(article).build());
-    }
-
-    @Transactional
     public List<ArticleResponseDto> readMyAllArticles(User user) {
         String userId = user.getId();
         return articleRepository.findAllByUser_Id(userId).stream()

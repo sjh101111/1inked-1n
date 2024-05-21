@@ -26,14 +26,14 @@ public class NaverNewsController {
     public ResponseEntity<List<NaverNewsItemDto>> getNewsItems(@ModelAttribute NaverNewsApiRequest request) throws BadRequestException {
         String requestUrl = naverNewsApiService.apiRequestUrlGenerator(request);
         try {
-        NaverNewsApiResponse response = naverNewsApiService.fetchNewsFromNaverAPI(requestUrl);
-        ResponseEntity<List<NaverNewsItemDto>> responseToFrontend;
+            NaverNewsApiResponse response = naverNewsApiService.fetchNewsFromNaverAPI(requestUrl);
+            ResponseEntity<List<NaverNewsItemDto>> responseToFrontend;
 
             responseToFrontend = ResponseEntity
                     .status(HttpServletResponse.SC_OK)
                     .body(response.getItems());
             return responseToFrontend;
-        }catch(HttpClientErrorException e) {
+        } catch (HttpClientErrorException e) {
             throw new BadRequestException("부적절한 인자가 전달되었습니다.");
         }
     }

@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.service;
+package com.example.oneinkedoneproject.service.article;
 
 
 import com.example.oneinkedoneproject.domain.*;
@@ -9,7 +9,6 @@ import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.follow.FollowRepository;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
-import com.example.oneinkedoneproject.service.article.ArticleService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -224,16 +223,6 @@ public class ArticleServiceUnitTest {
     }
 
     @Test
-    void testSaveArticleImages_withNull() {
-        // 시나리오 3: 이미지 리스트가 null인 경우
-        Article article = new Article(); // 적절한 Article 객체 생성
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            articleService.saveArticleImages(null, article);
-        });
-    }
-
-    @Test
     void readMyAllArticleTest() throws Exception {
         //given beforeEach 사전 준비된 데이터
         List<Article> articleList = new ArrayList<>();
@@ -245,6 +234,19 @@ public class ArticleServiceUnitTest {
 
         //then
         Mockito.verify(articleRepository).findAllByUser_Id(user.getId());
+        assertThat(articleResponseDtos.get(0).getContents()).isEqualTo("test content");
+        assertThat(articleResponseDtos.get(0).getImages().size()).isEqualTo(1);
+        assertThat(articleResponseDtos.get(0).getUser().getEmail()).isEqualTo("test@test.com");
+    }
+
+    @Test
+    void readUserAllArticles() {
+        List<Article> articleList = new ArrayList<>();
+        articleList.add(article);
+        Mockito.doReturn(articleList).when(articleRepository).findAllByUser_Id(user.getId());
+
+        List<ArticleResponseDto> articleResponseDtos = articleService.readMyAllArticles(user);
+
         assertThat(articleResponseDtos.get(0).getContents()).isEqualTo("test content");
         assertThat(articleResponseDtos.get(0).getImages().size()).isEqualTo(1);
         assertThat(articleResponseDtos.get(0).getUser().getEmail()).isEqualTo("test@test.com");

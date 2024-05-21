@@ -47,8 +47,6 @@ public class ChatService {
                 ChatSummariesDto summary = ChatSummariesDto.builder().
                 id(lastChat.getId()).lastMessage(lastChat.getContents()).lastMessageAt(lastChat.getSendAt())
                         .isDeleted(isDeleted).me(currentUser).partner(chatPartner).build();
-                System.out.println(chatPartner.getEmail() + currentUser.getEmail() + lastChat.getSendUser().getEmail()
-                + lastChat.getReceiveUser().getEmail());
                 chatSummaries.add(summary);
             }
         }

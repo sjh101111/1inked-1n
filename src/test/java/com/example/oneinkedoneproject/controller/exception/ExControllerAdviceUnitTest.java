@@ -1,5 +1,6 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.exception;
 
+import com.example.oneinkedoneproject.controller.ExControllerAdvice;
 import com.example.oneinkedoneproject.dto.auth.ErrorResult;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;

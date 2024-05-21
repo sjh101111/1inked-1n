@@ -5,6 +5,7 @@ import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.Resume;
 import com.example.oneinkedoneproject.domain.User;
 import com.example.oneinkedoneproject.dto.resume.AddResumeRequestDto;
+import com.example.oneinkedoneproject.dto.resume.ResumeResponseDto;
 import com.example.oneinkedoneproject.dto.resume.UpdateResumeRequestDto;
 import com.example.oneinkedoneproject.repository.resume.ResumeRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
@@ -111,6 +112,19 @@ public class ResumeServiceUnitTest {
         // then
         assertThat(resumeList.size()).isEqualTo(2);
         assertThat(resumeList.get(0).getId()).isEqualTo(resume.getId());
+    }
+
+    @Test
+    @DisplayName("특정 사용자 Resume 조회")
+    void getResumeOfUserPage() {
+        List<Resume> resumes = new ArrayList<>();
+        resumes.add(resume);
+        doReturn(Optional.of(user)).when(userRepository).findByEmail(any(String.class));
+        doReturn(resumes).when(resumeRepository).findByUser(any(User.class));
+
+        List<ResumeResponseDto> dto = resumeService.findByEmail(user.getEmail());
+
+        assertThat(dto.get(0).getContents()).isEqualTo(resume.getContents());
     }
 
     @Test
