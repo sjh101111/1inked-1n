@@ -1,10 +1,8 @@
-package com.example.oneinkedoneproject.service;
+package com.example.oneinkedoneproject.service.allenAi;
 
 import com.example.oneinkedoneproject.AllenAiApi.Action;
 import com.example.oneinkedoneproject.AllenAiApi.AiResponse;
 import com.example.oneinkedoneproject.AllenAiApi.AllenAi;
-import com.example.oneinkedoneproject.service.AllenAi.AllenAiService;
-import com.example.oneinkedoneproject.service.article.ArticleService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

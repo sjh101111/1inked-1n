@@ -40,8 +40,6 @@ public class AllenAiTest {
 
         // Create an instance of AllenAi with the mocked HttpClient
         allenAi = new AllenAi(mockHttpClient, new Gson());
-
-
     }
 
     @Test

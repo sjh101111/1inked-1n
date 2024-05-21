@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.service;
+package com.example.oneinkedoneproject.service.comment;
 
 import com.example.oneinkedoneproject.domain.Article;
 import com.example.oneinkedoneproject.domain.Comment;
@@ -7,7 +7,6 @@ import com.example.oneinkedoneproject.dto.comment.UpdateCommentRequestDto;
 import com.example.oneinkedoneproject.repository.article.ArticleRepository;
 import com.example.oneinkedoneproject.repository.comment.CommentRepository;
 import com.example.oneinkedoneproject.repository.user.UserRepository;
-import com.example.oneinkedoneproject.service.comment.CommentService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

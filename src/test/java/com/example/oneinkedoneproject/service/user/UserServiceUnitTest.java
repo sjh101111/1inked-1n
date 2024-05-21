@@ -2,7 +2,6 @@ package com.example.oneinkedoneproject.service.user;
 
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
 import com.example.oneinkedoneproject.domain.User;
-import com.example.oneinkedoneproject.dto.*;
 import com.example.oneinkedoneproject.dto.user.*;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.oneinkedoneproject.service.user.UserService.*;
@@ -731,4 +732,33 @@ public class UserServiceUnitTest {
 	/**
 	 * 유저 사진 업로드 TEST END
 	 */
+
+	@Test
+	@DisplayName("searchUser 테스트")
+	void searchUsersTest() {
+		String email = "test@naver.com";
+		MultipartFile file = new MockMultipartFile("file",
+				"test.png",
+				"image/png",
+				"test".getBytes(StandardCharsets.UTF_8));
+
+		User user = User.builder()
+				.id(GenerateIdUtils.generateUserId())
+				.realname("익명")
+				.passwordQuestion(pwdQuestion)
+				.passwordAnswer("aw")
+				.email(email)
+				.password(encoder.encode("1aw9!wWem23"))
+				.withdraw(false)
+				.build();
+
+		List<User> users = new ArrayList<>();
+		users.add(user);
+
+		doReturn(users).when(userRepository).findAllByIdentityOrDescription(any(String.class),any(String.class));
+		List<FindUserResponseDto> result = userService.searchUsers("search term", "test");
+
+
+		assertThat(users.get(0).getRealname()).isEqualTo(result.get(0).getRealName());
+	}
 }

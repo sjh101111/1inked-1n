@@ -1,4 +1,4 @@
-package com.example.oneinkedoneproject.service.AllenAi;
+package com.example.oneinkedoneproject.service.allenAi;
 
 import com.example.oneinkedoneproject.AllenAiApi.Action;
 import com.example.oneinkedoneproject.AllenAiApi.AiResponse;

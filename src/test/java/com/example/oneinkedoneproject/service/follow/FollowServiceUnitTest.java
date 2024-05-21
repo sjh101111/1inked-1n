@@ -36,11 +36,9 @@ public class FollowServiceUnitTest {
     @InjectMocks
     private FollowService followService;
 
-
     @Test
     @DisplayName("follow 생성")
     void follow(){
-
         // given
 
         AddFollowRequestDto request = new AddFollowRequestDto("testUser");
@@ -75,7 +73,6 @@ public class FollowServiceUnitTest {
                         .build())
         );
 
-
         Follow follow = Follow.builder()
                 .id(GenerateIdUtils.generateFollowId())
                 .toUser(null)
@@ -91,7 +88,6 @@ public class FollowServiceUnitTest {
         // then
         assertThat(savedFollow).isNotNull();
         assertThat(savedFollow.getId()).isEqualTo(follow.getId());
-
 
     }
 
@@ -180,6 +176,55 @@ public class FollowServiceUnitTest {
     }
 
     @Test
+    @DisplayName("특정 유저의 팔로잉 목록 조회")
+    void getFollowsOfUser() {
+        List<Follow> followList = new ArrayList<>();
+
+        //given
+        User followUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("kim")
+                .email("test")
+                .password("1234")
+                .passwordQuestion(null)
+                .passwordAnswer("답변")
+                .identity("학생")
+                .location("서울")
+                .description("hi")
+                .withdraw(false)
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        User curUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("lee")
+                .email("test2")
+                .password("12345")
+                .passwordQuestion(null)
+                .passwordAnswer("답변2")
+                .identity("직장인")
+                .location("부산")
+                .description("hi2")
+                .withdraw(false)
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        Follow follow = Follow.builder()
+                .id(GenerateIdUtils.generateFollowId())
+                .toUser(followUser)
+                .fromUser(curUser)
+                .build();
+
+        followList.add(follow);
+
+        doReturn(followList).when(followRepository).findAllByFromUser_Email(any(String.class));
+
+        List<FollowResponseDto> dto = followService.getFollowsOfUser(curUser.getEmail());
+
+        assertThat(dto.get(0).getRealname()).isEqualTo(followUser.getRealname());
+    }
+
+    @Test
     @DisplayName("팔로워 목록 조회")
     void showFollowers(){
 
@@ -232,6 +277,55 @@ public class FollowServiceUnitTest {
         assertThat(followsList.size()).isEqualTo(1);
         assertThat(followsList.get(0).getRealname()).isEqualTo(followedUser.getRealname());
 
+    }
+
+    @Test
+    @DisplayName("특정 유저의 팔로잉 목록 조회")
+    void getFollowersOfUser() {
+        List<Follow> followList = new ArrayList<>();
+
+        //given
+        User followedUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("kim")
+                .email("test")
+                .password("1234")
+                .passwordQuestion(null)
+                .passwordAnswer("답변")
+                .identity("학생")
+                .location("서울")
+                .description("hi")
+                .withdraw(false)
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        User curUser = User.builder()
+                .id(GenerateIdUtils.generateUserId())
+                .realname("lee")
+                .email("test2")
+                .password("12345")
+                .passwordQuestion(null)
+                .passwordAnswer("답변2")
+                .identity("직장인")
+                .location("부산")
+                .description("hi2")
+                .withdraw(false)
+                .grade(Grade.ROLE_BASIC)
+                .build();
+
+        Follow follow = Follow.builder()
+                .id(GenerateIdUtils.generateFollowId())
+                .toUser(curUser)
+                .fromUser(followedUser)
+                .build();
+
+        followList.add(follow);
+
+        doReturn(followList).when(followRepository).findAllByToUser_Email(any(String.class));
+
+        List<FollowResponseDto> dto = followService.getFollowersOfUser(curUser.getEmail());
+
+        assertThat(dto.get(0).getRealname()).isEqualTo(followedUser.getRealname());
     }
 
     @Test

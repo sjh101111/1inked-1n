@@ -1,8 +1,7 @@
-package com.example.oneinkedoneproject.service;
+package com.example.oneinkedoneproject.service.image;
 
 import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.repository.image.ImageRepository;
-import com.example.oneinkedoneproject.service.image.ImageService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.resume;
 
-import com.example.oneinkedoneproject.controller.resume.ResumeApiController;
 import com.example.oneinkedoneproject.domain.*;
 import com.example.oneinkedoneproject.dto.resume.AddResumeRequestDto;
+import com.example.oneinkedoneproject.dto.resume.ResumeResponseDto;
 import com.example.oneinkedoneproject.dto.resume.UpdateResumeRequestDto;
 import com.example.oneinkedoneproject.service.resume.ResumeService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -123,6 +125,21 @@ public class ResumeApiControllerUnitTest {
                 .andExpect(status().isOk())
                 .andDo(print())
         ;
+    }
+
+    @Test
+    void getResumeOfUserPage() throws Exception {
+        List<Resume> resumeList = new ArrayList<>();
+        resumeList.add(buildResume());
+
+        resumeList.stream().map(x -> new ResumeResponseDto(x))
+                .toList();
+        doReturn(resumeList).when(resumeService).findByEmail(any(String.class));
+
+        ResultActions resultActions = mockMvc.perform(get("/api/resume/user/{email}", mockedUser.getEmail()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$[0].contents").value(resumeList.get(0).getContents()));
     }
 
     @Test

@@ -22,12 +22,12 @@ public class FollowService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Follow follow(User fromUser, AddFollowRequestDto request){
+    public Follow follow(User fromUser, AddFollowRequestDto request) {
         User followUser = userRepository.findById(request.getFollowUserId())
                 .orElseThrow(IllegalArgumentException::new);
 
         //이미 팔로워 존재하는지 확인
-        if(followRepository.findByToUserId(followUser.getId(), fromUser.getId()).isPresent()){
+        if (followRepository.findByToUserId(followUser.getId(), fromUser.getId()).isPresent()) {
             throw new IllegalArgumentException("이미 팔로우 중입니다.");
         }
 
@@ -36,7 +36,7 @@ public class FollowService {
 
     // 팔로우 생성 기능
     @Transactional(readOnly = true)
-    public List<FollowResponseDto> getFollows(User toUser){
+    public List<FollowResponseDto> getFollows(User toUser) {
         String curUserEmail = toUser.getEmail();
         List<Follow> follows = followRepository.findAllByFromUser_Email(curUserEmail);
         return follows.stream()
@@ -48,29 +48,30 @@ public class FollowService {
     public List<FollowResponseDto> getFollowsOfUser(String email) {
         return followRepository.findAllByFromUser_Email(email).stream()
                 .map(follow -> new FollowResponseDto(follow.getId(), follow.getToUser().getRealname(), follow.getToUser().getIdentity(), follow.getToUser().getImage(), follow.getToUser().getEmail(), follow.getToUser().getId()))
-        .toList();
+                .toList();
     }
 
     // 팔로우 목록 조회 기능
     @Transactional(readOnly = true)
-    public List<FollowResponseDto> getFollowers(User fromUser){
+    public List<FollowResponseDto> getFollowers(User fromUser) {
         String curUserEmail = fromUser.getUsername();
         List<Follow> follows = followRepository.findAllByToUser_Email(curUserEmail); // To
         return follows.stream()
-                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public List<FollowResponseDto> getFollowersOfUser(String email) {
         return followRepository.findAllByToUser_Email(email).stream()
-                .map(follow -> new FollowResponseDto(follow.getId() ,follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
+                .map(follow -> new FollowResponseDto(follow.getId(), follow.getFromUser().getRealname(), follow.getFromUser().getIdentity(), follow.getFromUser().getImage(), follow.getFromUser().getEmail(), follow.getFromUser().getId()))
                 .toList();
     }
 
     @Transactional
     public void unfollow(String userId, User fromUser) {
-        Follow follow = followRepository.findByToUserId(userId, fromUser.getId()).orElseThrow(() -> new IllegalArgumentException("not found to user"));
+        Follow follow = followRepository.findByToUserId(userId, fromUser.getId())
+                .orElseThrow(() -> new IllegalArgumentException("not found to user"));
 
         followRepository.delete(follow);
     }

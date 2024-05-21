@@ -1,9 +1,9 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.allenAi;
 
 import com.example.oneinkedoneproject.AllenAiApi.Action;
 import com.example.oneinkedoneproject.AllenAiApi.AiResponse;
 import com.example.oneinkedoneproject.controller.AllenAi.AllenAiController;
-import com.example.oneinkedoneproject.service.AllenAi.AllenAiService;
+import com.example.oneinkedoneproject.service.allenAi.AllenAiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;

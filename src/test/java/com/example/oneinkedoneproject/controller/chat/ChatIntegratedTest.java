@@ -1,6 +1,5 @@
-package com.example.oneinkedoneproject.controller;
+package com.example.oneinkedoneproject.controller.chat;
 
-import com.example.oneinkedoneproject.controller.chat.ChatController;
 import com.example.oneinkedoneproject.domain.Chat;
 import com.example.oneinkedoneproject.domain.Grade;
 import com.example.oneinkedoneproject.domain.PasswordQuestion;
@@ -18,7 +17,6 @@ import com.example.oneinkedoneproject.service.auth.JwtTokenProvider;
 import com.example.oneinkedoneproject.service.chat.ChatService;
 import com.example.oneinkedoneproject.utils.GenerateIdUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
