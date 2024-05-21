@@ -408,15 +408,16 @@
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8efb2c85-2aea-404e-b7ee-aad05f295686">
 
 ## 8. 테스트 커버리지(Test Coverage)
+*Sonarqube와 Jacoco 라이브러리 사용
 ### Root Package Coverage (src/main/java/com/example/oneinkedoneproject)
 <Strong>Coverage 90.7%</Strong>
 </br>*dto는 단위, 통합 테스트에 사용되었으므로 제외한 수치
 <img src="https://github.com/Garodden/1inked-1n/assets/154873151/d58fbff5-7dbd-40aa-aa23-447eb3624924">
 
-### Controller Layer Coverage
+### Controller Layer Coverage (src/main/java/com/example/oneinkedoneproject/controller)
 <img src="https://github.com/Garodden/1inked-1n/assets/154873151/99e767b3-80ec-450a-828c-99cb686442c2">
 
-### Service Layer Coverage
+### Service Layer Coverage (src/main/java/com/example/oneinkedoneproject/service)
 <img src="https://github.com/Garodden/1inked-1n/assets/154873151/91a7a33b-e46d-4569-94c3-ce6e170613e1">
 
 ## 기타 -📐 코딩 컨벤션
