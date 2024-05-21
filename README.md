@@ -3,15 +3,15 @@
 ## 목차
 <div>
   
-- [0.프로젝트 소개](#0-프로젝트-소개)
-- [1.개발 환경 및 개발 일정](#1-개발-환경-및-개발-일정)
-- [2.기능 명세서](#2-기능-명세서)
-- [3.화면 설계서(Wireframe)](#3-화면-설계서wireframe)
-- [4.시연 영상 - 주요 기능 위주](#4-시연-영상---주요-기능-위주)
-- [5.구조도 - 프로젝트, 시스템](#5-구조도---프로젝트-시스템)
-- [6.데이터베이스(ERD)](#6-데이터베이스erd)
-- [7.API 명세서](#7-api-명세서)
-
+- [0. 프로젝트 소개](#0-프로젝트-소개)
+- [1. 개발 환경 및 개발 일정](#1-개발-환경-및-개발-일정)
+- [2. 기능 명세서](#2-기능-명세서)
+- [3. 화면 설계(Wireframe)](#3-화면-설계wireframe)
+- [4. 시연 영상 - 주요 기능 위주](#4-시연-영상---주요-기능-위주)
+- [5. 구조도 - 프로젝트, 시스템](#5-구조도---프로젝트-시스템)
+- [6. 데이터베이스(ERD)](#6-데이터베이스erd)
+- [7. API 명세서](#7-api-명세서)
+- [8. 테스트 커버리지(Test Coverage)](#8-테스트-커버리지test-coverage)
 </div>
 -------------------------  
 
@@ -72,8 +72,6 @@
 #### [화면설계]
  <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">
 
-<br>
-
 ### 개발일정
 - 팀 빌딩 / 도메인 설정 : 4/24
 - CI/CD 환경 구축 : 4/24 ~ 4/25
@@ -87,7 +85,7 @@
 - 발표 준비 : 5/12 ~ 5/15
 
 ## 2. 기능 명세서
-[1inked 1n 기능 정의서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
+[1inked 1n 기능 명세서](https://www.notion.so/oreumi/277fcbe54a704fa5bdef217d0d61f6f0)
 
 ### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
 | 요구사항 | 페이지     | 구성요소                  | 입력                      | 출력                                | 설명                                                                              |
@@ -218,11 +216,11 @@
 |               | | 쪽지 전송 버튼 | | | 서버에 쪽지 생성 요청 |
 
 
-## 3. 화면 설계서(Wireframe)
+## 3. 화면 설계(Wireframe)
 [1inkend 1n 화면 설계(figma)](https://www.figma.com/design/4Ypf3cLJBIoLrJ3pAu1YRU/Final-Project?node-id=0-1&t=TKggU5nXcle1n5yc-0)
 
 |||
-|--------------------|---------------------|
+|:--------------------:|:---------------------:|
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a9f09f49-c3b4-46ce-9542-a5dcae78f898"> <br/> 메인 페이지|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/3ce230b0-1707-4f48-ad35-5f9e47d781c9"> <br/> 로그인 화면|
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/1c88a47b-539a-4242-b08c-86cfc83143b4"> <br/> 회원 가입 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/a8868c5b-fa04-4481-a43d-811754426447"> <br/> 비밀번호 찾기 화면|
 |<img src="https://github.com/Garodden/1inked-1n/assets/143177939/0b180d0d-e8f1-4915-905d-d841b1cb2fe9"> <br/> 비밀번호 변경 화면|<img src="https://github.com/Garodden/1inked-1n/assets/143177939/ada1d08a-3401-4f99-a3fe-51cfc7514894"> <br/> 회원 탈퇴 화면|
@@ -387,7 +385,7 @@
 </p>
 
 ## 7. API 명세서
-
+*Swagger UI 재구성
 ### 공통 - 헤더, 댓글, 대댓글 등 필수적이고 반복되는 기능 및 메인(랜딩)페이지
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/42e1f742-810c-4394-8764-e10666180c6c">
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/7e267afe-4fd5-48e5-9c49-bf0be0acc3cb">
@@ -409,6 +407,17 @@
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/4fabdff1-8a31-4da1-b0fb-0deb2db60612">
 <img src="https://github.com/Garodden/1inked-1n/assets/143177939/8efb2c85-2aea-404e-b7ee-aad05f295686">
 
+## 8. 테스트 커버리지(Test Coverage)
+### Root Package Coverage (src/main/java/com/example/oneinkedoneproject)
+<Strong>Coverage 90.7%</Strong>
+</br>*dto는 단위, 통합 테스트에 사용되었으므로 제외한 수치
+<img src="https://github.com/Garodden/1inked-1n/assets/154873151/d58fbff5-7dbd-40aa-aa23-447eb3624924">
+
+### Controller Layer Coverage
+<img src="https://github.com/Garodden/1inked-1n/assets/154873151/99e767b3-80ec-450a-828c-99cb686442c2">
+
+### Service Layer Coverage
+<img src="https://github.com/Garodden/1inked-1n/assets/154873151/91a7a33b-e46d-4569-94c3-ce6e170613e1">
 
 ## 기타 -📐 코딩 컨벤션
 
